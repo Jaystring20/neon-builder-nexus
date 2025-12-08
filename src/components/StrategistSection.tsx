@@ -1,4 +1,5 @@
-import { Quote, Award, Target, Lightbulb, Users } from "lucide-react";
+import { Quote, Award, Target, Lightbulb, Users, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import jerryStrategist from "@/assets/jerry-strategist.png";
 import {
   Dialog,
@@ -134,6 +135,19 @@ const StrategistSection = () => {
                       navigate, innovate, and create lasting value in the digital age."
                     </p>
                   </div>
+
+                  {/* Connect Button */}
+                  <Button variant="hero" size="lg" asChild className="w-full">
+                    <a 
+                      href="https://jeremiahadeyemi.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="group"
+                    >
+                      Connect with Jeremiah
+                      <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -167,6 +181,19 @@ const StrategistSection = () => {
                 — From "The Professional Builder's Blueprint"
               </p>
             </div>
+
+            {/* Connect Button */}
+            <Button variant="heroOutline" size="lg" asChild className="mt-8">
+              <a 
+                href="https://jeremiahadeyemi.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group"
+              >
+                Connect with Jeremiah
+                <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
           </div>
         </div>
       </div>

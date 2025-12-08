@@ -19,7 +19,7 @@ const StrategistSection = () => {
       <div className="container-narrow relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Image/Avatar Section */}
-          <div className="relative order-2 lg:order-1">
+          <div className="relative order-2 lg:order-1 flex flex-col items-center">
             <Dialog>
               <DialogTrigger asChild>
                 <div className="relative mx-auto w-72 h-72 md:w-96 md:h-96 group cursor-pointer">
@@ -139,7 +139,7 @@ const StrategistSection = () => {
                   {/* Connect Button */}
                   <Button variant="hero" size="lg" asChild className="w-full">
                     <a 
-                      href="https://jeremiahadeyemi.com" 
+                      href="https://thedigitechstrategist.lovable.app" 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="group"
@@ -151,6 +151,19 @@ const StrategistSection = () => {
                 </div>
               </DialogContent>
             </Dialog>
+
+            {/* Connect Button - Under Picture */}
+            <Button variant="heroOutline" size="lg" asChild className="mt-8">
+              <a 
+                href="https://thedigitechstrategist.lovable.app" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group"
+              >
+                Connect with Jeremiah
+                <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Button>
           </div>
 
           {/* Content Section */}
@@ -181,19 +194,6 @@ const StrategistSection = () => {
                 — From "The Professional Builder's Blueprint"
               </p>
             </div>
-
-            {/* Connect Button */}
-            <Button variant="heroOutline" size="lg" asChild className="mt-8">
-              <a 
-                href="https://jeremiahadeyemi.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="group"
-              >
-                Connect with Jeremiah
-                <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </Button>
           </div>
         </div>
       </div>

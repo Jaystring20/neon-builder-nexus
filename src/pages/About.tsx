@@ -167,12 +167,25 @@ const About = () => {
           <div className="glass-card p-8 md:p-12">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Image */}
-              <div className="relative">
+              <div className="relative flex flex-col items-center">
                 <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/20">
                   <img src={jerryImage} alt="Jeremiah Adeyemi - Founder of Digital Civics Hub" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
                 <div className="absolute -top-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full blur-2xl" />
+                
+                {/* Connect Button - Under Picture */}
+                <Button variant="hero" size="lg" asChild className="mt-8 relative z-10">
+                  <a 
+                    href="https://thedigitechstrategist.lovable.app" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="group"
+                  >
+                    Connect with Jeremiah
+                    <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
               </div>
 
               {/* Content */}
@@ -213,19 +226,6 @@ const About = () => {
                     <span className="text-primary font-semibold"> building</span>."
                   </p>
                 </div>
-
-                {/* Connect Button */}
-                <Button variant="hero" size="lg" asChild className="mt-8">
-                  <a 
-                    href="https://jeremiahadeyemi.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="group"
-                  >
-                    Connect with Jeremiah
-                    <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </Button>
               </div>
             </div>
           </div>

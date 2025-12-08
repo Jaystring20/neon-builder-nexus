@@ -42,7 +42,7 @@ const DCNSection = () => {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
             Digital Creatives{" "}
-            <span className="neon-text-cyan">Network</span>
+            <span className="gradient-text">Network</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
             The heart of our community and social impact initiatives. Born from the recognition 

@@ -112,8 +112,8 @@ const Services = () => {
               Our Services
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 animate-fade-in-up">
-              <span className="neon-text-cyan">Build</span> With{" "}
-              <span className="neon-text-orange">Purpose</span>
+              <span className="gradient-text">Build</span> With{" "}
+              <span className="text-secondary font-semibold">Purpose</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8 animate-fade-in-up animation-delay-200">
               Empowering professionals and organizations to thrive in the digital age through strategic guidance, hands-on training, and innovative solutions.
@@ -135,7 +135,7 @@ const Services = () => {
         <div className="container-narrow">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Core <span className="neon-text-cyan">Services</span>
+              Core <span className="text-primary font-semibold">Services</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Comprehensive offerings designed to transform how you create, build, and grow in the digital economy.
@@ -194,7 +194,7 @@ const Services = () => {
               Our Methodology
             </span>
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              The <span className="neon-text-orange">Lab</span> Approach
+              The <span className="text-secondary font-semibold">Lab</span> Approach
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               A proven framework that takes you from idea to launch, with hands-on guidance at every step.
@@ -235,7 +235,7 @@ const Services = () => {
         <div className="container-narrow">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Choose Your <span className="neon-text-cyan">Path</span>
+              Choose Your <span className="text-primary font-semibold">Path</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Tailored programs designed to meet you where you are and take you where you want to go.
@@ -299,7 +299,7 @@ const Services = () => {
 
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                Ready to <span className="neon-text-orange">Build</span>?
+                Ready to <span className="text-secondary font-semibold">Build</span>?
               </h2>
               <p className="text-muted-foreground max-w-xl mx-auto mb-8">
                 Let's discuss how we can help you or your organization thrive in the digital age. Schedule a free consultation today.

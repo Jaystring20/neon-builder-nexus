@@ -1,6 +1,6 @@
 import { Download, CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import blueprintCover from "@/assets/blueprint-book-cover.jpg";
 const BlueprintSection = () => {
   const days = [
     { day: "1-2", title: "Consumer to Creator", description: "Shift your mindset from passive consumption to active creation" },
@@ -52,33 +52,51 @@ const BlueprintSection = () => {
             </Button>
           </div>
 
-          {/* Right Content - Timeline */}
+          {/* Right Content - Book Cover & Timeline */}
           <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-secondary via-secondary/50 to-transparent" />
-            
-            <div className="space-y-6">
-              {days.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative pl-16 group"
-                >
-                  {/* Timeline Dot */}
-                  <div className="absolute left-0 top-0 w-12 h-12 rounded-full bg-card border-2 border-secondary flex items-center justify-center group-hover:bg-secondary/10 transition-colors">
-                    <span className="text-secondary font-bold text-sm">
-                      D{item.day}
-                    </span>
-                  </div>
-
-                  <div className="glass-card p-6 group-hover:border-secondary/30 transition-colors">
-                    <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">
-                      {item.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm">
-                      {item.description}
-                    </p>
-                  </div>
+            {/* Book Cover */}
+            <div className="mb-8 flex justify-center">
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+                <div className="relative rounded-lg overflow-hidden shadow-2xl shadow-secondary/20 border border-border/30 transform transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
+                  <img 
+                    src={blueprintCover} 
+                    alt="The Professional Builder's Blueprint - 7 Days to Start Building Agency in the AI Age"
+                    className="w-64 md:w-72 h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-              ))}
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="relative">
+              <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-secondary via-secondary/50 to-transparent" />
+              
+              <div className="space-y-4">
+                {days.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative pl-16 group"
+                  >
+                    {/* Timeline Dot */}
+                    <div className="absolute left-0 top-0 w-12 h-12 rounded-full bg-card border-2 border-secondary flex items-center justify-center group-hover:bg-secondary/10 transition-colors">
+                      <span className="text-secondary font-bold text-sm">
+                        D{item.day}
+                      </span>
+                    </div>
+
+                    <div className="glass-card p-4 group-hover:border-secondary/30 transition-colors">
+                      <h3 className="font-heading font-semibold text-base mb-1 text-foreground">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

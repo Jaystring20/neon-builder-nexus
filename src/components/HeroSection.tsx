@@ -1,6 +1,7 @@
 import { ArrowRight, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import FloatingParticles from "@/components/FloatingParticles";
 import heroVisual from "@/assets/hero-visual.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -13,6 +14,9 @@ const HeroSection = () => {
         style={{ backgroundImage: `url(${heroBg})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+      
+      {/* Floating Particles */}
+      <FloatingParticles count={20} />
       
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">

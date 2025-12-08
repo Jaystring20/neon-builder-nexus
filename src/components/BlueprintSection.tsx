@@ -61,7 +61,7 @@ const BlueprintSection = () => {
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
               The Professional{" "}
-              <span className="neon-text-orange">Builder's Blueprint</span>
+              <span className="gradient-text">Builder's Blueprint</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               7 Days to Start Building Agency in the AI Age — a free, actionable guide 

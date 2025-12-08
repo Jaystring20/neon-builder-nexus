@@ -145,7 +145,7 @@ const StrategistSection = () => {
               Meet Your Guide
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
-              <span className="neon-text-cyan">Jeremiah Adeyemi</span>
+              <span className="gradient-text">Jeremiah Adeyemi</span>
               <br />
               <span className="text-foreground text-2xl md:text-3xl">The DigiTech Strategist</span>
             </h2>

@@ -51,7 +51,7 @@ const DCNSection = () => {
         </div>
 
         {/* Mission Statement */}
-        <div className="glass-card p-8 md:p-12 mb-16 text-center neon-border-cyan">
+        <div className="glass-card p-8 md:p-12 mb-16 text-center border-primary/30">
           <p className="text-sm uppercase tracking-wider text-primary mb-4">Our Mission</p>
           <p className="text-xl md:text-2xl font-heading text-foreground leading-relaxed max-w-3xl mx-auto">
             To <span className="text-primary font-semibold">democratize professional growth</span>, 
@@ -113,11 +113,11 @@ const DCNSection = () => {
         {/* CTA */}
         <div className="mt-16 text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="neonCyan" size="lg" className="group">
+            <Button variant="hero" size="lg" className="group">
               Explore DCN Initiatives
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Button>
-            <Button variant="neonOrange" size="lg">
+            <Button variant="heroOutline" size="lg">
               Partner With Us
             </Button>
           </div>

@@ -148,10 +148,10 @@ const Services = () => {
                 key={service.title}
                 className="glass-card p-8 group hover:border-primary/30 transition-all duration-500 glow-effect"
               >
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 border ${
                   service.color === "primary" 
-                    ? "bg-primary/10 neon-border-cyan" 
-                    : "bg-secondary/10 neon-border-orange"
+                    ? "bg-primary/10 border-primary/30" 
+                    : "bg-secondary/10 border-secondary/30"
                 }`}>
                   <service.icon className={`w-8 h-8 ${
                     service.color === "primary" ? "text-primary" : "text-secondary"

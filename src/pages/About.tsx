@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Target, Eye, Lightbulb, Users, Award, Heart, Zap, Shield, ArrowRight, Quote } from "lucide-react";
+import { Target, Eye, Lightbulb, Users, Award, Heart, Zap, Shield, ArrowRight, Quote, ExternalLink } from "lucide-react";
 import jerryImage from "@/assets/jerry-strategist.png";
 const About = () => {
   const coreValues = [{
@@ -213,6 +213,19 @@ const About = () => {
                     <span className="text-primary font-semibold"> building</span>."
                   </p>
                 </div>
+
+                {/* Connect Button */}
+                <Button variant="hero" size="lg" asChild className="mt-8">
+                  <a 
+                    href="https://jeremiahadeyemi.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="group"
+                  >
+                    Connect with Jeremiah
+                    <ExternalLink className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { ArrowRight, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import dchLogo from "@/assets/dch-logo.jpg";
+import heroVisual from "@/assets/hero-visual.jpg";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
@@ -38,14 +38,15 @@ const HeroSection = () => {
             </span>
           </div>
 
-          {/* Logo Animation */}
+          {/* Hero Visual */}
           <div className="flex justify-center mb-8 animate-fade-in-up animation-delay-100">
-            <div className="relative w-48 h-32 sm:w-64 sm:h-40 md:w-80 md:h-48 animate-glow">
+            <div className="relative w-64 h-40 sm:w-80 sm:h-48 md:w-[480px] md:h-72 rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-border/30">
               <img
-                src={dchLogo}
-                alt="Digital Creatives Hub"
-                className="w-full h-full object-contain"
+                src={heroVisual}
+                alt="Digital transformation and innovation"
+                className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
             </div>
           </div>
 

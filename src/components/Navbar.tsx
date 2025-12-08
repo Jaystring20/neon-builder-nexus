@@ -46,8 +46,8 @@ const Navbar = () => {
               />
             </div>
             <span className="font-heading font-bold text-lg hidden sm:block">
-              <span className="neon-text-cyan">Digital</span>{" "}
-              <span className="neon-text-orange">Creatives</span>{" "}
+              <span className="text-primary font-semibold">Digital</span>{" "}
+              <span className="text-secondary font-semibold">Creatives</span>{" "}
               <span className="text-foreground">Hub</span>
             </span>
           </Link>

@@ -1,12 +1,13 @@
 import { Twitter, Linkedin, Instagram, Youtube, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 import dchLogo from "@/assets/dch-logo.jpg";
 
 const Footer = () => {
   const links = {
     company: [
-      { label: "About Us", href: "#about" },
-      { label: "Our Mission", href: "#" },
-      { label: "Team", href: "#" },
+      { label: "About Us", href: "/about", isRoute: true },
+      { label: "Our Mission", href: "/about#mission", isRoute: true },
+      { label: "Meet The Founder", href: "/about#founder", isRoute: true },
       { label: "Careers", href: "#" },
     ],
     services: [
@@ -73,12 +74,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.company.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link
+                      to={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

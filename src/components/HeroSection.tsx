@@ -78,7 +78,7 @@ const HeroSection = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="mt-16 pt-8 border-t border-border/30 animate-fade-in-up animation-delay-500">
+          <div className="mt-12 pt-8 pb-20 border-t border-border/30 animate-fade-in-up animation-delay-500">
             <p className="text-sm text-muted-foreground mb-6">
               Trusted by forward-thinking professionals worldwide
             </p>
@@ -107,8 +107,8 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-primary/50 flex items-start justify-center p-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 bg-background/50 backdrop-blur-sm">
           <div className="w-1 h-2 rounded-full bg-primary animate-pulse" />
         </div>
       </div>

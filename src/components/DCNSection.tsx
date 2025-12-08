@@ -1,6 +1,7 @@
 import { Heart, Globe, BookOpen, Wrench, Users, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import FloatingParticles from "@/components/FloatingParticles";
 
 const DCNSection = () => {
   const features = [
@@ -31,6 +32,9 @@ const DCNSection = () => {
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
       <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[150px] animate-breathe" />
+
+      {/* Floating Particles */}
+      <FloatingParticles count={12} />
 
       <div className="container-narrow relative z-10">
         {/* Header */}

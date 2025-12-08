@@ -1,6 +1,7 @@
 import { Quote, Award, Target, Lightbulb, Users, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import FloatingParticles from "@/components/FloatingParticles";
 import jerryStrategist from "@/assets/jerry-strategist.png";
 import {
   Dialog,
@@ -16,6 +17,9 @@ const StrategistSection = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5" />
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[150px] animate-breathe" />
+
+      {/* Floating Particles */}
+      <FloatingParticles count={10} />
 
       <div className="container-narrow relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">

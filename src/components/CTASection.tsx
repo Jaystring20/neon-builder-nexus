@@ -1,6 +1,7 @@
 import { ArrowRight, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
+import FloatingParticles from "@/components/FloatingParticles";
 
 const CTASection = () => {
   return (
@@ -9,6 +10,9 @@ const CTASection = () => {
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-[120px] animate-breathe" />
       </div>
+
+      {/* Floating Particles */}
+      <FloatingParticles count={8} />
 
       <div className="container-narrow relative z-10">
         <ScrollReveal animation="blur-in">

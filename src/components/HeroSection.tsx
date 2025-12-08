@@ -12,11 +12,12 @@ const HeroSection = () => {
         style={{ backgroundImage: `url(${heroBg})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
-        <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] animate-pulse-slow animation-delay-300" />
+        <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-breathe" />
+        <div className="absolute bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] animate-breathe animation-delay-300" />
         
         {/* Grid Pattern */}
         <div 
@@ -31,7 +32,7 @@ const HeroSection = () => {
       <div className="container-narrow relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 backdrop-blur-sm border border-border/50 mb-8 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-8 animate-fade-in-up-elegant hover-glow">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-muted-foreground">
               Your Innovation Lab for Digital Agency
@@ -39,8 +40,8 @@ const HeroSection = () => {
           </div>
 
           {/* Hero Visual */}
-          <div className="flex justify-center mb-8 animate-fade-in-up animation-delay-100">
-            <div className="relative w-64 h-40 sm:w-80 sm:h-48 md:w-[480px] md:h-72 rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-border/30">
+          <div className="flex justify-center mb-8 opacity-0 animate-blur-in animation-delay-100">
+            <div className="relative w-64 h-40 sm:w-80 sm:h-48 md:w-[480px] md:h-72 rounded-2xl overflow-hidden glass-border hover-lift hover-glass-shine">
               <img
                 src={heroVisual}
                 alt="Digital transformation and innovation"
@@ -51,14 +52,14 @@ const HeroSection = () => {
           </div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 animate-fade-in-up animation-delay-200">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6 opacity-0 animate-fade-in-up-elegant animation-delay-200">
             <span className="text-foreground">Feeling Left Behind by the</span>
             <br />
             <span className="gradient-text">Digital Tsunami?</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up animation-delay-300">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed opacity-0 animate-fade-in-up-elegant animation-delay-300">
             The digital world is evolving faster than ever. Don't just adapt — 
             <span className="text-primary font-medium"> build your future</span> with agency and confidence. 
             Digital Creatives Hub empowers professionals and organizations to transform uncertainty 
@@ -66,37 +67,37 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up animation-delay-400">
-            <Button variant="hero" size="xl" className="group">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-fade-in-up-elegant animation-delay-400">
+            <Button variant="hero" size="xl" className="group hover-glow">
               Discover Your Path
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="heroOutline" size="xl" className="group">
+            <Button variant="heroOutline" size="xl" className="group hover-glass-shine">
               <Download className="w-5 h-5" />
               Free Builder's Blueprint
             </Button>
           </div>
 
           {/* Trust Indicators */}
-          <div className="mt-12 pt-8 pb-20 border-t border-border/30 animate-fade-in-up animation-delay-500">
+          <div className="mt-12 pt-8 pb-20 border-t border-border/30 opacity-0 animate-fade-in-up-elegant animation-delay-500">
             <p className="text-sm text-muted-foreground mb-6">
               Trusted by forward-thinking professionals worldwide
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-card flex items-center justify-center">
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift">
+                <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">
                   <span className="text-primary font-bold">500+</span>
                 </div>
                 <span className="text-sm text-muted-foreground">Builders</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-card flex items-center justify-center">
+              <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift animation-delay-100">
+                <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">
                   <span className="text-secondary font-bold">50+</span>
                 </div>
                 <span className="text-sm text-muted-foreground">Projects</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-card flex items-center justify-center">
+              <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift animation-delay-200">
+                <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">
                   <span className="text-primary font-bold">15+</span>
                 </div>
                 <span className="text-sm text-muted-foreground">Countries</span>
@@ -108,7 +109,7 @@ const HeroSection = () => {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 bg-background/50 backdrop-blur-sm">
+        <div className="w-6 h-10 rounded-full border-2 border-primary/30 flex items-start justify-center p-2 glass-card-subtle">
           <div className="w-1 h-2 rounded-full bg-primary animate-pulse" />
         </div>
       </div>

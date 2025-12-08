@@ -127,9 +127,108 @@
                 inset 0 0 10px hsl(var(--neon-orange) / 0.1);
   }
 
+  /* Enhanced Glassmorphism */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-xl;
-    box-shadow: var(--shadow-card);
+    @apply backdrop-blur-2xl border border-border/30 rounded-2xl;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card) / 0.7) 0%,
+      hsl(var(--card) / 0.5) 100%
+    );
+    box-shadow: 
+      0 8px 32px hsl(220 50% 3% / 0.4),
+      0 0 0 1px hsl(var(--primary) / 0.05) inset,
+      0 1px 0 0 hsl(0 0% 100% / 0.05) inset;
+  }
+
+  .glass-card-elevated {
+    @apply backdrop-blur-2xl border border-border/40 rounded-2xl;
+    background: linear-gradient(
+      145deg,
+      hsl(var(--card) / 0.8) 0%,
+      hsl(var(--card) / 0.6) 100%
+    );
+    box-shadow: 
+      0 20px 50px hsl(220 50% 3% / 0.5),
+      0 0 80px hsl(var(--primary) / 0.08),
+      0 0 0 1px hsl(var(--primary) / 0.1) inset,
+      0 2px 0 0 hsl(0 0% 100% / 0.08) inset;
+  }
+
+  .glass-card-subtle {
+    @apply backdrop-blur-xl border border-border/20 rounded-xl;
+    background: hsl(var(--card) / 0.4);
+    box-shadow: 0 4px 20px hsl(220 50% 3% / 0.3);
+  }
+
+  .glass-border {
+    position: relative;
+  }
+
+  .glass-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.5) 0%,
+      transparent 40%,
+      transparent 60%,
+      hsl(var(--secondary) / 0.5) 100%
+    );
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    pointer-events: none;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 25px 60px hsl(220 50% 3% / 0.5),
+      0 0 40px hsl(var(--primary) / 0.1);
+  }
+
+  .hover-glow {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 
+      0 0 40px hsl(var(--primary) / 0.2),
+      0 0 80px hsl(var(--primary) / 0.1);
+  }
+
+  .hover-glass-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hover-glass-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(0 0% 100% / 0.1),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+
+  .hover-glass-shine:hover::after {
+    left: 100%;
   }
 
   .glow-effect {
@@ -143,13 +242,13 @@
     background: var(--gradient-mixed);
     border-radius: inherit;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s ease;
     z-index: -1;
-    filter: blur(15px);
+    filter: blur(20px);
   }
 
   .glow-effect:hover::before {
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   .gradient-text {
@@ -184,6 +283,14 @@
     animation: gradient 8s ease infinite;
   }
 
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer-elegant {
+    animation: shimmer-elegant 3s ease-in-out infinite;
+  }
+
   @keyframes glow {
     from {
       filter: drop-shadow(0 0 20px hsl(var(--neon-cyan) / 0.6));
@@ -214,6 +321,26 @@
     }
   }
 
+  @keyframes breathe {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes shimmer-elegant {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -225,12 +352,49 @@
     }
   }
 
+  @keyframes fadeInUpElegant {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes blurIn {
+    from {
+      opacity: 0;
+      filter: blur(20px);
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scaleInElegant {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -260,8 +424,20 @@
     animation: fadeInUp 0.8s ease-out forwards;
   }
 
+  .animate-fade-in-up-elegant {
+    animation: fadeInUpElegant 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-blur-in {
+    animation: blurIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scale-in-elegant {
+    animation: scaleInElegant 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .animate-slide-in-left {
@@ -278,4 +454,6 @@
   .animation-delay-400 { animation-delay: 400ms; }
   .animation-delay-500 { animation-delay: 500ms; }
   .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+  .animation-delay-800 { animation-delay: 800ms; }
 }

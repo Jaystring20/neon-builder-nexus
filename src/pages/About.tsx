@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Target, Eye, Lightbulb, Users, Award, Heart, Zap, Shield, ArrowRight, Quote, ExternalLink } from "lucide-react";
 import jerryImage from "@/assets/jerry-strategist.png";
+
 const About = () => {
   const coreValues = [{
     icon: Lightbulb,
@@ -36,6 +37,7 @@ const About = () => {
     description: "Creating lasting change through purposeful digital solutions",
     color: "secondary"
   }];
+
   const differentiators = [{
     stat: "1000+",
     label: "Digital Builders Empowered",
@@ -49,23 +51,25 @@ const About = () => {
     label: "Community Support",
     description: "Round-the-clock access to resources and mentorship"
   }];
-  return <div className="min-h-screen bg-background text-foreground">
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-breathe" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-breathe animation-delay-300" />
         
         <div className="container-narrow relative z-10 text-center">
-          <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 border border-primary/20">
+          <span className="inline-block px-4 py-2 rounded-full glass-card-subtle text-primary text-sm font-medium mb-6 border border-primary/20 opacity-0 animate-fade-in-up-elegant">
             About Us
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 opacity-0 animate-fade-in-up-elegant animation-delay-100">
             Empowering <span className="gradient-text">Digital Builders</span> Worldwide
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-up-elegant animation-delay-200">
             We're on a mission to transform professionals from passive digital consumers 
             into active creators who build meaningful solutions.
           </p>
@@ -77,7 +81,7 @@ const About = () => {
         <div className="container-narrow">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Mission Card */}
-            <div className="glass-card p-8 md:p-10 border-primary/20">
+            <div className="glass-card-elevated p-8 md:p-10 border-primary/20 hover-lift hover-glass-shine opacity-0 animate-fade-in-up-elegant">
               <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6">
                 <Target className="w-7 h-7 text-primary" />
               </div>
@@ -90,7 +94,7 @@ const About = () => {
             </div>
 
             {/* Vision Card */}
-            <div className="glass-card p-8 md:p-10 border-secondary/20">
+            <div className="glass-card-elevated p-8 md:p-10 border-secondary/20 hover-lift hover-glass-shine opacity-0 animate-fade-in-up-elegant animation-delay-100">
               <div className="w-14 h-14 rounded-2xl bg-secondary/10 border border-secondary/30 flex items-center justify-center mb-6">
                 <Eye className="w-7 h-7 text-secondary" />
               </div>
@@ -109,11 +113,11 @@ const About = () => {
       <section className="section-padding bg-muted/30">
         <div className="container-narrow">
           <div className="text-center mb-12">
-            <span className="text-primary font-medium uppercase tracking-wider text-sm">Our Journey</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">The Story Behind DCH</h2>
+            <span className="text-primary font-medium uppercase tracking-wider text-sm opacity-0 animate-fade-in-up-elegant">Our Journey</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 opacity-0 animate-fade-in-up-elegant animation-delay-100">The Story Behind DCH</h2>
           </div>
           
-          <div className="glass-card p-8 md:p-12 max-w-3xl mx-auto">
+          <div className="glass-card-elevated p-8 md:p-12 max-w-3xl mx-auto hover-glow opacity-0 animate-fade-in-up-elegant animation-delay-200">
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               <p>
                 Digital Creatives Hub was born from a simple yet powerful observation: too many talented professionals were stuck in the cycle of consuming digital content rather than creating it.
@@ -137,21 +141,27 @@ const About = () => {
       <section id="values" className="section-padding">
         <div className="container-narrow">
           <div className="text-center mb-16">
-            <span className="text-primary font-medium uppercase tracking-wider text-sm">What Drives Us</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 mb-4">Our Core Values</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <span className="text-primary font-medium uppercase tracking-wider text-sm opacity-0 animate-fade-in-up-elegant">What Drives Us</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 mb-4 opacity-0 animate-fade-in-up-elegant animation-delay-100">Our Core Values</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-up-elegant animation-delay-200">
               These principles guide every decision we make and every solution we build.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coreValues.map((value, index) => <div key={value.title} className="glass-card p-6 group hover:border-primary/30 transition-all duration-300">
+            {coreValues.map((value, index) => (
+              <div 
+                key={value.title} 
+                className={`glass-card-subtle p-6 hover-lift hover-glass-shine transition-all duration-300 opacity-0 animate-fade-in-up-elegant`}
+                style={{ animationDelay: `${(index + 3) * 100}ms` }}
+              >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 border ${value.color === "primary" ? "bg-primary/10 border-primary/30" : "bg-secondary/10 border-secondary/30"}`}>
                   <value.icon className={`w-6 h-6 ${value.color === "primary" ? "text-primary" : "text-secondary"}`} />
                 </div>
                 <h3 className="text-xl font-heading font-semibold mb-2">{value.title}</h3>
                 <p className="text-muted-foreground text-sm">{value.description}</p>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -160,22 +170,22 @@ const About = () => {
       <section id="founder" className="section-padding bg-muted/30">
         <div className="container-narrow">
           <div className="text-center mb-12">
-            <span className="text-primary font-medium uppercase tracking-wider text-sm">Leadership</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">Meet The Founder</h2>
+            <span className="text-primary font-medium uppercase tracking-wider text-sm opacity-0 animate-fade-in-up-elegant">Leadership</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 opacity-0 animate-fade-in-up-elegant animation-delay-100">Meet The Founder</h2>
           </div>
 
-          <div className="glass-card p-8 md:p-12">
+          <div className="glass-card-elevated p-8 md:p-12 hover-glow opacity-0 animate-fade-in-up-elegant animation-delay-200">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Image */}
               <div className="relative flex flex-col items-center">
-                <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/20">
+                <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/20 glass-border opacity-0 animate-blur-in animation-delay-300">
                   <img src={jerryImage} alt="Jeremiah Adeyemi - Founder of Digital Civics Hub" className="w-full h-full object-cover" />
                 </div>
-                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
-                <div className="absolute -top-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full blur-2xl" />
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl animate-breathe" />
+                <div className="absolute -top-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full blur-2xl animate-breathe animation-delay-300" />
                 
                 {/* Connect Button - Under Picture */}
-                <Button variant="hero" size="lg" asChild className="mt-8 relative z-10">
+                <Button variant="hero" size="lg" asChild className="mt-8 relative z-10 hover-glow opacity-0 animate-fade-in-up-elegant animation-delay-400">
                   <a 
                     href="https://thedigitechstrategist.lovable.app" 
                     target="_blank" 
@@ -190,10 +200,10 @@ const About = () => {
 
               {/* Content */}
               <div>
-                <h3 className="text-2xl md:text-3xl font-heading font-bold mb-2">Jeremiah Adeyemi</h3>
-                <p className="text-primary font-medium mb-6">Founder & Chief Strategist</p>
+                <h3 className="text-2xl md:text-3xl font-heading font-bold mb-2 opacity-0 animate-fade-in-up-elegant animation-delay-300">Jeremiah Adeyemi</h3>
+                <p className="text-primary font-medium mb-6 opacity-0 animate-fade-in-up-elegant animation-delay-400">Founder & Chief Strategist</p>
                 
-                <div className="space-y-4 text-muted-foreground mb-8">
+                <div className="space-y-4 text-muted-foreground mb-8 opacity-0 animate-fade-in-up-elegant animation-delay-500">
                   <p>
                     Known as <span className="text-secondary font-semibold">"The DigiTech Strategist"</span>, 
                     Jeremiah has dedicated his career to bridging the gap between traditional 
@@ -212,14 +222,16 @@ const About = () => {
                 </div>
 
                 {/* Expertise Tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {["Digital Strategy", "Leadership", "Community Building", "Tech Innovation"].map(tag => <span key={tag} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm border border-primary/20">
+                <div className="flex flex-wrap gap-2 mb-8 opacity-0 animate-fade-in-up-elegant animation-delay-600">
+                  {["Digital Strategy", "Leadership", "Community Building", "Tech Innovation"].map(tag => (
+                    <span key={tag} className="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm border border-primary/20 hover-glow transition-all duration-300">
                       {tag}
-                    </span>)}
+                    </span>
+                  ))}
                 </div>
 
                 {/* Quote */}
-                <div className="relative p-6 bg-card/50 rounded-xl border border-border/50">
+                <div className="relative p-6 glass-card-subtle hover-glow opacity-0 animate-fade-in-up-elegant animation-delay-700">
                   <Quote className="absolute top-4 left-4 w-8 h-8 text-primary/20" />
                   <p className="italic text-foreground pl-8">
                     "In the digital age, the greatest competitive advantage isn't just knowing—it's 
@@ -236,21 +248,27 @@ const About = () => {
       <section className="section-padding">
         <div className="container-narrow">
           <div className="text-center mb-16">
-            <span className="text-primary font-medium uppercase tracking-wider text-sm">Our Impact</span>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 mb-4">Why Choose DCH</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <span className="text-primary font-medium uppercase tracking-wider text-sm opacity-0 animate-fade-in-up-elegant">Our Impact</span>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4 mb-4 opacity-0 animate-fade-in-up-elegant animation-delay-100">Why Choose DCH</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-up-elegant animation-delay-200">
               We measure our success by the success of our community members.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {differentiators.map((item, index) => <div key={item.label} className="text-center">
+            {differentiators.map((item, index) => (
+              <div 
+                key={item.label} 
+                className={`text-center glass-card-subtle p-8 hover-lift opacity-0 animate-fade-in-up-elegant`}
+                style={{ animationDelay: `${(index + 3) * 100}ms` }}
+              >
                 <div className="text-4xl md:text-5xl font-heading font-bold gradient-text mb-2">
                   {item.stat}
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{item.label}</h3>
                 <p className="text-muted-foreground text-sm">{item.description}</p>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -258,7 +276,7 @@ const About = () => {
       {/* CTA Section */}
       <section className="section-padding bg-muted/30">
         <div className="container-narrow">
-          <div className="glass-card p-12 md:p-16 text-center relative overflow-hidden">
+          <div className="glass-card-elevated p-12 md:p-16 text-center relative overflow-hidden hover-glow glass-border opacity-0 animate-fade-in-up-elegant">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5" />
             
             <div className="relative z-10">
@@ -271,13 +289,13 @@ const About = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button variant="hero" size="lg" asChild>
+                <Button variant="hero" size="lg" asChild className="hover-glow">
                   <Link to="/services" className="group">
                     Explore Services
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
-                <Button variant="heroOutline" size="lg" asChild>
+                <Button variant="heroOutline" size="lg" asChild className="hover-glass-shine">
                   <a href="mailto:hello@digitalcivicshub.com">
                     Get in Touch
                   </a>
@@ -289,6 +307,8 @@ const About = () => {
       </section>
 
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default About;

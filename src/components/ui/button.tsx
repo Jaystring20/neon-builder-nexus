@@ -18,8 +18,8 @@ const buttonVariants = cva(
         hero: "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-bold shadow-[0_0_30px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_50px_hsl(var(--primary)/0.7)] hover:scale-105 transform",
         heroOutline: "border-2 border-secondary bg-transparent text-secondary hover:bg-secondary/10 shadow-[0_0_20px_hsl(var(--secondary)/0.3)] hover:shadow-[0_0_35px_hsl(var(--secondary)/0.5)] hover:scale-105 transform",
         glass: "bg-card/50 backdrop-blur-md border border-border/50 text-foreground hover:bg-card/70 hover:border-primary/50",
-        neonCyan: "bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.4),inset_0_0_20px_hsl(var(--primary)/0.1)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.6)]",
-        neonOrange: "bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground shadow-[0_0_20px_hsl(var(--secondary)/0.4),inset_0_0_20px_hsl(var(--secondary)/0.1)] hover:shadow-[0_0_40px_hsl(var(--secondary)/0.6)]",
+        subtle: "bg-transparent border-2 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-colors",
+        subtleSecondary: "bg-transparent border-2 border-secondary/50 text-secondary hover:bg-secondary/10 hover:border-secondary transition-colors",
       },
       size: {
         default: "h-11 px-6 py-2",

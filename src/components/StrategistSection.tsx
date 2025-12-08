@@ -1,4 +1,5 @@
 import { Quote } from "lucide-react";
+import jerryStrategist from "@/assets/jerry-strategist.png";
 
 const StrategistSection = () => {
   return (
@@ -16,13 +17,15 @@ const StrategistSection = () => {
               <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse-slow" />
               <div className="absolute inset-4 rounded-full border border-secondary/20" />
               
-              {/* Avatar Container */}
-              <div className="absolute inset-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="text-6xl md:text-7xl font-heading font-bold gradient-text">JA</span>
-                    <p className="text-sm text-muted-foreground mt-2">The DigiTech Strategist</p>
-                  </div>
+              {/* Avatar Container with Photo */}
+              <div className="absolute inset-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 p-1 overflow-hidden">
+                <div className="w-full h-full rounded-full overflow-hidden relative">
+                  <img 
+                    src={jerryStrategist} 
+                    alt="Jeremiah Adeyemi - The DigiTech Strategist"
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
                 </div>
               </div>
 

@@ -1,13 +1,50 @@
-import { Download, CheckCircle, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { CheckCircle, ArrowRight, Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import blueprintCover from "@/assets/blueprint-book-cover.jpg";
+
 const BlueprintSection = () => {
-  const days = [
-    { day: "1-2", title: "Consumer to Creator", description: "Shift your mindset from passive consumption to active creation" },
-    { day: "3-4", title: "Builder's Identity", description: "Identify your unique strengths and builder persona" },
-    { day: "5-6", title: "10-Year Vision", description: "Craft your long-term vision and actionable first steps" },
-    { day: "7", title: "Agency & Resilience", description: "Commit to a path of urgency and internal resilience" },
-  ];
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate API call - replace with actual backend integration
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    toast({
+      title: "Success!",
+      description: "Check your inbox for the Blueprint download link.",
+    });
+    
+    setEmail("");
+    setIsLoading(false);
+  };
 
   return (
     <section id="lab" className="section-padding relative overflow-hidden">
@@ -31,7 +68,7 @@ const BlueprintSection = () => {
               designed to help you break free from passivity and start creating real value immediately.
             </p>
 
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 mb-8">
               {[
                 "Shift from consumer to creator mindset",
                 "Identify your unique builder's identity",
@@ -45,57 +82,54 @@ const BlueprintSection = () => {
               ))}
             </div>
 
-            <Button variant="secondary" size="xl" className="group">
-              <Download className="w-5 h-5" />
-              Download Free Blueprint
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            {/* Email Capture Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-12 h-12 bg-card/50 border-border/50 focus:border-secondary"
+                    disabled={isLoading}
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  variant="secondary" 
+                  size="lg" 
+                  className="h-12 px-6 group whitespace-nowrap"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      Get Free Blueprint
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                No spam, ever. Unsubscribe anytime.
+              </p>
+            </form>
           </div>
 
-          {/* Right Content - Book Cover & Timeline */}
-          <div className="relative">
-            {/* Book Cover */}
-            <div className="mb-8 flex justify-center">
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
-                <div className="relative rounded-lg overflow-hidden shadow-2xl shadow-secondary/20 border border-border/30 transform transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
-                  <img 
-                    src={blueprintCover} 
-                    alt="The Professional Builder's Blueprint - 7 Days to Start Building Agency in the AI Age"
-                    className="w-64 md:w-72 h-auto object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-              </div>
-            </div>
-
-            {/* Timeline */}
-            <div className="relative">
-              <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-secondary via-secondary/50 to-transparent" />
-              
-              <div className="space-y-4">
-                {days.map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative pl-16 group"
-                  >
-                    {/* Timeline Dot */}
-                    <div className="absolute left-0 top-0 w-12 h-12 rounded-full bg-card border-2 border-secondary flex items-center justify-center group-hover:bg-secondary/10 transition-colors">
-                      <span className="text-secondary font-bold text-sm">
-                        D{item.day}
-                      </span>
-                    </div>
-
-                    <div className="glass-card p-4 group-hover:border-secondary/30 transition-colors">
-                      <h3 className="font-heading font-semibold text-base mb-1 text-foreground">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+          {/* Right Content - Book Cover */}
+          <div className="flex justify-center">
+            <div className="relative group">
+              <div className="absolute -inset-6 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+              <div className="relative rounded-lg overflow-hidden shadow-2xl shadow-secondary/20 border border-border/30 transform transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
+                <img 
+                  src={blueprintCover} 
+                  alt="The Professional Builder's Blueprint - 7 Days to Start Building Agency in the AI Age"
+                  className="w-72 md:w-80 h-auto object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </div>
           </div>

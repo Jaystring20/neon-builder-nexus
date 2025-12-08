@@ -36,7 +36,7 @@ const SolutionSection = () => {
             The Lab Approach
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
-            A Lab for <span className="neon-text-cyan">Digital Builders</span>
+            A Lab for <span className="gradient-text">Digital Builders</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
             Digital Creatives Hub is your innovation lab — a hands-on space to conquer fear, 

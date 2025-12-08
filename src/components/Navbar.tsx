@@ -19,7 +19,7 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { label: "About", href: isHomePage ? "#about" : "/#about" },
+    { label: "About", href: "/about", isRoute: true },
     { label: "Services", href: "/services", isRoute: true },
     { label: "Lab", href: isHomePage ? "#lab" : "/#lab" },
     { label: "DCN", href: isHomePage ? "#dcn" : "/#dcn" },

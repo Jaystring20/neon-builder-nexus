@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "react-router-dom";
 import dchLogo from "@/assets/dch-logo.jpg";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,11 +19,11 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { label: "About", href: "#about" },
-    { label: "Services", href: "#services" },
-    { label: "Lab", href: "#lab" },
-    { label: "DCN", href: "#dcn" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: isHomePage ? "#about" : "/#about" },
+    { label: "Services", href: "/services", isRoute: true },
+    { label: "Lab", href: isHomePage ? "#lab" : "/#lab" },
+    { label: "DCN", href: isHomePage ? "#dcn" : "/#dcn" },
+    { label: "Contact", href: isHomePage ? "#contact" : "/#contact" },
   ];
 
   return (
@@ -34,7 +37,7 @@ const Navbar = () => {
       <nav className="container-narrow">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <div className="relative w-12 h-12 rounded-lg overflow-hidden animate-glow">
               <img
                 src={dchLogo}
@@ -47,18 +50,28 @@ const Navbar = () => {
               <span className="neon-text-orange">Creatives</span>{" "}
               <span className="text-foreground">Hub</span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium text-sm uppercase tracking-wider"
-              >
-                {link.label}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium text-sm uppercase tracking-wider"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-primary transition-colors duration-300 font-medium text-sm uppercase tracking-wider"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -87,14 +100,25 @@ const Navbar = () => {
           <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in">
             <div className="container-narrow py-6 space-y-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
+                link.isRoute ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
               ))}
               <div className="pt-4 flex flex-col gap-3">
                 <Button variant="ghost" className="w-full">

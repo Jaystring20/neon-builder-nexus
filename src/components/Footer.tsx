@@ -10,10 +10,10 @@ const Footer = () => {
       { label: "Careers", href: "#" },
     ],
     services: [
-      { label: "Professional Services", href: "#services" },
-      { label: "Strategic Consulting", href: "#" },
-      { label: "Training Programs", href: "#lab" },
-      { label: "Community Hub", href: "#dcn" },
+      { label: "All Services", href: "/services" },
+      { label: "Strategic Consulting", href: "/services" },
+      { label: "Training Programs", href: "/services" },
+      { label: "Innovation Lab", href: "/services" },
     ],
     resources: [
       { label: "Builder's Blueprint", href: "#lab" },

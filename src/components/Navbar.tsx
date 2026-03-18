@@ -68,7 +68,7 @@ const Navbar = () => {
                   <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-primary hover:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-primary text-sm uppercase tracking-wider font-medium">
                     What We Do
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="!left-1/2 !-translate-x-1/2">
+                  <NavigationMenuContent>
                     <div className="w-[min(1050px,calc(100vw-2rem))] p-5">
                       <div className="grid grid-cols-4 gap-4">
                         {serviceCategories.map((cat) => {

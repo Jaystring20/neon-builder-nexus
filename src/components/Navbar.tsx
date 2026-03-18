@@ -233,13 +233,13 @@ const Navbar = () => {
               </div>
 
               {/* Our Work */}
-              <a
-                href={isHomePage ? "#lab" : "/#lab"}
+              <Link
+                to="/our-work"
                 className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Our Work
-              </a>
+              </Link>
 
               {/* Who We Are */}
               <div>

@@ -121,6 +121,7 @@ export const portfolioProjects: PortfolioProject[] = [
     tags: ["Web Platform", "Community", "Event Management", "Fitness"],
     url: "https://www.thefitnessreligioncompany.com.ng/",
     icon: Dumbbell,
+    image: fitnessReligionImg,
   },
 ];
 

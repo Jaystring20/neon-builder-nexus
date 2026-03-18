@@ -13,6 +13,9 @@ import {
   Megaphone,
   Zap,
   PenTool,
+  CalendarDays,
+  Users,
+  UserPlus,
   type LucideIcon,
 } from "lucide-react";
 

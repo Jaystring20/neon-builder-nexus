@@ -122,20 +122,25 @@ const OurWork = () => {
                       {/* Gradient border on hover */}
                       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15) 0%, transparent 40%, transparent 60%, hsl(var(--neon-orange) / 0.1) 100%)' }} />
 
-                      {/* Image Placeholder */}
+                      {/* Project Screenshot */}
                       <div className="aspect-[16/10] relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-muted/40 via-muted/20 to-card/60" />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--neon-cyan)/0.06)_0%,transparent_70%)]" />
+                        {project.image ? (
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                          />
+                        ) : (
+                          <>
+                            <div className="absolute inset-0 bg-gradient-to-br from-muted/40 via-muted/20 to-card/60" />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Icon className="w-14 h-14 text-primary/25 group-hover:text-primary/50 transition-all duration-700" />
+                            </div>
+                          </>
+                        )}
                         
-                        {/* Decorative grid */}
-                        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-                        
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="relative">
-                            <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl scale-150 group-hover:bg-primary/20 transition-all duration-700" />
-                            <Icon className="w-14 h-14 text-primary/25 group-hover:text-primary/50 group-hover:scale-110 transition-all duration-700 relative z-10" />
-                          </div>
-                        </div>
+                        {/* Overlay gradient on hover */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         
                         {/* External link badge */}
                         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">

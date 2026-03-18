@@ -69,34 +69,31 @@ const Navbar = () => {
                     What We Do
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[780px] p-6">
-                      <div className="grid grid-cols-2 gap-6">
+                    <div className="w-[1100px] p-5">
+                      <div className="grid grid-cols-4 gap-4">
                         {serviceCategories.map((cat) => {
                           const colorClass = cat.color === "primary" ? "text-primary" : "text-secondary";
                           const borderColor = cat.color === "primary" ? "border-primary/30" : "border-secondary/30";
                           const bgColor = cat.color === "primary" ? "bg-primary/5" : "bg-secondary/5";
 
                           return (
-                            <div key={cat.slug} className="space-y-3">
+                            <div key={cat.slug} className="space-y-2">
                               <Link
                                 to={`/services/${cat.slug}`}
-                                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${borderColor} ${bgColor} ${colorClass} text-xs font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity`}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${borderColor} ${bgColor} ${colorClass} text-[10px] font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity`}
                               >
                                 {cat.title}
-                                <ArrowRight className="w-3 h-3" />
+                                <ArrowRight className="w-2.5 h-2.5" />
                               </Link>
-                              <ul className="space-y-1.5 pl-1">
+                              <ul className="space-y-0.5 pl-0.5">
                                 {cat.subServices.map((sub) => (
                                   <li key={sub.title}>
                                     <Link
                                       to={`/services/${cat.slug}`}
-                                      className="flex items-start gap-2.5 rounded-md p-2 hover:bg-muted/50 transition-colors group"
+                                      className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted/50 transition-colors group"
                                     >
-                                      <sub.icon className={`w-4 h-4 mt-0.5 flex-shrink-0 ${colorClass} opacity-70 group-hover:opacity-100 transition-opacity`} />
-                                      <div>
-                                        <div className="text-sm font-medium text-foreground leading-tight">{sub.title}</div>
-                                        <div className="text-xs text-muted-foreground leading-snug mt-0.5">{sub.description}</div>
-                                      </div>
+                                      <sub.icon className={`w-3.5 h-3.5 flex-shrink-0 ${colorClass} opacity-70 group-hover:opacity-100 transition-opacity`} />
+                                      <span className="text-sm font-medium text-foreground leading-tight">{sub.title}</span>
                                     </Link>
                                   </li>
                                 ))}

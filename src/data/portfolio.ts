@@ -1,5 +1,15 @@
 import { Globe, BookOpen, Palette, Leaf, ShoppingBag, Heart, Stethoscope, Church, Dumbbell, Briefcase } from "lucide-react";
 
+import ddoImg from "@/assets/portfolio/ddo-learning-liberation.png";
+import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.png";
+import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.png";
+import everythingHouseholdImg from "@/assets/portfolio/everything-household.png";
+import bunmiFlexImg from "@/assets/portfolio/bunmiflex-yoga.png";
+import digitechImg from "@/assets/portfolio/digitech-strategist.png";
+import healingImg from "@/assets/portfolio/healing-broken-hearted.png";
+import soteriaImg from "@/assets/portfolio/soteria-eye-clinic.png";
+import discoveryChurchImg from "@/assets/portfolio/the-discovery-church.png";
+
 export interface PortfolioProject {
   id: string;
   title: string;
@@ -8,6 +18,7 @@ export interface PortfolioProject {
   tags: string[];
   url: string;
   icon: typeof Globe;
+  image?: string;
 }
 
 export const portfolioProjects: PortfolioProject[] = [
@@ -17,8 +28,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Education",
     description: "A bold ed-tech platform empowering learners through liberation-focused pedagogy, digital courses, and community-driven education initiatives.",
     tags: ["Ed-Tech", "Learning Platform", "Community"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://thelearningliberationspecialist.lovable.app",
     icon: BookOpen,
+    image: ddoImg,
   },
   {
     id: "innerspace",
@@ -26,8 +38,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Interior Design",
     description: "A sleek portfolio and booking platform for a premium Nigerian interior design studio — showcasing projects, client testimonials, and consultation flow.",
     tags: ["Portfolio", "Design Studio", "Booking"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://innerspace-innovations.lovable.app",
     icon: Palette,
+    image: innerspaceImg,
   },
   {
     id: "ecopath",
@@ -35,8 +48,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Sustainability",
     description: "A sustainability-first digital platform driving circular economy adoption through waste management solutions, education, and community engagement.",
     tags: ["Sustainability", "Circular Economy", "Green Tech"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://ecopath.lovable.app",
     icon: Leaf,
+    image: ecopathImg,
   },
   {
     id: "everything-household",
@@ -44,8 +58,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "E-commerce",
     description: "A full-featured e-commerce storefront for household essentials — complete with product catalog, cart system, and seamless checkout experience.",
     tags: ["E-commerce", "Product Catalog", "Online Store"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://everythinghousehold.lovable.app",
     icon: ShoppingBag,
+    image: everythingHouseholdImg,
   },
   {
     id: "bunmi-flex",
@@ -53,8 +68,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Health & Wellness",
     description: "A serene wellness platform for a yoga instructor — featuring class schedules, booking integration, philosophy pages, and mindful brand storytelling.",
     tags: ["Wellness", "Yoga", "Class Booking"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://bunmiflex.lovable.app",
     icon: Heart,
+    image: bunmiFlexImg,
   },
   {
     id: "digitech-strategist",
@@ -62,8 +78,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Career Strategy",
     description: "A personal brand and consulting platform for a digital transformation strategist — showcasing services, portfolio, and strategic frameworks.",
     tags: ["Personal Brand", "Consulting", "Strategy"],
-    url: "https://thedigitechstrategist.com",
+    url: "https://thedigitechstrategist.lovable.app",
     icon: Briefcase,
+    image: digitechImg,
   },
   {
     id: "htbh-foundation",
@@ -71,8 +88,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Non-Profit",
     description: "A mission-driven website for a non-profit foundation focused on emotional healing, community outreach, and donation-powered impact programs.",
     tags: ["Non-Profit", "Foundation", "Community Impact"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://healingthebrokenhearted.lovable.app",
     icon: Heart,
+    image: healingImg,
   },
   {
     id: "soteria-mh-eyewear",
@@ -80,8 +98,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Healthcare",
     description: "A dual-brand web presence for an eye clinic and eyewear brand — featuring service listings, product showcase, appointment booking, and patient resources.",
     tags: ["Healthcare", "Eye Care", "Appointments"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://soteriaeyeclinic.lovable.app",
     icon: Stethoscope,
+    image: soteriaImg,
   },
   {
     id: "discovery-church",
@@ -89,8 +108,9 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Web Development",
     description: "A modern church website with sermon archives, event management, community features, and an inviting digital front door for the congregation.",
     tags: ["Church", "Community", "Events"],
-    url: "https://thedigitechstrategist.com/portfolio",
+    url: "https://www.thediscoverylagos.org",
     icon: Church,
+    image: discoveryChurchImg,
   },
   {
     id: "fitness-religion",

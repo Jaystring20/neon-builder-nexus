@@ -118,7 +118,7 @@ const Navbar = () => {
                 {/* Our Work */}
                 <NavigationMenuItem>
                   <Link
-                    to={isHomePage ? "#lab" : "/#lab"}
+                    to="/our-work"
                     className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
                   >
                     Our Work
@@ -233,13 +233,13 @@ const Navbar = () => {
               </div>
 
               {/* Our Work */}
-              <a
-                href={isHomePage ? "#lab" : "/#lab"}
+              <Link
+                to="/our-work"
                 className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Our Work
-              </a>
+              </Link>
 
               {/* Who We Are */}
               <div>

@@ -13,6 +13,9 @@ import {
   Megaphone,
   Zap,
   PenTool,
+  CalendarDays,
+  Users,
+  UserPlus,
   type LucideIcon,
 } from "lucide-react";
 
@@ -168,6 +171,27 @@ export const serviceCategories: ServiceCategory[] = [
         detail:
           "Every headline, email, landing page, and ad is written with one goal: conversion. We combine direct-response principles with brand voice to create copy that doesn't just sound good — it sells. From web copy to sales sequences, every word earns its place.",
         icon: PenTool,
+      },
+      {
+        title: "Event Strategy & Production",
+        description: "End-to-end event architecture from ideation to execution.",
+        detail:
+          "We architect physical and virtual events as conversion engines — from strategic roadmapping and activity planning to live content production across commercial and musical formats. Every event is designed with one outcome in mind: building community that converts. Because strategy is the map, and the event is the engine.",
+        icon: CalendarDays,
+      },
+      {
+        title: "Community & Funnel Architecture",
+        description: "Building the engine that sustains momentum beyond the event.",
+        detail:
+          "We engineer lead pipeline funnels, community-building frameworks, and post-event nurture sequences that transform attendees into loyal advocates and one-time buyers into lifetime customers. Because community is the engine that sustains — and we build the infrastructure to keep it running.",
+        icon: Users,
+      },
+      {
+        title: "Influencer & Creator Partnerships",
+        description: "Micro to macro — activating voices that amplify your brand.",
+        detail:
+          "We identify, recruit, and manage strategic creator partnerships across micro, mini, and macro tiers — integrating influencer campaigns into your broader growth strategy for maximum virality, memorability, and measurable ROI. Every partnership is engineered for momentum, not just impressions.",
+        icon: UserPlus,
       },
     ],
   },

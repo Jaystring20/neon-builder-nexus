@@ -33,8 +33,6 @@ const BlueprintSection = () => {
     }
 
     setIsLoading(true);
-    
-    // Simulate API call - replace with actual backend integration
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     toast({
@@ -65,15 +63,15 @@ const BlueprintSection = () => {
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               7 Days to Start Building Agency in the AI Age — a free, actionable guide 
-              designed to help you break free from passivity and start creating real value immediately.
+              to help you architect your brand's growth engine from day one.
             </p>
 
             <div className="space-y-3 mb-8">
               {[
-                "Shift from consumer to creator mindset",
-                "Identify your unique builder's identity",
-                "Create your 10-year strategic vision",
-                "Build lasting agency and resilience"
+                "Find the 'Builder' inside your brand",
+                "Architect high-conversion growth platforms",
+                "Build content systems that run while you sleep",
+                "Deploy performance campaigns at velocity"
               ].map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
@@ -126,7 +124,7 @@ const BlueprintSection = () => {
               <div className="relative rounded-lg overflow-hidden shadow-2xl shadow-secondary/20 border border-border/30 transform transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-1">
                 <img 
                   src={blueprintCover} 
-                  alt="The Professional Builder's Blueprint - 7 Days to Start Building Agency in the AI Age"
+                  alt="The Professional Builder's Blueprint"
                   className="w-72 md:w-80 h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

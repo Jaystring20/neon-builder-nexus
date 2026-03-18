@@ -20,11 +20,9 @@ const HeroSection = () => {
       
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient Orbs */}
         <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px] animate-breathe" />
         <div className="absolute bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px] animate-breathe animation-delay-300" />
         
-        {/* Grid Pattern */}
         <div 
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -41,7 +39,7 @@ const HeroSection = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-8 hover-glow">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-muted-foreground">
-                Your Innovation Lab for Digital Agency
+                Business Development Creative Agency
               </span>
             </div>
           </ScrollReveal>
@@ -52,7 +50,7 @@ const HeroSection = () => {
               <div className="relative w-64 h-40 sm:w-80 sm:h-48 md:w-[480px] md:h-72 rounded-2xl overflow-hidden glass-border hover-lift hover-glass-shine">
                 <img
                   src={heroVisual}
-                  alt="Digital transformation and innovation"
+                  alt="Digital transformation and growth architecture"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
@@ -63,19 +61,22 @@ const HeroSection = () => {
           {/* Headline */}
           <ScrollReveal animation="fade-up" delay={200}>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
-              <span className="text-foreground">Feeling Left Behind by the</span>
+              <span className="text-foreground">The Future is</span>{" "}
+              <span className="gradient-text">Built.</span>
               <br />
-              <span className="gradient-text">Digital Tsunami?</span>
+              <span className="text-foreground">Not Bought.</span>
             </h1>
           </ScrollReveal>
 
           {/* Subheadline */}
           <ScrollReveal animation="fade-up" delay={300}>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
-              The digital world is evolving faster than ever. Don't just adapt — 
-              <span className="text-primary font-medium"> build your future</span> with agency and confidence. 
-              Digital Creatives Hub empowers professionals and organizations to transform uncertainty 
-              into opportunity and become <span className="text-secondary font-medium">leaders in the AI-driven age</span>.
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
+              Most brands are renting space in a digital maze they don't own.{" "}
+              <span className="text-primary font-medium">We help you build the architecture of authority.</span>
+            </p>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+              We build growth engines that convert brand potential into{" "}
+              <span className="text-secondary font-medium">measurable market velocity</span>.
             </p>
           </ScrollReveal>
 
@@ -83,12 +84,12 @@ const HeroSection = () => {
           <ScrollReveal animation="fade-up" delay={400}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button variant="hero" size="xl" className="group hover-glow">
-                Discover Your Path
+                Start the Build
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button variant="heroOutline" size="xl" className="group hover-glass-shine">
                 <Download className="w-5 h-5" />
-                Free Builder's Blueprint
+                View the Blueprint
               </Button>
             </div>
           </ScrollReveal>
@@ -97,20 +98,20 @@ const HeroSection = () => {
           <ScrollReveal animation="fade-up" delay={500}>
             <div className="mt-12 pt-8 pb-20 border-t border-border/30">
               <p className="text-sm text-muted-foreground mb-6">
-                Trusted by forward-thinking professionals worldwide
+                Trusted by forward-thinking brands and professionals
               </p>
               <div className="flex flex-wrap items-center justify-center gap-8">
                 <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift">
                   <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">
                     <span className="text-primary font-bold">500+</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">Builders</span>
+                  <span className="text-sm text-muted-foreground">Brands Built</span>
                 </div>
                 <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift">
                   <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">
                     <span className="text-secondary font-bold">50+</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">Projects</span>
+                  <span className="text-sm text-muted-foreground">Growth Engines</span>
                 </div>
                 <div className="flex items-center gap-2 glass-card-subtle px-4 py-2 hover-lift">
                   <div className="w-10 h-10 rounded-lg bg-card/50 flex items-center justify-center">

@@ -7,13 +7,13 @@ const Footer = () => {
     company: [
       { label: "About Us", href: "/about", isRoute: true },
       { label: "Our Mission", href: "/about#mission", isRoute: true },
-      { label: "Meet The Founder", href: "/about#founder", isRoute: true },
+      { label: "Lead Architect", href: "/about#founder", isRoute: true },
       { label: "Careers", href: "#" },
     ],
     services: [
       { label: "All Services", href: "/services" },
-      { label: "Strategic Consulting", href: "/services" },
-      { label: "Training Programs", href: "/services" },
+      { label: "Growth Architecture", href: "/services" },
+      { label: "Performance Engines", href: "/services" },
       { label: "Innovation Lab", href: "/services" },
     ],
     resources: [
@@ -42,7 +42,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
-            <a href="#" className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg overflow-hidden">
                 <img
                   src={dchLogo}
@@ -50,9 +50,9 @@ const Footer = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-            </a>
+            </Link>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-              Empowering professionals and organizations to thrive in the digital age.
+              Business Development Creative Agency. We build the systems that grow brands.
             </p>
             <div className="flex items-center gap-3">
               {socials.map((social) => (
@@ -152,7 +152,7 @@ const Footer = () => {
             © {new Date().getFullYear()} Digital Creatives Hub Ltd. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Built with <Heart className="w-4 h-4 text-secondary" /> for builders everywhere
+            Built with <Heart className="w-4 h-4 text-secondary" /> by Growth Architects
           </p>
         </div>
       </div>

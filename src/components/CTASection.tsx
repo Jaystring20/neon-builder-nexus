@@ -20,22 +20,21 @@ const CTASection = () => {
             <div className="relative z-10">
               <ScrollReveal animation="fade-up">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
-                  Ready to <span className="gradient-text">Build Your Future?</span>
+                  Ready to <span className="gradient-text">Start the Build?</span>
                 </h2>
               </ScrollReveal>
               
               <ScrollReveal animation="fade-up" delay={100}>
                 <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-                  Whether you're a professional, entrepreneur, or organization, Digital Creatives Hub 
-                  is your essential partner in building agency, bridging gaps, and empowering growth 
-                  in the digital age.
+                  Whether you're a brand, entrepreneur, or organization — Digital Creatives Hub 
+                  is your Growth Architect. Let's build the systems that grow your brand.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal animation="fade-up" delay={200}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
                   <Button variant="hero" size="xl" className="group hover-glow">
-                    Join Now
+                    Book a Call
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                   <Button variant="heroOutline" size="xl" className="hover-glass-shine">

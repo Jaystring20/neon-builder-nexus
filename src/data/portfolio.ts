@@ -9,6 +9,7 @@ import digitechImg from "@/assets/portfolio/digitech-strategist.png";
 import healingImg from "@/assets/portfolio/healing-broken-hearted.png";
 import soteriaImg from "@/assets/portfolio/soteria-eye-clinic.png";
 import discoveryChurchImg from "@/assets/portfolio/the-discovery-church.png";
+import fitnessReligionImg from "@/assets/portfolio/fitness-religion.png";
 
 export interface PortfolioProject {
   id: string;
@@ -120,6 +121,7 @@ export const portfolioProjects: PortfolioProject[] = [
     tags: ["Web Platform", "Community", "Event Management", "Fitness"],
     url: "https://www.thefitnessreligioncompany.com.ng/",
     icon: Dumbbell,
+    image: fitnessReligionImg,
   },
 ];
 

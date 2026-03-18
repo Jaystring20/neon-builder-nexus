@@ -1,55 +1,17 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import dchLogo from "@/assets/dch-logo.jpg";
 import { cn } from "@/lib/utils";
-import React from "react";
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { title: string; to?: string }
->(({ className, title, children, to, ...props }, ref) => {
-  const content = (
-    <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted/50 hover:text-foreground focus:bg-muted/50 focus:text-foreground">
-      <div className="text-sm font-semibold leading-none text-foreground">{title}</div>
-      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-1.5">
-        {children}
-      </p>
-    </div>
-  );
-
-  if (to) {
-    return (
-      <li>
-        <NavigationMenuLink asChild>
-          <Link ref={ref as any} to={to} className={cn(className)}>
-            {content}
-          </Link>
-        </NavigationMenuLink>
-      </li>
-    );
-  }
-
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a ref={ref} className={cn(className)} {...props}>
-          {content}
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";
+import { serviceCategories } from "@/data/services";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -59,25 +21,15 @@ const Navbar = () => {
   const isHomePage = location.pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setMobileDropdown(null);
   }, [location.pathname]);
-
-  const serviceItems = [
-    { title: "Strategic Consulting", description: "Digital transformation roadmaps and AI integration strategies", href: "/services" },
-    { title: "Professional Training", description: "Future-ready skills development and no-code mastery", href: "/services" },
-    { title: "Innovation Lab", description: "Sprint-based workshops, prototyping, and go-to-market guidance", href: "/services" },
-    { title: "Digital Solutions", description: "End-to-end web, mobile, and AI-powered product development", href: "/services" },
-  ];
 
   const whoWeAreItems = [
     { title: "About Us", description: "Our mission, vision, and the story behind Digital Creatives Hub", href: "/about" },
@@ -98,11 +50,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative w-12 h-12 rounded-lg overflow-hidden animate-glow">
-              <img
-                src={dchLogo}
-                alt="Digital Creatives Hub"
-                className="w-full h-full object-cover"
-              />
+              <img src={dchLogo} alt="Digital Creatives Hub" className="w-full h-full object-cover" />
             </div>
             <span className="font-heading font-bold text-lg hidden sm:block">
               <span className="text-primary font-semibold">Digital</span>{" "}
@@ -115,23 +63,59 @@ const Navbar = () => {
           <div className="hidden lg:block">
             <NavigationMenu>
               <NavigationMenuList className="gap-1">
-                {/* What We Do - Dropdown */}
+                {/* What We Do — Mega Menu */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-primary hover:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-primary text-sm uppercase tracking-wider font-medium">
                     What We Do
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[420px] gap-1 p-4">
-                      {serviceItems.map((item) => (
-                        <ListItem key={item.title} title={item.title} to={item.href}>
-                          {item.description}
-                        </ListItem>
-                      ))}
-                    </ul>
+                    <div className="w-[780px] p-6">
+                      <div className="grid grid-cols-2 gap-6">
+                        {serviceCategories.map((cat) => {
+                          const colorClass = cat.color === "primary" ? "text-primary" : "text-secondary";
+                          const borderColor = cat.color === "primary" ? "border-primary/30" : "border-secondary/30";
+                          const bgColor = cat.color === "primary" ? "bg-primary/5" : "bg-secondary/5";
+
+                          return (
+                            <div key={cat.slug} className="space-y-3">
+                              <Link
+                                to={`/services/${cat.slug}`}
+                                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${borderColor} ${bgColor} ${colorClass} text-xs font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity`}
+                              >
+                                {cat.title}
+                                <ArrowRight className="w-3 h-3" />
+                              </Link>
+                              <ul className="space-y-1.5 pl-1">
+                                {cat.subServices.map((sub) => (
+                                  <li key={sub.title}>
+                                    <Link
+                                      to={`/services/${cat.slug}`}
+                                      className="flex items-start gap-2.5 rounded-md p-2 hover:bg-muted/50 transition-colors group"
+                                    >
+                                      <sub.icon className={`w-4 h-4 mt-0.5 flex-shrink-0 ${colorClass} opacity-70 group-hover:opacity-100 transition-opacity`} />
+                                      <div>
+                                        <div className="text-sm font-medium text-foreground leading-tight">{sub.title}</div>
+                                        <div className="text-xs text-muted-foreground leading-snug mt-0.5">{sub.description}</div>
+                                      </div>
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-5 pt-4 border-t border-border/50 flex items-center justify-between">
+                        <p className="text-xs text-muted-foreground">See all services and how they connect.</p>
+                        <Link to="/services" className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
+                          View All Services <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
+                    </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {/* Our Work - Direct Link */}
+                {/* Our Work */}
                 <NavigationMenuItem>
                   <Link
                     to={isHomePage ? "#lab" : "/#lab"}
@@ -141,28 +125,36 @@ const Navbar = () => {
                   </Link>
                 </NavigationMenuItem>
 
-                {/* Who We Are - Dropdown */}
+                {/* Who We Are — Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-primary hover:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-primary text-sm uppercase tracking-wider font-medium">
                     Who We Are
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[380px] gap-1 p-4">
-                      {whoWeAreItems.map((item) => (
-                        <ListItem
-                          key={item.title}
-                          title={item.title}
-                          to={item.href.startsWith("#") || item.href.startsWith("/#") ? undefined : item.href}
-                          href={item.href.startsWith("#") || item.href.startsWith("/#") ? item.href : undefined}
-                        >
-                          {item.description}
-                        </ListItem>
-                      ))}
+                      {whoWeAreItems.map((item) => {
+                        const isHash = item.href.startsWith("#") || item.href.startsWith("/#");
+                        const content = (
+                          <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted/50 hover:text-foreground focus:bg-muted/50 focus:text-foreground">
+                            <div className="text-sm font-semibold leading-none text-foreground">{item.title}</div>
+                            <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-1.5">{item.description}</p>
+                          </div>
+                        );
+                        return (
+                          <li key={item.title}>
+                            {isHash ? (
+                              <a href={item.href}>{content}</a>
+                            ) : (
+                              <Link to={item.href}>{content}</Link>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {/* Contact - Direct Link */}
+                {/* Contact */}
                 <NavigationMenuItem>
                   <a
                     href={isHomePage ? "#contact" : "/#contact"}
@@ -175,11 +167,9 @@ const Navbar = () => {
             </NavigationMenu>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="hero" size="sm">
-              Book a Call
-            </Button>
+            <Button variant="hero" size="sm">Book a Call</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -194,9 +184,9 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in max-h-[80vh] overflow-y-auto">
             <div className="container-narrow py-6 space-y-1">
-              {/* What We Do - Mobile Dropdown */}
+              {/* What We Do */}
               <div>
                 <button
                   className="flex items-center justify-between w-full py-3 text-foreground hover:text-primary transition-colors font-medium"
@@ -206,17 +196,38 @@ const Navbar = () => {
                   <ChevronDown className={cn("w-4 h-4 transition-transform", mobileDropdown === "services" && "rotate-180")} />
                 </button>
                 {mobileDropdown === "services" && (
-                  <div className="pl-4 pb-2 space-y-1 animate-fade-in">
-                    {serviceItems.map((item) => (
-                      <Link
-                        key={item.title}
-                        to={item.href}
-                        className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
+                  <div className="pl-4 pb-2 space-y-3 animate-fade-in">
+                    {serviceCategories.map((cat) => {
+                      const colorClass = cat.color === "primary" ? "text-primary" : "text-secondary";
+                      return (
+                        <div key={cat.slug}>
+                          <Link
+                            to={`/services/${cat.slug}`}
+                            className={`block text-sm font-semibold ${colorClass} mb-1`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {cat.title} →
+                          </Link>
+                          {cat.subServices.map((sub) => (
+                            <Link
+                              key={sub.title}
+                              to={`/services/${cat.slug}`}
+                              className="block py-1 text-xs text-muted-foreground hover:text-primary transition-colors pl-2"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {sub.title}
+                            </Link>
+                          ))}
+                        </div>
+                      );
+                    })}
+                    <Link
+                      to="/services"
+                      className="block text-xs text-primary font-semibold pt-1"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      View All Services →
+                    </Link>
                   </div>
                 )}
               </div>
@@ -230,7 +241,7 @@ const Navbar = () => {
                 Our Work
               </a>
 
-              {/* Who We Are - Mobile Dropdown */}
+              {/* Who We Are */}
               <div>
                 <button
                   className="flex items-center justify-between w-full py-3 text-foreground hover:text-primary transition-colors font-medium"
@@ -241,7 +252,7 @@ const Navbar = () => {
                 </button>
                 {mobileDropdown === "who" && (
                   <div className="pl-4 pb-2 space-y-1 animate-fade-in">
-                    {whoWeAreItems.map((item) => (
+                    {whoWeAreItems.map((item) =>
                       item.href.startsWith("#") || item.href.startsWith("/#") ? (
                         <a
                           key={item.title}
@@ -261,7 +272,7 @@ const Navbar = () => {
                           {item.title}
                         </Link>
                       )
-                    ))}
+                    )}
                   </div>
                 )}
               </div>
@@ -276,9 +287,7 @@ const Navbar = () => {
               </a>
 
               <div className="pt-4">
-                <Button variant="hero" className="w-full">
-                  Book a Call
-                </Button>
+                <Button variant="hero" className="w-full">Book a Call</Button>
               </div>
             </div>
           </div>

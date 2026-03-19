@@ -131,7 +131,7 @@ const HeroSection = () => {
                 Most brands are renting space in a digital maze they don't own.{" "}
                 <span className="text-primary font-medium">We help you build the architecture of authority.</span>
               </p>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-lg mb-10 leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-lg mb-6 md:mb-10 leading-relaxed">
                 We build growth engines that convert brand potential into{" "}
                 <span className="text-secondary font-medium">measurable market velocity</span>.
               </p>

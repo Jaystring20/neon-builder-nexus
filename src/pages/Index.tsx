@@ -1,3 +1,4 @@
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FrictionSection from "@/components/FrictionSection";
@@ -12,6 +13,11 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="Build Agency in the AI Age"
+        description="Digital Creatives Hub empowers professionals and organizations to transform uncertainty into opportunity. Build your future with agency and confidence in the AI-driven age."
+        path="/"
+      />
       <Navbar />
       <HeroSection />
       <FrictionSection />

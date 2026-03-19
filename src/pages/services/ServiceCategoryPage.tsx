@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -30,6 +31,11 @@ const ServiceCategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={category.title}
+        description={category.description}
+        path={`/services/${category.slug}`}
+      />
       <Navbar />
 
       {/* Hero */}

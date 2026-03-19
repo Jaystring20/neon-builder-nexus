@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,11 @@ import jerryImage from "@/assets/jerry-strategist.png";
 const About = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEO
+        title="About Us"
+        description="Meet the team behind Digital Creatives Hub. We help professionals and organizations build agency, strategy, and digital presence in the AI-driven age."
+        path="/about"
+      />
       <Navbar />
       
       {/* Hero / Manifesto */}

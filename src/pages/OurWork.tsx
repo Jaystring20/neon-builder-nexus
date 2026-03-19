@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ExternalLink, ArrowUpRight, Layers, Globe, Zap } from "lucide-react";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -23,6 +24,11 @@ const OurWork = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="Our Work"
+        description="Explore the portfolio of projects delivered by Digital Creatives Hub — brand identities, digital products, and growth systems across industries."
+        path="/our-work"
+      />
       <Navbar />
 
       {/* Hero */}

@@ -1,6 +1,7 @@
 import { Construction, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -8,11 +9,19 @@ interface PlaceholderPageProps {
   title: string;
   description: string;
   icon?: React.ReactNode;
+  seoTitle?: string;
+  seoDescription?: string;
+  path?: string;
 }
 
-const PlaceholderPage = ({ title, description, icon }: PlaceholderPageProps) => {
+const PlaceholderPage = ({ title, description, icon, seoTitle, seoDescription, path }: PlaceholderPageProps) => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={seoTitle || title}
+        description={seoDescription || description}
+        path={path}
+      />
       <Navbar />
       <main className="pt-20">
         <div className="container-narrow py-24 md:py-32 flex flex-col items-center text-center">

@@ -10,6 +10,11 @@ import { serviceCategories } from "@/data/services";
 const Services = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Our Services"
+        description="Brand strategy, digital products, and growth systems — explore the full range of services Digital Creatives Hub offers to help you build and scale."
+        path="/services"
+      />
       <Navbar />
 
       {/* Hero */}

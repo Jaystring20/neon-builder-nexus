@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ExternalLink, ArrowUpRight, Layers, Globe, Zap } from "lucide-react";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";

@@ -33,8 +33,8 @@ const CarouselColumn = ({
   return (
     <div className="flex-1 overflow-hidden relative" style={{ marginTop: offset }}>
       <div
-        className={`flex flex-col gap-4 ${direction === "up" ? "animate-scroll-up" : "animate-scroll-down"}`}
-        style={{ animationDuration: duration }}
+        className="flex flex-col gap-4"
+        style={{ animation: `${direction === "up" ? "scroll-up" : "scroll-down"} ${duration} linear infinite` }}
       >
         {doubled.map((img, i) => (
           <div

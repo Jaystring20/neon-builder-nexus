@@ -83,7 +83,7 @@ const MobileCarousel = () => {
 
 const HeroSection = () => {
   return (
-    <section className="relative flex min-h-screen items-start overflow-hidden pt-24 lg:items-center lg:pt-0">
+    <section className="relative flex items-start overflow-hidden py-20 pt-24 lg:min-h-screen lg:items-center lg:py-0 lg:pt-0">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
         style={{ backgroundImage: `url(${heroBg})` }}

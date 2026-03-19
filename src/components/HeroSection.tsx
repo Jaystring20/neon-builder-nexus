@@ -172,6 +172,7 @@ const HeroSection = () => {
                 </div>
               </div>
             </ScrollReveal>
+          </div>
 
           {/* Desktop — Vertical Carousel Grid */}
           <div className="flex-1 relative h-[600px] w-full max-w-none hidden md:block group">

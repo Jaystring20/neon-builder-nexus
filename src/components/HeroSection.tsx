@@ -117,7 +117,7 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "100ms" }}>
+            <div className="hero-animate" style={{ animationDelay: "100ms" }}>
               <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
                 <span className="text-foreground">The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
@@ -126,7 +126,7 @@ const HeroSection = () => {
               </h1>
             </div>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "200ms" }}>
+            <div className="hero-animate" style={{ animationDelay: "200ms" }}>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mb-4 leading-relaxed">
                 Most brands are renting space in a digital maze they don't own.{" "}
                 <span className="text-primary font-medium">We help you build the architecture of authority.</span>
@@ -140,7 +140,7 @@ const HeroSection = () => {
             {/* Mobile — Horizontal Marquee (between description and CTA) */}
             <MobileCarousel />
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "300ms" }}>
+            <div className="hero-animate" style={{ animationDelay: "300ms" }}>
               <div className="flex flex-col sm:flex-row items-center md:items-start gap-4">
                 <Button variant="hero" size="xl" className="group hover-glow">
                   Start the Build
@@ -153,7 +153,7 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "400ms" }}>
+            <div className="hero-animate" style={{ animationDelay: "400ms" }}>
               <div className="mt-12 pt-8 border-t border-border/30">
                 <p className="text-sm text-muted-foreground mb-4">
                   Trusted by forward-thinking brands

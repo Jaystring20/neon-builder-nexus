@@ -24,6 +24,11 @@ const OurWork = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="Our Work"
+        description="Explore the portfolio of projects delivered by Digital Creatives Hub — brand identities, digital products, and growth systems across industries."
+        path="/our-work"
+      />
       <Navbar />
 
       {/* Hero */}

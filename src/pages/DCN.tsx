@@ -9,6 +9,11 @@ import { Link } from "react-router-dom";
 const DCN = () => {
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="Digital Creatives Network"
+        description="Join the Digital Creatives Network — a community for digital creators, strategists, and builders shaping the future of work."
+        path="/dcn"
+      />
       <Navbar />
       
       {/* Hero Section */}

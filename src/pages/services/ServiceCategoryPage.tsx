@@ -31,6 +31,11 @@ const ServiceCategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={category.title}
+        description={category.description}
+        path={`/services/${category.slug}`}
+      />
       <Navbar />
 
       {/* Hero */}

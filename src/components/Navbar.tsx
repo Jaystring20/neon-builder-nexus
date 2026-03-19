@@ -286,7 +286,9 @@ const Navbar = () => {
               </a>
 
               <div className="pt-4">
-                <Button variant="hero" className="w-full">Book a Call</Button>
+                <Button variant="hero" className="w-full" asChild>
+                  <a href={isHomePage ? "#contact" : "/#contact"} onClick={() => setIsMobileMenuOpen(false)}>Book a Call</a>
+                </Button>
               </div>
             </div>
           </div>

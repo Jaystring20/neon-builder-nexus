@@ -26,7 +26,7 @@ const CarouselColumn = ({
   duration,
   offset,
 }: {
-  images: string[];
+  images: { src: string; alt: string }[];
   direction: "up" | "down";
   duration: string;
   offset: string;
@@ -44,8 +44,8 @@ const CarouselColumn = ({
             className="rounded-xl overflow-hidden flex-shrink-0"
           >
             <img
-              src={img}
-              alt="Portfolio project"
+              src={img.src}
+              alt={img.alt}
               className="w-full h-48 md:h-56 object-cover"
               loading="lazy"
             />

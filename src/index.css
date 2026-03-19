@@ -275,6 +275,11 @@
   to { transform: translateY(0); }
 }
 
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @layer utilities {
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;

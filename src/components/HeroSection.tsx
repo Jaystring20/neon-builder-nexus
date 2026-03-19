@@ -109,7 +109,7 @@ const HeroSection = () => {
           {/* Left — Text */}
           <div className="flex-1 text-center md:text-left">
             <ScrollReveal animation="fade-up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-8 hover-glow">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-4 md:mb-8 hover-glow">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-muted-foreground">
                   Business Development Creative Agency

@@ -8,24 +8,24 @@ const Footer = () => {
       { label: "About Us", href: "/about", isRoute: true },
       { label: "Our Mission", href: "/about#mission", isRoute: true },
       { label: "Lead Architect", href: "/about#founder", isRoute: true },
-      { label: "Careers", href: "#" },
+      { label: "Careers", href: "/careers", isRoute: true },
     ],
     services: [
-      { label: "All Services", href: "/services" },
-      { label: "Growth Architecture", href: "/services" },
-      { label: "Performance Engines", href: "/services" },
-      { label: "Innovation Lab", href: "/services" },
+      { label: "All Services", href: "/services", isRoute: true },
+      { label: "Growth Architecture", href: "/services", isRoute: true },
+      { label: "Performance Engines", href: "/services", isRoute: true },
+      { label: "Innovation Lab", href: "/services", isRoute: true },
     ],
     resources: [
       { label: "Builder's Blueprint", href: "#lab" },
-      { label: "Blog", href: "#" },
-      { label: "Case Studies", href: "#" },
-      { label: "FAQ", href: "#" },
+      { label: "Blog", href: "/blog", isRoute: true },
+      { label: "Case Studies", href: "/case-studies", isRoute: true },
+      { label: "FAQ", href: "/faq", isRoute: true },
     ],
     legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "Cookie Policy", href: "#" },
+      { label: "Privacy Policy", href: "/privacy-policy", isRoute: true },
+      { label: "Terms of Service", href: "/terms-of-service", isRoute: true },
+      { label: "Cookie Policy", href: "/cookie-policy", isRoute: true },
     ],
   };
 
@@ -100,12 +100,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.services.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</Link>
+                  ) : (
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -117,12 +116,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.resources.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</Link>
+                  ) : (
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -134,12 +132,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.legal.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</Link>
+                  ) : (
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>

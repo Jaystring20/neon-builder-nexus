@@ -1,48 +1,50 @@
 
 
-## Generate Hyper-Realistic Hero Carousel Images
+## Fix Carousel Animation + Regenerate Brand-Aligned Images
 
-### What Changes
+### Two Problems
 
-Replace the 10 portfolio screenshot images in the hero carousel with AI-generated hyper-realistic visuals that represent DCH's core service pillars and brand identity.
+**1. Carousel still not moving**
+The `scroll-up` / `scroll-down` keyframes are defined in `tailwind.config.ts`, but Tailwind only emits `@keyframes` CSS when the corresponding utility class (`animate-scroll-up`) is used somewhere in the code. Since the component uses an inline `style={{ animation: "scroll-up ..." }}` instead of the Tailwind class, the keyframes are never generated in the CSS output. The animation references keyframes that do not exist in the stylesheet.
 
-### Images to Generate (10 total)
+**Fix**: Add the `@keyframes scroll-up` and `@keyframes scroll-down` rules directly in `src/index.css` so they are always present regardless of Tailwind class usage.
 
-Distributed across the four service pillars:
+**2. Images feel generic / sci-fi — not DCH**
+The current AI-generated images lean too heavily into abstract sci-fi aesthetics. They need to reflect DCH's actual identity: human-led execution, business growth momentum, and an Afrofuturist edge.
 
-**Brand Architecture (3 images)**
-1. A luminous brand identity system — golden geometric letterforms floating in dark space with light refractions
-2. A designer's desk with premium stationery mockups, color swatches, and a sleek logo on matte paper
-3. Abstract sculptural typography — monumental 3D letters with dramatic studio lighting
+**Fix**: Regenerate all 10 images with refined prompts that center:
+- Real people (diverse, confident professionals) collaborating, leading, building
+- Business momentum — growth charts, conversion systems, strategic planning
+- Afrofuturist aesthetic — bold color palettes, cultural depth, futuristic but grounded
+- Dark moody backgrounds with cyan and orange accent lighting to match the site palette
 
-**Digital Infrastructure (3 images)**
-1. A futuristic holographic UI dashboard floating in a dark environment with glowing data streams
-2. A sleek device ecosystem — laptop, tablet, phone displaying cohesive interfaces, connected by light threads
-3. An isometric digital city made of code blocks and circuit patterns with neon accents
+### New Image Concepts (10 total)
 
-**Agentic AI & Automation (2 images)**
-1. A humanoid silhouette composed of flowing data particles and neural network pathways
-2. Robotic hands assembling a glowing brand symbol from light fragments
+**Human-Led Execution (4 images)**
+1. A confident Black creative director reviewing brand boards on a glass wall, neon cyan ambient lighting, cinematic dark studio
+2. A diverse team around a holographic strategy table, Afrofuturist office, warm orange and cool cyan lighting
+3. Hands assembling a glowing brand identity puzzle — close-up, dramatic lighting, dark background
+4. A female strategist presenting to a boardroom with data visualizations floating around her, futuristic but grounded
 
-**Growth Operations (2 images)**
-1. An upward-spiraling staircase of light representing growth trajectory, with metrics floating alongside
-2. A dynamic network of interconnected nodes pulsing with energy — community and funnel architecture
+**Business Growth (3 images)**
+1. An ascending spiral of glowing metrics and growth charts, dark background, cyan and orange data streams
+2. A funnel architecture visualization — leads flowing through stages, converting into golden results, dark cinematic
+3. A dynamic network of interconnected communities pulsing with energy, Afrofuturist city skyline backdrop
 
-### Process
-
-1. Generate all 10 images using the AI image model (`google/gemini-3-pro-image-preview` for higher quality)
-2. Save them to `public/images/hero/` with descriptive filenames
-3. Update `HeroSection.tsx` to import and use the new images instead of portfolio screenshots
+**Afrofuturist Edge (3 images)**
+1. A bold geometric brand mark being forged in light, African-inspired patterns, dark studio with neon accents
+2. A futuristic workspace blending traditional craftsmanship with AI interfaces, warm and cool lighting
+3. A monumental architectural structure made of light and data, inspired by African geometric art, dramatic scale
 
 ### Files Changed
 
-1. **10 new image files** in `public/images/hero/`
-2. **`src/components/HeroSection.tsx`** — swap imports from `src/assets/portfolio/` to the new hero images
+1. **`src/index.css`** — Add `@keyframes scroll-up` and `@keyframes scroll-down` rules in the utilities layer
+2. **10 new images** in `public/images/hero/` — replacing existing files with brand-aligned visuals
+3. **`src/components/HeroSection.tsx`** — Minor: update alt text to be more descriptive; filenames may change
 
-### Technical Details
+### Process
 
-- Images generated at high resolution via the AI gateway script
-- Saved as PNG to `public/images/hero/` for static serving
-- Dark/moody color palette to match the site's dark theme with primary (gold/amber) and secondary accent colors
-- Each image prompt crafted for cinematic, hyper-realistic quality with no text in the images
+1. Add keyframes to CSS (fixes animation immediately)
+2. Generate all 10 images via AI image model with carefully crafted prompts
+3. Save to `public/images/hero/`, update component references
 

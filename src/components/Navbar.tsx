@@ -69,7 +69,7 @@ const Navbar = () => {
                     What We Do
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[min(1050px,calc(100vw-2rem))] p-5">
+                    <div className="w-[calc(100vw-2rem)] max-w-[1400px] p-6">
                       <div className="grid grid-cols-4 gap-4">
                         {serviceCategories.map((cat) => {
                           const colorClass = cat.color === "primary" ? "text-primary" : "text-secondary";

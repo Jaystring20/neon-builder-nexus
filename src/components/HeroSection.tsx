@@ -87,6 +87,7 @@ const MobileCarousel = () => {
   );
 };
 
+// Hero Section Component
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-start md:items-center overflow-hidden pt-24 md:pt-0">

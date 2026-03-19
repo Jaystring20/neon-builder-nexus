@@ -9,6 +9,13 @@ import Services from "./pages/Services";
 import ServiceCategoryPage from "./pages/services/ServiceCategoryPage";
 import DCN from "./pages/DCN";
 import OurWork from "./pages/OurWork";
+import Blog from "./pages/Blog";
+import CaseStudies from "./pages/CaseStudies";
+import FAQ from "./pages/FAQ";
+import Careers from "./pages/Careers";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 

@@ -118,7 +118,7 @@ const HeroSection = () => {
             </ScrollReveal>
 
             <ScrollReveal animation="fade-up" delay={100}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 md:mb-6">
                 <span className="text-foreground">The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
                 <br />

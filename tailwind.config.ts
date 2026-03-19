@@ -117,6 +117,8 @@ export default {
         "blur-in": "blur-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "scale-in-elegant": "scale-in-elegant 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "scroll-up": "scroll-up 25s linear infinite",
+        "scroll-down": "scroll-down 30s linear infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

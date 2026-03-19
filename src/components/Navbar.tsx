@@ -61,7 +61,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:block">
-            <NavigationMenu>
+            <NavigationMenu delayDuration={0}>
               <NavigationMenuList className="gap-1">
                 {/* What We Do — Mega Menu */}
                 <NavigationMenuItem>

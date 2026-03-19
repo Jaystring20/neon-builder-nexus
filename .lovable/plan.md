@@ -1,50 +1,21 @@
 
 
-## Fix Carousel Animation + Regenerate Brand-Aligned Images
+## Fix Mega Menu Overflow + Full-Width Expansion
 
-### Two Problems
+### Problem
+The `NavigationMenuViewport` wrapper div uses `absolute left-0` relative to the `NavigationMenu` root, which sits inside the navbar. On a 945px viewport, the 1050px mega menu overflows to the right. The user also wants the mega menu to span nearly the full screen width.
 
-**1. Carousel still not moving**
-The `scroll-up` / `scroll-down` keyframes are defined in `tailwind.config.ts`, but Tailwind only emits `@keyframes` CSS when the corresponding utility class (`animate-scroll-up`) is used somewhere in the code. Since the component uses an inline `style={{ animation: "scroll-up ..." }}` instead of the Tailwind class, the keyframes are never generated in the CSS output. The animation references keyframes that do not exist in the stylesheet.
+### Solution
 
-**Fix**: Add the `@keyframes scroll-up` and `@keyframes scroll-down` rules directly in `src/index.css` so they are always present regardless of Tailwind class usage.
+**1. Update `NavigationMenuViewport` (`src/components/ui/navigation-menu.tsx`)**
+- Change the viewport wrapper from `absolute left-0` to `fixed left-0 right-0 w-screen` so it positions relative to the browser viewport, not the nav element.
+- Center the content within using `flex justify-center`.
 
-**2. Images feel generic / sci-fi — not DCH**
-The current AI-generated images lean too heavily into abstract sci-fi aesthetics. They need to reflect DCH's actual identity: human-led execution, business growth momentum, and an Afrofuturist edge.
-
-**Fix**: Regenerate all 10 images with refined prompts that center:
-- Real people (diverse, confident professionals) collaborating, leading, building
-- Business momentum — growth charts, conversion systems, strategic planning
-- Afrofuturist aesthetic — bold color palettes, cultural depth, futuristic but grounded
-- Dark moody backgrounds with cyan and orange accent lighting to match the site palette
-
-### New Image Concepts (10 total)
-
-**Human-Led Execution (4 images)**
-1. A confident Black creative director reviewing brand boards on a glass wall, neon cyan ambient lighting, cinematic dark studio
-2. A diverse team around a holographic strategy table, Afrofuturist office, warm orange and cool cyan lighting
-3. Hands assembling a glowing brand identity puzzle — close-up, dramatic lighting, dark background
-4. A female strategist presenting to a boardroom with data visualizations floating around her, futuristic but grounded
-
-**Business Growth (3 images)**
-1. An ascending spiral of glowing metrics and growth charts, dark background, cyan and orange data streams
-2. A funnel architecture visualization — leads flowing through stages, converting into golden results, dark cinematic
-3. A dynamic network of interconnected communities pulsing with energy, Afrofuturist city skyline backdrop
-
-**Afrofuturist Edge (3 images)**
-1. A bold geometric brand mark being forged in light, African-inspired patterns, dark studio with neon accents
-2. A futuristic workspace blending traditional craftsmanship with AI interfaces, warm and cool lighting
-3. A monumental architectural structure made of light and data, inspired by African geometric art, dramatic scale
+**2. Update mega menu content width (`src/components/Navbar.tsx`)**
+- Change the "What We Do" content container from `w-[min(1050px,calc(100vw-2rem))]` to `w-[calc(100vw-2rem)] max-w-[1400px]` so it spans nearly the full screen.
+- Adjust padding/layout to breathe at this wider size.
 
 ### Files Changed
-
-1. **`src/index.css`** — Add `@keyframes scroll-up` and `@keyframes scroll-down` rules in the utilities layer
-2. **10 new images** in `public/images/hero/` — replacing existing files with brand-aligned visuals
-3. **`src/components/HeroSection.tsx`** — Minor: update alt text to be more descriptive; filenames may change
-
-### Process
-
-1. Add keyframes to CSS (fixes animation immediately)
-2. Generate all 10 images via AI image model with carefully crafted prompts
-3. Save to `public/images/hero/`, update component references
+1. **`src/components/ui/navigation-menu.tsx`** — Fix viewport positioning to be screen-relative
+2. **`src/components/Navbar.tsx`** — Widen mega menu to near full-width
 

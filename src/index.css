@@ -265,6 +265,16 @@
   }
 }
 
+@keyframes scroll-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@keyframes scroll-down {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
 @layer utilities {
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;

@@ -4,20 +4,20 @@ import ScrollReveal from "@/components/ScrollReveal";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const col1Images = [
-  "/images/hero/brand-identity-system.png",
-  "/images/hero/digital-holographic-dashboard.png",
-  "/images/hero/ai-neural-silhouette.png",
-  "/images/hero/growth-spiral-staircase.png",
+  { src: "/images/hero/creative-director-brandboards.png", alt: "Creative director reviewing brand identity boards" },
+  { src: "/images/hero/growth-spiral-metrics.png", alt: "Growth trajectory with ascending metrics" },
+  { src: "/images/hero/afro-geometric-brandmark.png", alt: "Geometric brand mark with African-inspired patterns" },
+  { src: "/images/hero/strategist-presenting.png", alt: "Strategist presenting with holographic data" },
 ];
 const col2Images = [
-  "/images/hero/brand-stationery-desk.png",
-  "/images/hero/digital-device-ecosystem.png",
-  "/images/hero/ai-robotic-assembly.png",
+  { src: "/images/hero/team-strategy-table.png", alt: "Diverse team collaborating around holographic strategy table" },
+  { src: "/images/hero/funnel-architecture.png", alt: "Marketing funnel converting leads to golden results" },
+  { src: "/images/hero/craft-meets-ai-workspace.png", alt: "Traditional craftsmanship meets AI interfaces" },
 ];
 const col3Images = [
-  "/images/hero/brand-sculptural-forms.png",
-  "/images/hero/digital-isometric-city.png",
-  "/images/hero/growth-network-nodes.png",
+  { src: "/images/hero/brand-puzzle-hands.png", alt: "Hands assembling glowing brand identity puzzle" },
+  { src: "/images/hero/network-afrofuturist-city.png", alt: "Interconnected network over Afrofuturist cityscape" },
+  { src: "/images/hero/afro-monument-of-light.png", alt: "Monumental architecture of light and data" },
 ];
 
 const CarouselColumn = ({
@@ -26,7 +26,7 @@ const CarouselColumn = ({
   duration,
   offset,
 }: {
-  images: string[];
+  images: { src: string; alt: string }[];
   direction: "up" | "down";
   duration: string;
   offset: string;
@@ -44,8 +44,8 @@ const CarouselColumn = ({
             className="rounded-xl overflow-hidden flex-shrink-0"
           >
             <img
-              src={img}
-              alt="Portfolio project"
+              src={img.src}
+              alt={img.alt}
               className="w-full h-48 md:h-56 object-cover"
               loading="lazy"
             />

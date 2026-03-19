@@ -137,6 +137,9 @@ const HeroSection = () => {
               </p>
             </ScrollReveal>
 
+            {/* Mobile — Horizontal Marquee (between description and CTA) */}
+            <MobileCarousel />
+
             <ScrollReveal animation="fade-up" delay={300}>
               <div className="flex flex-col sm:flex-row items-center md:items-start gap-4">
                 <Button variant="hero" size="xl" className="group hover-glow">
@@ -151,7 +154,7 @@ const HeroSection = () => {
             </ScrollReveal>
 
             <ScrollReveal animation="fade-up" delay={400}>
-              <div className="mt-12 pt-8 border-t border-border/30">
+              <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border/30">
                 <p className="text-sm text-muted-foreground mb-4">
                   Trusted by forward-thinking brands
                 </p>
@@ -169,10 +172,6 @@ const HeroSection = () => {
                 </div>
               </div>
             </ScrollReveal>
-          </div>
-
-          {/* Mobile — Horizontal Marquee */}
-          <MobileCarousel />
 
           {/* Desktop — Vertical Carousel Grid */}
           <div className="flex-1 relative h-[600px] w-full max-w-none hidden md:block group">

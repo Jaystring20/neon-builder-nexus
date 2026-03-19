@@ -100,12 +100,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.services.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</Link>
+                  ) : (
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -117,12 +116,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {links.resources.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.isRoute ? (
+                    <Link to={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</Link>
+                  ) : (
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">{link.label}</a>
+                  )}
                 </li>
               ))}
             </ul>

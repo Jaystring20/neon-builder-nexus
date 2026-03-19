@@ -1,31 +1,19 @@
 
 
-## Mobile Hero: Horizontal Marquee Strip
+## Fix Mobile Hero Content Being Pushed Off-Screen
 
-### What changes
+### Root Cause
+On mobile, `min-h-screen flex items-center` vertically centers all content (text + carousel + stats). The total content height exceeds 575px viewport, so centering pushes the top of the content above the fold. The 80px `pt-20` navbar offset makes it worse.
 
-On mobile (below `md` breakpoint), replace the 3-column vertical carousel with a **full-width horizontal auto-scrolling strip** of all 10 images. Desktop stays unchanged.
+### Fix
 
-### Implementation
+**`src/components/HeroSection.tsx`**:
+- Change the section from `items-center` to `items-start` on mobile: `items-start md:items-center`
+- Reduce mobile top padding: `pt-24 md:pt-20` (just enough to clear navbar)
+- Remove `min-h-screen` on mobile in favor of auto height: use `min-h-[auto] md:min-h-screen` or simply let content flow naturally
+- Reduce `mb-8` on the badge, `mb-10` on text, and `mt-12` on stats section for mobile to tighten spacing
+- Consider moving MobileCarousel **above** the CTA buttons but **below** the headline+description to keep the most important content visible first
 
-**1. `src/index.css`** — Add horizontal scroll keyframe:
-```css
-@keyframes scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-```
-
-**2. `src/components/HeroSection.tsx`**:
-- Combine all 10 images into a single `allImages` array
-- Add a `MobileCarousel` component: a horizontal row of all images (doubled for seamless loop), each rendered as a rounded card (~220px wide × 150px tall), animated with `scroll-left 30s linear infinite`
-- Left/right horizontal gradient fade masks on the edges
-- Container height ~180px, compact so hero text stays the focal point
-- Wrap existing 3-column grid in `hidden md:flex`
-- Show `MobileCarousel` with `md:hidden`
-- Pause animation on touch/hover
-
-### Files changed
-1. `src/index.css`
-2. `src/components/HeroSection.tsx`
+### Files Changed
+1. `src/components/HeroSection.tsx` — Adjust mobile vertical alignment and spacing
 

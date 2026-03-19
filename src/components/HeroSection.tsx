@@ -1,6 +1,5 @@
 import { ArrowRight, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ScrollReveal from "@/components/ScrollReveal";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const col1Images = [
@@ -108,25 +107,25 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
           {/* Left — Text */}
           <div className="flex-1 text-center md:text-left">
-            <ScrollReveal animation="fade-up">
+            <div className="animate-fade-up-elegant" style={{ animationDelay: "0ms" }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-4 md:mb-8 hover-glow">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-muted-foreground">
                   Business Development Creative Agency
                 </span>
               </div>
-            </ScrollReveal>
+            </div>
 
-            <ScrollReveal animation="fade-up" delay={100}>
+            <div className="animate-fade-up-elegant" style={{ animationDelay: "100ms" }}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 md:mb-6">
                 <span className="text-foreground">The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
                 <br />
                 <span className="text-foreground">Not Bought.</span>
               </h1>
-            </ScrollReveal>
+            </div>
 
-            <ScrollReveal animation="fade-up" delay={200}>
+            <div className="animate-fade-up-elegant" style={{ animationDelay: "200ms" }}>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mb-4 leading-relaxed">
                 Most brands are renting space in a digital maze they don't own.{" "}
                 <span className="text-primary font-medium">We help you build the architecture of authority.</span>
@@ -135,12 +134,12 @@ const HeroSection = () => {
                 We build growth engines that convert brand potential into{" "}
                 <span className="text-secondary font-medium">measurable market velocity</span>.
               </p>
-            </ScrollReveal>
+            </div>
 
             {/* Mobile — Horizontal Marquee (between description and CTA) */}
             <MobileCarousel />
 
-            <ScrollReveal animation="fade-up" delay={300}>
+            <div className="animate-fade-up-elegant" style={{ animationDelay: "300ms" }}>
               <div className="flex flex-col sm:flex-row items-center md:items-start gap-4">
                 <Button variant="hero" size="xl" className="group hover-glow">
                   Start the Build
@@ -151,9 +150,9 @@ const HeroSection = () => {
                   View the Blueprint
                 </Button>
               </div>
-            </ScrollReveal>
+            </div>
 
-            <ScrollReveal animation="fade-up" delay={400}>
+            <div className="animate-fade-up-elegant" style={{ animationDelay: "400ms" }}>
               <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border/30">
                 <p className="text-sm text-muted-foreground mb-4">
                   Trusted by forward-thinking brands
@@ -171,7 +170,7 @@ const HeroSection = () => {
                   ))}
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
 
           {/* Desktop — Vertical Carousel Grid */}

@@ -286,8 +286,17 @@
 }
 
 .hero-animate {
-  opacity: 0;
-  animation: hero-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1;
+  will-change: transform, opacity, filter;
+  animation: hero-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-animate {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 @layer utilities {

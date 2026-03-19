@@ -100,6 +100,14 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px hsl(var(--primary) / 0.3)" },
           "50%": { boxShadow: "0 0 40px hsl(var(--primary) / 0.5)" },
         },
+        "scroll-up": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-50%)" },
+        },
+        "scroll-down": {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -109,6 +117,8 @@ export default {
         "blur-in": "blur-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "scale-in-elegant": "scale-in-elegant 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "scroll-up": "scroll-up 25s linear infinite",
+        "scroll-down": "scroll-down 30s linear infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

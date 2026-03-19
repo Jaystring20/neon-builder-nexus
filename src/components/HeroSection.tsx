@@ -20,6 +20,8 @@ const col3Images = [
   { src: "/images/hero/afro-monument-of-light.png", alt: "Monumental architecture of light and data" },
 ];
 
+const allImages = [...col1Images, ...col2Images, ...col3Images];
+
 const CarouselColumn = ({
   images,
   direction,
@@ -56,6 +58,36 @@ const CarouselColumn = ({
   );
 };
 
+const MobileCarousel = () => {
+  const doubled = [...allImages, ...allImages];
+  return (
+    <div className="relative w-full h-[180px] overflow-hidden md:hidden">
+      {/* Left/right fade masks */}
+      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+      <div
+        className="flex gap-4 h-full items-center hover:[animation-play-state:paused]"
+        style={{ animation: "scroll-left 30s linear infinite", width: "max-content" }}
+      >
+        {doubled.map((img, i) => (
+          <div
+            key={i}
+            className="rounded-xl overflow-hidden flex-shrink-0 w-[220px] h-[150px]"
+          >
+            <img
+              src={img.src}
+              alt={img.alt}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
@@ -73,7 +105,7 @@ const HeroSection = () => {
       </div>
 
       <div className="container-narrow relative z-10 py-12 md:py-0">
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
           {/* Left — Text */}
           <div className="flex-1 text-center md:text-left">
             <ScrollReveal animation="fade-up">
@@ -139,8 +171,11 @@ const HeroSection = () => {
             </ScrollReveal>
           </div>
 
-          {/* Right — Carousel Grid */}
-          <div className="flex-1 relative h-[340px] md:h-[600px] w-full max-w-md md:max-w-none group">
+          {/* Mobile — Horizontal Marquee */}
+          <MobileCarousel />
+
+          {/* Desktop — Vertical Carousel Grid */}
+          <div className="flex-1 relative h-[600px] w-full max-w-none hidden md:block group">
             {/* Top & Bottom gradient masks */}
             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />

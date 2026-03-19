@@ -3,20 +3,22 @@ import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import heroBg from "@/assets/hero-bg.jpg";
 
-import ddoImg from "@/assets/portfolio/ddo-learning-liberation.png";
-import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.png";
-import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.png";
-import everythingHouseholdImg from "@/assets/portfolio/everything-household.png";
-import bunmiFlexImg from "@/assets/portfolio/bunmiflex-yoga.png";
-import digitechImg from "@/assets/portfolio/digitech-strategist.png";
-import healingImg from "@/assets/portfolio/healing-broken-hearted.png";
-import soteriaImg from "@/assets/portfolio/soteria-eye-clinic.png";
-import discoveryChurchImg from "@/assets/portfolio/the-discovery-church.png";
-import fitnessReligionImg from "@/assets/portfolio/fitness-religion.png";
-
-const col1Images = [ddoImg, innerspaceImg, ecopathImg, everythingHouseholdImg];
-const col2Images = [bunmiFlexImg, digitechImg, healingImg];
-const col3Images = [soteriaImg, discoveryChurchImg, fitnessReligionImg];
+const col1Images = [
+  "/images/hero/brand-identity-system.png",
+  "/images/hero/digital-holographic-dashboard.png",
+  "/images/hero/ai-neural-silhouette.png",
+  "/images/hero/growth-spiral-staircase.png",
+];
+const col2Images = [
+  "/images/hero/brand-stationery-desk.png",
+  "/images/hero/digital-device-ecosystem.png",
+  "/images/hero/ai-robotic-assembly.png",
+];
+const col3Images = [
+  "/images/hero/brand-sculptural-forms.png",
+  "/images/hero/digital-isometric-city.png",
+  "/images/hero/growth-network-nodes.png",
+];
 
 const CarouselColumn = ({
   images,

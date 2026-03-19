@@ -1,21 +1,31 @@
 
 
-## Fix Mega Menu Overflow + Full-Width Expansion
+## Mobile Hero: Horizontal Marquee Strip
 
-### Problem
-The `NavigationMenuViewport` wrapper div uses `absolute left-0` relative to the `NavigationMenu` root, which sits inside the navbar. On a 945px viewport, the 1050px mega menu overflows to the right. The user also wants the mega menu to span nearly the full screen width.
+### What changes
 
-### Solution
+On mobile (below `md` breakpoint), replace the 3-column vertical carousel with a **full-width horizontal auto-scrolling strip** of all 10 images. Desktop stays unchanged.
 
-**1. Update `NavigationMenuViewport` (`src/components/ui/navigation-menu.tsx`)**
-- Change the viewport wrapper from `absolute left-0` to `fixed left-0 right-0 w-screen` so it positions relative to the browser viewport, not the nav element.
-- Center the content within using `flex justify-center`.
+### Implementation
 
-**2. Update mega menu content width (`src/components/Navbar.tsx`)**
-- Change the "What We Do" content container from `w-[min(1050px,calc(100vw-2rem))]` to `w-[calc(100vw-2rem)] max-w-[1400px]` so it spans nearly the full screen.
-- Adjust padding/layout to breathe at this wider size.
+**1. `src/index.css`** — Add horizontal scroll keyframe:
+```css
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+```
 
-### Files Changed
-1. **`src/components/ui/navigation-menu.tsx`** — Fix viewport positioning to be screen-relative
-2. **`src/components/Navbar.tsx`** — Widen mega menu to near full-width
+**2. `src/components/HeroSection.tsx`**:
+- Combine all 10 images into a single `allImages` array
+- Add a `MobileCarousel` component: a horizontal row of all images (doubled for seamless loop), each rendered as a rounded card (~220px wide × 150px tall), animated with `scroll-left 30s linear infinite`
+- Left/right horizontal gradient fade masks on the edges
+- Container height ~180px, compact so hero text stays the focal point
+- Wrap existing 3-column grid in `hidden md:flex`
+- Show `MobileCarousel` with `md:hidden`
+- Pause animation on touch/hover
+
+### Files changed
+1. `src/index.css`
+2. `src/components/HeroSection.tsx`
 

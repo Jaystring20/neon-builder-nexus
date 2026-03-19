@@ -1,5 +1,6 @@
 import { ArrowRight, Download, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ScrollReveal";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const col1Images = [
@@ -60,13 +61,13 @@ const CarouselColumn = ({
 const MobileCarousel = () => {
   const doubled = [...allImages, ...allImages];
   return (
-    <div className="relative w-full h-[180px] overflow-hidden md:hidden">
+    <div className="relative w-full h-[180px] overflow-hidden md:hidden my-6">
       {/* Left/right fade masks */}
       <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
       <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
       <div
-        className="flex gap-4 h-full items-center hover:[animation-play-state:paused]"
+        className="flex gap-4 h-full items-center"
         style={{ animation: "scroll-left 30s linear infinite", width: "max-content" }}
       >
         {doubled.map((img, i) => (
@@ -89,7 +90,7 @@ const MobileCarousel = () => {
 
 const HeroSection = () => {
   return (
-    <section className="relative md:min-h-screen flex items-start md:items-center overflow-hidden pt-24 md:pt-20">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
@@ -103,43 +104,43 @@ const HeroSection = () => {
         <div className="absolute bottom-1/4 -right-1/4 w-[500px] h-[500px] bg-secondary/15 rounded-full blur-[120px]" />
       </div>
 
-      <div className="container-narrow relative z-10 py-12 md:py-0">
+      <div className="container-narrow relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
           {/* Left — Text */}
           <div className="flex-1 text-center md:text-left">
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "0ms" }}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-4 md:mb-8 hover-glow">
+            <ScrollReveal animation="fade-up" delay={0}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle mb-8 hover-glow">
                 <Sparkles className="w-4 h-4 text-primary" />
                 <span className="text-sm font-medium text-muted-foreground">
                   Business Development Creative Agency
                 </span>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "100ms" }}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 md:mb-6">
+            <ScrollReveal animation="fade-up" delay={100}>
+              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
                 <span className="text-foreground">The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
                 <br />
                 <span className="text-foreground">Not Bought.</span>
               </h1>
-            </div>
+            </ScrollReveal>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "200ms" }}>
+            <ScrollReveal animation="fade-up" delay={200}>
               <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mb-4 leading-relaxed">
                 Most brands are renting space in a digital maze they don't own.{" "}
                 <span className="text-primary font-medium">We help you build the architecture of authority.</span>
               </p>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-lg mb-6 md:mb-10 leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-lg mb-10 leading-relaxed">
                 We build growth engines that convert brand potential into{" "}
                 <span className="text-secondary font-medium">measurable market velocity</span>.
               </p>
-            </div>
+            </ScrollReveal>
 
             {/* Mobile — Horizontal Marquee (between description and CTA) */}
             <MobileCarousel />
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "300ms" }}>
+            <ScrollReveal animation="fade-up" delay={300}>
               <div className="flex flex-col sm:flex-row items-center md:items-start gap-4">
                 <Button variant="hero" size="xl" className="group hover-glow">
                   Start the Build
@@ -150,10 +151,10 @@ const HeroSection = () => {
                   View the Blueprint
                 </Button>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="animate-fade-up-elegant" style={{ animationDelay: "400ms" }}>
-              <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-border/30">
+            <ScrollReveal animation="fade-up" delay={400}>
+              <div className="mt-12 pt-8 border-t border-border/30">
                 <p className="text-sm text-muted-foreground mb-4">
                   Trusted by forward-thinking brands
                 </p>
@@ -170,10 +171,10 @@ const HeroSection = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
 
-          {/* Desktop — Vertical Carousel Grid */}
+          {/* Desktop — Vertical Carousel Grid (hidden on mobile) */}
           <div className="flex-1 relative h-[600px] w-full max-w-none hidden md:block group">
             {/* Top & Bottom gradient masks */}
             <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />

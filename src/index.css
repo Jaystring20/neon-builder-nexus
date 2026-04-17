@@ -281,17 +281,17 @@
 }
 
 @keyframes hero-fade-up {
-  0% { opacity: 0; transform: translateY(40px); filter: blur(10px); }
+  0% { opacity: 0.01; transform: translateY(40px); filter: blur(10px); }
   100% { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 .hero-animate {
   opacity: 1;
-  animation: hero-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@supports not (animation-timeline: scroll()) {
-  /* fallback no-op */
+@supports (animation-timeline: view()) {
+  /* keep existing */
 }
 
 @media (prefers-reduced-motion: reduce) {

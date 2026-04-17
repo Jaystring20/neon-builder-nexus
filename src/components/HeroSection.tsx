@@ -99,9 +99,9 @@ const HeroSection = () => {
         <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
           <div className="flex-1 text-center md:text-left">
             <div className="hero-animate" style={{ animationDelay: "0ms" }}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-muted-foreground">
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Business Development Creative Agency
                 </span>
               </div>

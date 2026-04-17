@@ -287,8 +287,11 @@
 
 .hero-animate {
   opacity: 1;
-  will-change: transform, opacity, filter;
   animation: hero-fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@supports not (animation-timeline: scroll()) {
+  /* fallback no-op */
 }
 
 @media (prefers-reduced-motion: reduce) {

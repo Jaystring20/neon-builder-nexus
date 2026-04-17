@@ -57,6 +57,11 @@ const Navbar = () => {
               <span className="text-secondary font-semibold">Creatives</span>{" "}
               <span className="text-foreground">Hub</span>
             </span>
+            <span className="font-heading font-bold text-base sm:hidden">
+              <span className="text-primary">D</span>
+              <span className="text-secondary">C</span>
+              <span className="text-foreground">H</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

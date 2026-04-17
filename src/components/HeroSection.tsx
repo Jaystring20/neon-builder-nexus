@@ -178,7 +178,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 animate-bounce md:flex">
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 animate-bounce">
         <div className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-primary/30 p-2 glass-card-subtle">
           <div className="h-2 w-1 animate-pulse rounded-full bg-primary" />
         </div>

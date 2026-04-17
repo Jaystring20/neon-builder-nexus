@@ -54,12 +54,12 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Business Development Creative Agency. We build the systems that grow brands.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                  className="w-11 h-11 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />

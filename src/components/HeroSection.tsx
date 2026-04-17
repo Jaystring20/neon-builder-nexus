@@ -97,7 +97,7 @@ const HeroSection = () => {
 
       <div className="container-narrow relative z-10">
         <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
-          <div className="flex-1 text-center md:text-left" style={{ outline: '2px solid red' }}>
+          <div className="flex-1 text-center md:text-left">
             <div className="hero-animate" style={{ animationDelay: "0ms" }}>
               <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
                 <Sparkles className="h-4 w-4 text-primary" />
@@ -107,12 +107,12 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hero-animate" style={{ animationDelay: "100ms", background: 'rgba(255,0,0,0.5)' }}>
-              <h1 className="mb-5 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-5xl lg:mb-6 lg:text-6xl" style={{ color: 'yellow' }}>
-                <span style={{ color: 'white' }}>The Future is</span>{" "}
+            <div className="hero-animate" style={{ animationDelay: "100ms" }}>
+              <h1 className="mb-5 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-5xl lg:mb-6 lg:text-6xl">
+                <span className="text-foreground">The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
                 <br />
-                <span style={{ color: 'white' }}>Not Bought.</span>
+                <span className="text-foreground">Not Bought.</span>
               </h1>
             </div>
 

@@ -107,12 +107,12 @@ const HeroSection = () => {
               </div>
             </div>
 
-            <div className="hero-animate" style={{ animationDelay: "100ms" }}>
-              <h1 className="mb-5 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-5xl lg:mb-6 lg:text-6xl">
-                <span className="text-foreground">The Future is</span>{" "}
+            <div className="hero-animate" style={{ animationDelay: "100ms", background: 'rgba(255,0,0,0.5)' }}>
+              <h1 className="mb-5 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-5xl lg:mb-6 lg:text-6xl" style={{ color: 'yellow' }}>
+                <span style={{ color: 'white' }}>The Future is</span>{" "}
                 <span className="gradient-text">Built.</span>
                 <br />
-                <span className="text-foreground">Not Bought.</span>
+                <span style={{ color: 'white' }}>Not Bought.</span>
               </h1>
             </div>
 

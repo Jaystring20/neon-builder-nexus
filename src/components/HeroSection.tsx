@@ -83,7 +83,7 @@ const MobileCarousel = () => {
 
 const HeroSection = () => {
   return (
-    <section className="relative flex items-start overflow-hidden py-20 pt-24 lg:min-h-screen lg:items-center lg:py-0 lg:pt-0">
+    <section className="relative flex items-start overflow-hidden pb-12 pt-24 lg:min-h-screen lg:items-center lg:py-0 lg:pt-0">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
         style={{ backgroundImage: `url(${heroBg})` }}
@@ -99,9 +99,9 @@ const HeroSection = () => {
         <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
           <div className="flex-1 text-center md:text-left">
             <div className="hero-animate" style={{ animationDelay: "0ms" }}>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-muted-foreground">
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Business Development Creative Agency
                 </span>
               </div>
@@ -178,7 +178,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 animate-bounce md:flex">
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 animate-bounce">
         <div className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-primary/30 p-2 glass-card-subtle">
           <div className="h-2 w-1 animate-pulse rounded-full bg-primary" />
         </div>

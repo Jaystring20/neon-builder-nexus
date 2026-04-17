@@ -312,16 +312,22 @@ const CTASection = () => {
 
               {/* Navigation */}
               {step < 3 && (
-                <div className="flex items-center justify-between mt-10 max-w-2xl mx-auto">
+                <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 mt-10 max-w-2xl mx-auto">
                   <Button
-                    variant="ghost"
+                    variant="subtle"
                     onClick={handleBack}
                     disabled={step === 0}
+                    size="lg"
                     className="gap-2"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Back
                   </Button>
+                  {step === 0 && selectedServices.length > 0 && (
+                    <span className="text-xs text-primary text-center sm:hidden">
+                      {selectedServices.length} pillar{selectedServices.length > 1 ? "s" : ""} selected
+                    </span>
+                  )}
                   <Button
                     variant="hero"
                     size="lg"

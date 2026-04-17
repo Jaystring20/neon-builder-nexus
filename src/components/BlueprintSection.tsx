@@ -83,14 +83,14 @@ const BlueprintSection = () => {
             {/* Email Capture Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1">
+                <div className="relative flex-1 w-full">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     type="email"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-12 h-12 bg-card/50 border-border/50 focus:border-secondary"
+                    className="pl-12 h-12 bg-card/50 border-border/50 focus:border-secondary w-full"
                     disabled={isLoading}
                   />
                 </div>
@@ -98,7 +98,7 @@ const BlueprintSection = () => {
                   type="submit" 
                   variant="secondary" 
                   size="lg" 
-                  className="h-12 px-6 group whitespace-nowrap"
+                  className="h-12 px-6 group whitespace-nowrap w-full sm:w-auto"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -125,7 +125,8 @@ const BlueprintSection = () => {
                 <img 
                   src={blueprintCover} 
                   alt="The Professional Builder's Blueprint"
-                  className="w-72 md:w-80 h-auto object-cover"
+                  className="w-56 sm:w-72 md:w-80 h-auto object-cover"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>

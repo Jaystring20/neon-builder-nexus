@@ -1,14 +1,18 @@
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import TrustBar from "@/components/TrustBar";
 import FrictionSection from "@/components/FrictionSection";
 import ResolutionSection from "@/components/ResolutionSection";
+import ComparisonSection from "@/components/ComparisonSection";
 import PillarsSection from "@/components/PillarsSection";
 import WhyUsSection from "@/components/WhyUsSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import AboutSnippetSection from "@/components/AboutSnippetSection";
 import BlueprintSection from "@/components/BlueprintSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import FloatingCTA from "@/components/FloatingCTA";
 
 const Index = () => {
   return (
@@ -20,14 +24,18 @@ const Index = () => {
       />
       <Navbar />
       <HeroSection />
+      <TrustBar />
       <FrictionSection />
       <ResolutionSection />
+      <ComparisonSection />
       <PillarsSection />
       <WhyUsSection />
+      <TestimonialsSection />
       <AboutSnippetSection />
       <BlueprintSection />
       <CTASection />
       <Footer />
+      <FloatingCTA />
     </main>
   );
 };

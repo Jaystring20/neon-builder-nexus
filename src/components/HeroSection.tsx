@@ -100,7 +100,7 @@ const HeroSection = () => {
       </div>
 
       <div className="container-narrow relative z-10">
-        <div className="flex flex-col items-center gap-8 lg:flex-row lg:gap-16">
+        <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:items-center lg:gap-16">
           <div className="w-full flex-1 text-center md:text-left">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 glass-card-subtle hover-glow sm:mb-8">
               <Sparkles className="h-4 w-4 text-primary" />

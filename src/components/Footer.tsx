@@ -17,7 +17,7 @@ const Footer = () => {
       { label: "Innovation Lab", href: "/services", isRoute: true },
     ],
     resources: [
-      { label: "Builder's Blueprint", href: "#lab" },
+      { label: "Builder's Blueprint", href: "#blueprint" },
       { label: "Blog", href: "/blog", isRoute: true },
       { label: "Case Studies", href: "/case-studies", isRoute: true },
       { label: "FAQ", href: "/faq", isRoute: true },

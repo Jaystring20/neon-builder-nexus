@@ -45,7 +45,7 @@ const BlueprintSection = () => {
   };
 
   return (
-    <section id="lab" className="section-padding relative overflow-hidden">
+    <section id="blueprint" className="section-padding relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/5 via-transparent to-transparent" />
       <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-secondary/15 rounded-full blur-[120px]" />

@@ -1,82 +1,95 @@
 
+# DCH × Superside UX Pattern Alignment
 
-# UX Audit and Optimization Plan — Landing Page
+I scraped superside.com to map their flow. Below is what they do well, what we'll borrow (UX patterns, NOT visual identity — DCH keeps its dark neon-cyan/orange "Builder" brand per memory), and the exact changes to ship.
 
-## Critical Issues Found
+## What Superside does that we should adopt
 
-### 1. HERO SECTION — Mobile Completely Broken (CRITICAL)
-The hero section on mobile (390px) shows a blank screen with only the image carousel visible at the bottom. All text content (headline, sub-copy, CTAs) is invisible. This is the single biggest conversion killer — visitors see nothing above the fold.
+1. **Hero = Headline + 1 primary CTA + visual proof wall.** They use a single CTA ("Book a demo") repeated everywhere instead of two competing CTAs. The right side is a dense mosaic of real client work (Microsoft, Reddit, Amazon, Roland, Otto…) — proof IS the hero visual.
+2. **Logo bar immediately under the hero** — instant credibility before any copy.
+3. **Comparison table** ("Hiring or traditional outsourcing? Neither.") — Superside vs In-house vs Agencies vs Freelancers vs AI-only. Sharp positioning device.
+4. **Testimonials carousel with face + name + title + company** — high density, auto-scrolling, multiple rows.
+5. **"Built for brands that refuse to compromise"** — 4-pillar differentiator block with verb-led labels (Scalable / Flexible / Responsive / Seamless).
+6. **One sticky CTA** repeated at every section break, identical label, identical color.
+7. **Footer mega-structure** with services grouped by category, resources, company.
+8. **Cookie + sticky bottom-right "Talk to us"** persistent contact affordance.
 
-**Root cause**: The hero text and carousel share a flex container that pushes content out of viewport on small screens. The `lg:min-h-screen` and `items-start` layout combined with excessive padding creates a void.
+## What's wrong with DCH today (vs. that pattern)
 
-**Fix**: Restructure the hero section so mobile text content is always visible first, with proper top padding accounting for the fixed navbar (h-20). Ensure headline, sub-copy, and CTA buttons render fully within the mobile viewport before the marquee carousel.
+- Two competing hero CTAs ("Start the Build" + "View the Blueprint") split attention.
+- Hero proof is a generic image carousel (stock-feel), not a logo wall of real clients.
+- No dedicated logo/trust bar directly under the fold.
+- No competitive comparison block — visitors don't know why to pick a "Growth Architect" over an agency or freelancer.
+- Testimonials section is light/missing density; no auto-scrolling social proof rail.
+- CTA labels are inconsistent across sections.
+- No persistent floating CTA on long scroll.
 
----
+## Changes to ship (all UI/presentation only)
 
-### 2. NAVBAR — Mobile Polish
-- The brand name is hidden on small screens (`hidden sm:block`) — visitors only see the tiny logo icon, reducing brand recognition.
-- Mobile menu lacks visual hierarchy separation between primary nav items.
+### 1. Hero — single-CTA, proof-led (`HeroSection.tsx`)
+- Keep headline "The Future is Built. Not Bought." and Builder positioning.
+- Demote "View the Blueprint" to a text link under the primary CTA: `Or download the Blueprint →` (anchors to `#blueprint`).
+- Primary CTA "Start the Build" scrolls to `#contact` (Project Builder), per memory.
+- Replace stock image carousel columns with a **client logo / case-study mosaic** placeholder grid (2 cols mobile, 3 cols desktop) using existing portfolio images from `src/data/portfolio.ts`; titles overlaid bottom-left like Superside (brand name + service tag).
 
-**Fix**: Show a shorter brand name on mobile (e.g., just "DCH"). Add subtle dividers between mobile menu sections.
+### 2. New Trust Bar component (`TrustBar.tsx`, inserted between Hero and Friction)
+- Auto-scrolling marquee of monochrome client/partner logos.
+- Tagline left: "Trusted by builders shaping what's next."
+- Reuses existing brand stat tokens (500+, 50+, 15+) inline at the right on desktop.
 
----
+### 3. New Comparison block (`ComparisonSection.tsx`, replaces or sits before `WhyUsSection`)
+- Title: "Hiring an agency, freelancers, or AI tools? **None of the above.**"
+- 5-column row (DCH | In-house | Agencies | Freelancers | AI-only) × 4-row matrix (Speed, Strategy, Brand IQ, Scalability) with check/dash icons.
+- Mobile: collapses to a tabbed view (DCH always pinned).
 
-### 3. SECTION SPACING — Excessive Empty Space Between Sections
-Scrolling through the page reveals large gaps of empty space between sections (particularly between Friction/Resolution and Pillars/WhyUs). This breaks visual flow and makes the page feel incomplete.
+### 4. Testimonials rail (`TestimonialsSection.tsx`, new, before Blueprint)
+- Two auto-scrolling rows (opposite directions, pause on hover) of cards with avatar + quote + name + role + company.
+- Seeded with 6 placeholder testimonials matching DCH founder/clients (real copy to be supplied later).
 
-**Fix**: Audit `section-padding` values and reduce vertical padding from the current values to tighter, more professional spacing. Desktop: `py-20`, Mobile: `py-12`.
+### 5. CTA consistency pass
+- Every primary CTA across the page = label "**Start the Build**", links to `#contact`.
+- Every secondary CTA = "**View the Blueprint**", links to `#blueprint`.
+- Removes the current label drift in `PillarsSection`, `WhyUsSection`, `AboutSnippetSection`, `BlueprintSection`, `CTASection`.
 
----
+### 6. Floating sticky CTA (`FloatingCTA.tsx`, new)
+- Appears after user scrolls past hero (IntersectionObserver on hero sentinel).
+- Bottom-right pill, gradient primary, "Start the Build", scrolls to `#contact`.
+- Hidden when `#contact` is in view to avoid overlap.
 
-### 4. CTA SECTION (Project Builder) — UX Polish
-- Step progress dots are small and hard to read on mobile.
-- The "Back" button uses `ghost` variant which is nearly invisible against the dark background.
-- No visual confirmation that selections have been saved when moving between steps.
+### 7. Section flow re-order in `pages/Index.tsx`
+```
+Navbar
+HeroSection            (single CTA + proof mosaic)
+TrustBar               (NEW – logos)
+FrictionSection
+ResolutionSection
+ComparisonSection      (NEW – vs. table)
+PillarsSection
+WhyUsSection
+TestimonialsSection    (NEW – social proof rail)
+AboutSnippetSection
+BlueprintSection
+CTASection             (Project Builder)
+Footer
+FloatingCTA            (NEW – sticky)
+```
 
-**Fix**: Increase tap target sizes. Make the Back button more visible with `subtle` variant. Add a subtle selection count indicator on Step 0.
+### 8. Mobile hero rendering bug (carryover)
+- Resolve the invisible mobile headline by removing the `.hero-animate` opacity-0 starting state on viewports <768px and falling back to instant render — animations are nice-to-have, content visibility is not.
 
----
+## Files touched
 
-### 5. BLUEPRINT SECTION — Form UX
-- The email input and button stack awkwardly on small screens.
-- Book cover image could be better proportioned on mobile.
+- `src/components/HeroSection.tsx` — single CTA + portfolio mosaic, fix mobile invisibility
+- `src/components/TrustBar.tsx` — NEW
+- `src/components/ComparisonSection.tsx` — NEW
+- `src/components/TestimonialsSection.tsx` — NEW
+- `src/components/FloatingCTA.tsx` — NEW
+- `src/pages/Index.tsx` — re-order + insert new sections
+- `src/components/PillarsSection.tsx`, `WhyUsSection.tsx`, `AboutSnippetSection.tsx`, `BlueprintSection.tsx`, `CTASection.tsx` — CTA label/anchor pass
+- `src/index.css` — small additions for marquee + comparison table tokens (no token color changes)
 
-**Fix**: Ensure form input and button stack cleanly on mobile with full-width treatment. Hide or reduce book cover size on mobile to prioritize the email capture.
+## Out of scope (intentionally)
 
----
-
-### 6. FOOTER — Mobile Layout
-- The 5-column grid collapses to 2 columns on mobile, which works but creates a lot of scrolling.
-- Social icons are small and closely spaced for touch targets.
-
-**Fix**: Increase social icon touch targets. Consider an accordion pattern for footer links on mobile.
-
----
-
-### 7. SCROLL INDICATOR — Positioning
-- The bounce-scroll indicator at the bottom of the hero is hidden on mobile (`hidden md:flex`) — but that's where it's most needed since mobile users can't see the content below.
-
-**Fix**: Show the scroll indicator on mobile too, positioned just above the marquee carousel.
-
----
-
-## Implementation Summary
-
-| Section | Priority | Type |
-|---------|----------|------|
-| Hero mobile layout fix | P0 | Critical bug |
-| Section spacing tightening | P1 | Visual polish |
-| Navbar mobile brand name | P1 | Branding |
-| CTA wizard UX improvements | P2 | Interaction polish |
-| Blueprint form mobile | P2 | Conversion |
-| Footer mobile touch targets | P3 | Accessibility |
-| Scroll indicator mobile | P3 | Discoverability |
-
-### Files to modify:
-- `src/components/HeroSection.tsx` — major mobile layout restructure
-- `src/index.css` — section-padding adjustments
-- `src/components/Navbar.tsx` — mobile brand name
-- `src/components/CTASection.tsx` — wizard UX improvements
-- `src/components/BlueprintSection.tsx` — mobile form layout
-- `src/components/Footer.tsx` — touch target improvements
-
+- No visual rebrand. DCH stays dark + neon cyan/orange + Montserrat/Poppins. We are NOT copying Superside's mint-green-on-dark-green palette.
+- No backend wiring (form submissions, email capture) — separate task.
+- No new copy beyond CTA label normalization and section titles listed above; founder/client testimonial text comes later.

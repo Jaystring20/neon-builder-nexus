@@ -189,11 +189,11 @@ const Navbar = () => {
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in max-h-[80vh] overflow-y-auto">
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 rounded-2xl bg-background/95 backdrop-blur-xl border border-border/60 shadow-2xl animate-fade-in max-h-[80vh] overflow-y-auto">
             <div className="container-narrow py-6 space-y-1">
               {/* What We Do */}
               <div>

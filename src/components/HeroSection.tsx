@@ -108,27 +108,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Trusted-by logo strip */}
-        <div className="hero-animate mt-12 lg:mt-16" style={{ animationDelay: "360ms" }}>
-          <p className="mb-5 text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/80 lg:text-left">
-            Trusted by builders shipping at
-          </p>
-          <div className="logo-strip-fade relative w-full overflow-hidden">
-            <div
-              className="flex w-max gap-12 md:gap-16"
-              style={{ animation: "scroll-left 45s linear infinite" }}
-            >
-              {[...TRUST_LOGOS, ...TRUST_LOGOS].map((name, i) => (
-                <span
-                  key={`${name}-${i}`}
-                  className="shrink-0 font-heading text-lg font-bold tracking-[0.18em] text-muted-foreground/60 transition-colors hover:text-foreground/80 md:text-xl"
-                >
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

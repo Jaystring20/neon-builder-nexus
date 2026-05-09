@@ -1,46 +1,64 @@
-# Hero Headline Redesign — Superside Editorial Style
+## Hero Redesign — Dark Hybrid with 3D Visual
 
-## What's wrong now
-The current headline uses **uppercase Bricolage Grotesque** with a tiny italic "Built." accent. It reads as a brutalist poster, not the refined editorial voice Superside uses. The reference shows:
+Goal: lift the hero from "type on a black canvas" to a polished, product-launch-grade dark split layout — anchored by a custom 3D abstract render and surrounded by trust signals.
 
-- **Sentence case**, not uppercase
-- A **large, flowing italic serif** word (`creative team's`) carrying equal weight to the sans
-- Tight but airy line-height, generous tracking
-- Soft mint/primary color on the italic phrase — sans stays foreground white
-- A single full-width pill CTA directly underneath
+### Layout (desktop ≥ lg)
 
-## New headline treatment
-
-Copy stays: **"The Future is Built. Not Bought."** — but restructured visually so the italic serif becomes the hero, not a footnote.
-
-```text
-The Future
-is  Built.
-Not Bought.
+```
+┌─────────────────────────────────────────────────────────┐
+│  [★★★★★ 5.0 — trusted by 40+ founders]                  │
+│                                                          │
+│   The Future                          ╭──────────────╮  │
+│   is  Built.                          │   3D abstract │  │
+│   Not Bought.                         │   render with │  │
+│                                       │   cyan/orange │  │
+│   Sub-headline copy (2 lines)         │   glow + soft │  │
+│                                       │   parallax    │  │
+│   [ Start the Build → ]  [ See Work ] ╰──────────────╯  │
+│                                                          │
+│   ── Trusted by ──                                       │
+│   logo  logo  logo  logo  logo  logo  (muted, marquee)   │
+└─────────────────────────────────────────────────────────┘
 ```
 
-- Line 1: `The Future` — sans, foreground, regular weight
-- Line 2: `is` (sans, foreground) + `Built.` (italic serif, primary color, oversized — the visual anchor)
-- Line 3: `Not Bought.` — sans, foreground
+- Split: left column ~58% (text), right column ~42% (visual). Stacks vertically on mobile (visual below text, max-h capped).
+- Min height: `min-h-[100svh]` desktop, `min-h-[88svh]` mobile.
 
-## Technical changes
+### Content blocks (top → bottom)
 
-### `src/components/HeroSection.tsx`
-- Remove `font-display-bold` + `uppercase` from `<h1>`
-- Switch base to a **refined sans** (keep Bricolage but use weight 500–600, normal case, tight tracking `-0.02em`)
-- Wrap `Built.` in a span: `font-serif-display italic text-primary` — sized **~1.15× the sans** so it visually dominates (e.g. sans `text-6xl md:text-8xl`, serif `text-7xl md:text-[9rem]`)
-- Line-height: `leading-[1.05]` mobile, `leading-[1.0]` desktop
-- Keep center alignment on mobile, left on desktop (unchanged)
-- Pill CTA: keep current, but on mobile make it `w-full` to match Superside's full-width pill
+1. **Reviews badge** — small pill above headline: star icon + "5.0 · trusted by 40+ founders". Subtle bordered glass pill, primary star.
+2. **Headline** — keep current treatment ("The Future / is *Built.* / Not Bought.") but tighten to fit split column. Slightly smaller cap (max ~7rem at lg) so the visual gets room.
+3. **Sub-headline** — current copy, no change.
+4. **Dual CTA** — primary `Start the Build` (pill, scrolls to `#contact`) + ghost `See the Work` (links to `/our-work`).
+5. **Client logo strip** — "Trusted by" eyebrow + 6 muted SVG/text logos in a slow horizontal marquee (already have `scroll-left` keyframe). Use placeholder text-logos for now (Stripe, Notion, Linear, Vercel, Framer, Webflow style — but use generic project-relevant names).
 
-### `src/index.css`
-- Add a `.font-display-refined` utility: `font-family: 'Bricolage Grotesque'; font-weight: 500; letter-spacing: -0.025em; line-height: 1.0;`
-- (Keep `font-display-bold` available — other sections still use it)
+### Right-side visual
 
-### No other files touched
-HeroProofSection, HeroVisualSection, button variants, section rhythm — all stay as-is.
+- New asset: `src/assets/hero-3d-architecture.png` generated via `imagegen` (premium, transparent bg).
+- Prompt direction: abstract architectural 3D structure — interlocking translucent geometric blocks/towers, glowing cyan edges, warm orange accent light, glassy material, dark void background, dramatic side lighting, premium product render, octane-style.
+- Placement: floats inside a soft radial glow halo (cyan + orange blooms behind). Subtle `animate-float` (existing utility) for life. No heavy parallax JS.
+- Mobile: render below text at ~280px height, centered.
 
-## Out of scope
-- No copy rewrites
-- No color/token changes
-- No changes to other sections or the marquee
+### File changes
+
+- **`src/components/HeroSection.tsx`** — full rewrite of the section JSX:
+  - Two-column grid (`grid lg:grid-cols-[1.15fr_1fr] gap-12 items-center`)
+  - New `ReviewsBadge` inline subcomponent at top
+  - Headline cap reduced one step (`lg:text-[7rem]`, "Built." `lg:text-[8.5rem]`) to balance split
+  - Dual CTA row (primary pill + ghost variant)
+  - Right column: 3D image inside glow halo
+  - Logo strip below the grid (full-width, marquee)
+- **`src/assets/hero-3d-architecture.png`** — new generated asset (premium, transparent).
+- **`src/index.css`** — add `.hero-glow-halo` helper (cyan + orange radial blooms) and `.logo-strip-fade` edge masks. No token changes.
+- **`src/pages/Index.tsx`** — no structural change; the existing `HeroVisualSection` (two-row marquee on cream) stays as the next section ("Builds that ship.") so we keep the dark→light exhale.
+
+### Out of scope
+- No copy rewrites beyond adding badge + logo eyebrow.
+- No nav, footer, or downstream section changes.
+- No 3D library (react-three-fiber not needed) — single rendered image keeps it fast and crisp.
+- No business logic.
+
+### Acceptance
+- Above-the-fold on 1440px shows: badge, full headline, sub, dual CTA, visual, and the top of the logo strip.
+- On 1007px (current preview) the split holds; on <768px text stacks above visual.
+- All animations are CSS keyframes with staggered delays (per project rule), no IntersectionObserver above the fold.

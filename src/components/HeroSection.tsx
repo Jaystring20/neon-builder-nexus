@@ -17,9 +17,9 @@ const HeroSection = () => {
 
       <div className="container-narrow relative z-10">
         <div className="mx-auto max-w-5xl text-center md:text-left">
-          <h1 className="mb-8 font-heading font-bold leading-[1.05] tracking-tight text-foreground text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+          <h1 className="font-display-bold mb-8 text-foreground text-[3.25rem] sm:text-7xl md:text-[5.5rem] lg:text-[7rem] uppercase">
             The Future is{" "}
-            <span className="font-serif-display text-primary">Built.</span>
+            <span className="font-serif-display normal-case text-primary">Built.</span>
             <br />
             Not Bought.
           </h1>

@@ -1,95 +1,105 @@
 
-# DCH × Superside UX Pattern Alignment
+# Hero & Section Rhythm Overhaul — Superside-Inspired Polish
 
-I scraped superside.com to map their flow. Below is what they do well, what we'll borrow (UX patterns, NOT visual identity — DCH keeps its dark neon-cyan/orange "Builder" brand per memory), and the exact changes to ship.
+Goal: take the landing page from "busy neon dark" to the calm, premium, editorial feel of superside.com — while keeping DCH's brand identity (dark dominant, neon cyan/orange accents, Montserrat/Poppins). The current hero feels cluttered: scrolling proof columns on desktop, a marquee on mobile, two CTAs visually competing, badge + headline + 2 paragraphs + button + text link + carousel all crammed above the fold.
 
-## What Superside does that we should adopt
+## What Superside does (ref: uploaded screenshots)
 
-1. **Hero = Headline + 1 primary CTA + visual proof wall.** They use a single CTA ("Book a demo") repeated everywhere instead of two competing CTAs. The right side is a dense mosaic of real client work (Microsoft, Reddit, Amazon, Roland, Otto…) — proof IS the hero visual.
-2. **Logo bar immediately under the hero** — instant credibility before any copy.
-3. **Comparison table** ("Hiring or traditional outsourcing? Neither.") — Superside vs In-house vs Agencies vs Freelancers vs AI-only. Sharp positioning device.
-4. **Testimonials carousel with face + name + title + company** — high density, auto-scrolling, multiple rows.
-5. **"Built for brands that refuse to compromise"** — 4-pillar differentiator block with verb-led labels (Scalable / Flexible / Responsive / Seamless).
-6. **One sticky CTA** repeated at every section break, identical label, identical color.
-7. **Footer mega-structure** with services grouped by category, resources, company.
-8. **Cookie + sticky bottom-right "Talk to us"** persistent contact affordance.
+1. **Hero is breathable.** Just a logo, a single oversized editorial headline (mixed sans + serif italic), one short supporting paragraph, ONE pill CTA. No proof, no carousel, no badge.
+2. **Proof comes AFTER the hero**, in its own block: a clean light section "Trusted by 500+ of the world's top brands" with monochrome logos.
+3. **Then a tall, single hero image** in another light section.
+4. **Alternating dark → light → dark → light rhythm**, with dark dominating. White sections act as "exhale" moments to highlight proof and editorial copy.
+5. **Typography drives the polish**: huge headlines, generous line-height, italic serif accents on key words.
 
-## What's wrong with DCH today (vs. that pattern)
+## What's wrong with our hero today
 
-- Two competing hero CTAs ("Start the Build" + "View the Blueprint") split attention.
-- Hero proof is a generic image carousel (stock-feel), not a logo wall of real clients.
-- No dedicated logo/trust bar directly under the fold.
-- No competitive comparison block — visitors don't know why to pick a "Growth Architect" over an agency or freelancer.
-- Testimonials section is light/missing density; no auto-scrolling social proof rail.
-- CTA labels are inconsistent across sections.
-- No persistent floating CTA on long scroll.
+- Two-column layout with three scrolling proof columns on the right = noisy.
+- Badge "Business Development Creative Agency" + headline + TWO paragraphs + CTA + secondary text link + mobile marquee = 6 competing elements above the fold.
+- Mobile shows headline + sub-copy + CTA + a horizontal scrolling rail right under the button — the user can't focus.
+- Page is 100% dark from top to bottom — no contrast rhythm, everything starts to feel the same after 2 scrolls.
+- Headline uses gradient on "Built." which fights the rest of the type. Superside uses a single color + italic serif for emphasis, much calmer.
 
-## Changes to ship (all UI/presentation only)
+## Changes to ship
 
-### 1. Hero — single-CTA, proof-led (`HeroSection.tsx`)
-- Keep headline "The Future is Built. Not Bought." and Builder positioning.
-- Demote "View the Blueprint" to a text link under the primary CTA: `Or download the Blueprint →` (anchors to `#blueprint`).
-- Primary CTA "Start the Build" scrolls to `#contact` (Project Builder), per memory.
-- Replace stock image carousel columns with a **client logo / case-study mosaic** placeholder grid (2 cols mobile, 3 cols desktop) using existing portfolio images from `src/data/portfolio.ts`; titles overlaid bottom-left like Superside (brand name + service tag).
+### 1. `HeroSection.tsx` — strip it down to a Superside-grade hero
+- Remove the badge pill ("Business Development Creative Agency").
+- Remove the desktop 3-column scrolling proof mosaic.
+- Remove the mobile horizontal proof rail (`MobileProofRail`).
+- Remove the second supporting paragraph. Keep ONE tight sub-copy (≤2 lines).
+- Remove the secondary "Or download the Builder's Blueprint" text link from the hero. (It will live further down the page; one CTA in the hero only.)
+- Keep one centered/left-aligned editorial layout (single column, max-w ~5xl, generous vertical padding).
+- Headline restyle: sans-serif for "The Future is" + "Not Bought." and **italic serif (Playfair Display or similar already in tailwind config)** for "Built." — replaces the gradient treatment. One brand color, no glow.
+- Single primary CTA pill: "Start the Build" → `#contact`. Use a wider, taller pill (rounded-full, h-14, px-10) to match Superside's button presence.
+- Remove the scroll indicator bounce (low signal, adds noise).
+- Background: keep the subtle radial blur but lower opacity (currently 0.15 → 0.08) and remove the `heroBg` image overlay so the section reads as pure brand-dark.
 
-### 2. New Trust Bar component (`TrustBar.tsx`, inserted between Hero and Friction)
-- Auto-scrolling marquee of monochrome client/partner logos.
-- Tagline left: "Trusted by builders shaping what's next."
-- Reuses existing brand stat tokens (500+, 50+, 15+) inline at the right on desktop.
+### 2. New `HeroProofSection.tsx` (light section, full-bleed white/cream)
+- Inserted directly after the hero, replacing the current `TrustBar` position (TrustBar is removed or absorbed here).
+- Background: `bg-background` swapped to a new token `--surface-inverse` (off-white #F5F4EE-ish, matching Superside's cream).
+- Centered eyebrow: "Trusted by builders shaping what's next." (dark text on cream).
+- Row of 4–6 monochrome client/partner logos (use placeholder marks from `/portfolio` data or simple SVG lockups).
+- Generous vertical padding (`py-20 md:py-28`).
 
-### 3. New Comparison block (`ComparisonSection.tsx`, replaces or sits before `WhyUsSection`)
-- Title: "Hiring an agency, freelancers, or AI tools? **None of the above.**"
-- 5-column row (DCH | In-house | Agencies | Freelancers | AI-only) × 4-row matrix (Speed, Strategy, Brand IQ, Scalability) with check/dash icons.
-- Mobile: collapses to a tabbed view (DCH always pinned).
+### 3. New `HeroVisualSection.tsx` (light section, single editorial image)
+- Tall single hero image, full-bleed within container, rounded-2xl.
+- Pulls the top portfolio piece (`portfolioProjects[0]`) as the image; caption underneath: brand + service tag.
+- Same cream background as #2 to read as one continuous "exhale" block.
 
-### 4. Testimonials rail (`TestimonialsSection.tsx`, new, before Blueprint)
-- Two auto-scrolling rows (opposite directions, pause on hover) of cards with avatar + quote + name + role + company.
-- Seeded with 6 placeholder testimonials matching DCH founder/clients (real copy to be supplied later).
-
-### 5. CTA consistency pass
-- Every primary CTA across the page = label "**Start the Build**", links to `#contact`.
-- Every secondary CTA = "**View the Blueprint**", links to `#blueprint`.
-- Removes the current label drift in `PillarsSection`, `WhyUsSection`, `AboutSnippetSection`, `BlueprintSection`, `CTASection`.
-
-### 6. Floating sticky CTA (`FloatingCTA.tsx`, new)
-- Appears after user scrolls past hero (IntersectionObserver on hero sentinel).
-- Bottom-right pill, gradient primary, "Start the Build", scrolls to `#contact`.
-- Hidden when `#contact` is in view to avoid overlap.
-
-### 7. Section flow re-order in `pages/Index.tsx`
+### 4. Section rhythm in `pages/Index.tsx`
+Re-order to alternate dark/light, dark dominating:
 ```
-Navbar
-HeroSection            (single CTA + proof mosaic)
-TrustBar               (NEW – logos)
-FrictionSection
-ResolutionSection
-ComparisonSection      (NEW – vs. table)
-PillarsSection
-WhyUsSection
-TestimonialsSection    (NEW – social proof rail)
-AboutSnippetSection
-BlueprintSection
-CTASection             (Project Builder)
-Footer
-FloatingCTA            (NEW – sticky)
+Navbar                     (dark)
+HeroSection                (dark)  ← stripped
+HeroProofSection           (LIGHT) ← new, replaces TrustBar
+HeroVisualSection          (LIGHT) ← new
+FrictionSection            (dark)
+ResolutionSection          (dark)
+ComparisonSection          (LIGHT) ← reskin to cream surface
+PillarsSection             (dark)
+WhyUsSection               (dark)
+TestimonialsSection        (LIGHT) ← reskin
+AboutSnippetSection        (dark)
+BlueprintSection           (dark)
+CTASection                 (dark)
+Footer                     (dark)
+FloatingCTA                (overlay)
 ```
+Net ratio ≈ 60% dark / 40% light, dark dominant.
 
-### 8. Mobile hero rendering bug (carryover)
-- Resolve the invisible mobile headline by removing the `.hero-animate` opacity-0 starting state on viewports <768px and falling back to instant render — animations are nice-to-have, content visibility is not.
+### 5. `index.css` / `tailwind.config.ts` — add inverse surface tokens
+Add semantic tokens (HSL) so light sections stay on-brand:
+```
+--surface-inverse:        45 20% 96%   /* warm off-white */
+--surface-inverse-foreground: 220 15% 12%
+--surface-inverse-muted:  45 15% 88%
+--border-inverse:         45 10% 80%
+```
+Add a `.section-inverse` utility class that flips `bg`, `text`, `border` so reskinning Comparison/Testimonials is a one-liner without touching their internals.
+
+### 6. Tiny CTA polish
+- Replace the current `variant="hero"` (gradient + glow) with a calmer pill: solid primary (cyan), `rounded-full`, no glow shadow, subtle hover lift. Keeps the Superside "single confident pill" feeling. Apply this new variant (`variant="pill"`) only in the hero; rest of page keeps existing hero variant for now to avoid scope creep.
 
 ## Files touched
 
-- `src/components/HeroSection.tsx` — single CTA + portfolio mosaic, fix mobile invisibility
-- `src/components/TrustBar.tsx` — NEW
-- `src/components/ComparisonSection.tsx` — NEW
-- `src/components/TestimonialsSection.tsx` — NEW
-- `src/components/FloatingCTA.tsx` — NEW
-- `src/pages/Index.tsx` — re-order + insert new sections
-- `src/components/PillarsSection.tsx`, `WhyUsSection.tsx`, `AboutSnippetSection.tsx`, `BlueprintSection.tsx`, `CTASection.tsx` — CTA label/anchor pass
-- `src/index.css` — small additions for marquee + comparison table tokens (no token color changes)
+- `src/components/HeroSection.tsx` — major strip-down + restyle
+- `src/components/HeroProofSection.tsx` — NEW (replaces visual role of `TrustBar` in the hero area)
+- `src/components/HeroVisualSection.tsx` — NEW
+- `src/components/ComparisonSection.tsx` — wrap in `.section-inverse`
+- `src/components/TestimonialsSection.tsx` — wrap in `.section-inverse`
+- `src/pages/Index.tsx` — re-order, swap TrustBar for HeroProofSection + HeroVisualSection
+- `src/components/ui/button.tsx` — add `pill` variant
+- `src/index.css` + `tailwind.config.ts` — add `--surface-inverse` token + `.section-inverse` utility
 
-## Out of scope (intentionally)
+## Out of scope
 
-- No visual rebrand. DCH stays dark + neon cyan/orange + Montserrat/Poppins. We are NOT copying Superside's mint-green-on-dark-green palette.
-- No backend wiring (form submissions, email capture) — separate task.
-- No new copy beyond CTA label normalization and section titles listed above; founder/client testimonial text comes later.
+- No copy rewrites beyond the hero trims listed above.
+- No real client logos (placeholders/monochrome marks only — real logos to be supplied later).
+- TrustBar component is removed from the homepage but file kept (in case used elsewhere); not deleted.
+- `FloatingCTA`, navbar, footer untouched.
+- No new images generated; reuse `portfolioProjects[0].image` for the editorial visual.
+
+## Why this works
+
+- One CTA, one headline, one breath of copy → matches the Superside hero discipline.
+- Cream sections immediately under the dark hero create the contrast rhythm the user asked for.
+- Brand identity preserved: dark stays dominant, neon cyan stays the accent, Montserrat/Poppins unchanged. We're borrowing Superside's *composition discipline*, not its color palette.

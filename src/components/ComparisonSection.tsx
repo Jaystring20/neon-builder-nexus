@@ -50,9 +50,8 @@ const ComparisonSection = () => {
   const altCols = columns.filter((c) => c.key !== "dch");
 
   return (
-    <section className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/20 to-transparent" />
-      <div className="absolute right-0 top-1/3 h-[400px] w-[400px] rounded-full bg-primary/10 blur-[120px]" />
+    <section className="section-inverse section-padding relative overflow-hidden">
+      <div className="absolute right-0 top-1/3 h-[400px] w-[400px] rounded-full bg-primary/5 blur-[120px]" />
 
       <div className="container-narrow relative z-10">
         <div className="mb-12 text-center md:mb-16">

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600;1,700&display=swap');
 
 @layer base {
   :root {
@@ -72,6 +72,13 @@
     --sidebar-accent-foreground: 180 100% 95%;
     --sidebar-border: 220 20% 20%;
     --sidebar-ring: 180 100% 50%;
+
+    /* Inverse / cream surface tokens (for light "exhale" sections) */
+    --surface-inverse: 45 30% 96%;
+    --surface-inverse-foreground: 220 25% 10%;
+    --surface-inverse-muted: 220 10% 38%;
+    --surface-inverse-border: 45 12% 82%;
+    --surface-inverse-card: 45 25% 99%;
   }
 
   .dark {
@@ -262,6 +269,28 @@
 
   .container-narrow {
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Light "exhale" surface — flips background, text, borders, muted, cards */
+  .section-inverse {
+    background-color: hsl(var(--surface-inverse));
+    color: hsl(var(--surface-inverse-foreground));
+    --background: var(--surface-inverse);
+    --foreground: var(--surface-inverse-foreground);
+    --muted-foreground: var(--surface-inverse-muted);
+    --border: var(--surface-inverse-border);
+    --card: var(--surface-inverse-card);
+    --card-foreground: var(--surface-inverse-foreground);
+  }
+
+  .section-inverse .gradient-text {
+    background-image: linear-gradient(135deg, hsl(180 100% 35%) 0%, hsl(25 100% 45%) 100%);
+  }
+
+  .font-serif-display {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
   }
 }
 

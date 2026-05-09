@@ -20,6 +20,7 @@ const buttonVariants = cva(
         glass: "bg-card/50 backdrop-blur-md border border-border/50 text-foreground hover:bg-card/70 hover:border-primary/50",
         subtle: "bg-transparent border-2 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-colors",
         subtleSecondary: "bg-transparent border-2 border-secondary/50 text-secondary hover:bg-secondary/10 hover:border-secondary transition-colors",
+        pill: "bg-primary text-primary-foreground rounded-full font-bold hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.6)] transition-all duration-300",
       },
       size: {
         default: "h-11 px-6 py-2",

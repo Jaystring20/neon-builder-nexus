@@ -17,9 +17,13 @@ const HeroSection = () => {
 
       <div className="container-narrow relative z-10">
         <div className="mx-auto max-w-5xl text-center md:text-left">
-          <h1 className="font-display-bold mb-8 text-foreground text-[3.25rem] sm:text-7xl md:text-[5.5rem] lg:text-[7rem] uppercase">
-            The Future is{" "}
-            <span className="font-serif-display normal-case text-primary">Built.</span>
+          <h1 className="font-display-refined mb-8 text-foreground leading-[1.05] md:leading-[1] text-[3.5rem] sm:text-7xl md:text-[6.5rem] lg:text-[8rem]">
+            The Future
+            <br />
+            <span className="text-foreground/95">is </span>
+            <span className="font-serif-display text-primary text-[4rem] sm:text-[5.5rem] md:text-[7.5rem] lg:text-[9.5rem] leading-none">
+              Built.
+            </span>
             <br />
             Not Bought.
           </h1>
@@ -34,7 +38,7 @@ const HeroSection = () => {
               variant="pill"
               size="xl"
               onClick={() => scrollToId("contact")}
-              className="group"
+              className="group w-full sm:w-auto"
             >
               Start the Build
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

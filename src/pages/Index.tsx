@@ -1,7 +1,8 @@
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import TrustBar from "@/components/TrustBar";
+import HeroProofSection from "@/components/HeroProofSection";
+import HeroVisualSection from "@/components/HeroVisualSection";
 import FrictionSection from "@/components/FrictionSection";
 import ResolutionSection from "@/components/ResolutionSection";
 import ComparisonSection from "@/components/ComparisonSection";
@@ -24,7 +25,8 @@ const Index = () => {
       />
       <Navbar />
       <HeroSection />
-      <TrustBar />
+      <HeroProofSection />
+      <HeroVisualSection />
       <FrictionSection />
       <ResolutionSection />
       <ComparisonSection />

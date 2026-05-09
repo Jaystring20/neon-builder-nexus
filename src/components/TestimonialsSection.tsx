@@ -102,9 +102,8 @@ const Row = ({ items, reverse }: { items: Testimonial[]; reverse?: boolean }) =>
 const TestimonialsSection = () => {
   const half = Math.ceil(testimonials.length / 2);
   return (
-    <section className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
-      <div className="absolute -left-20 top-1/2 h-[300px] w-[300px] rounded-full bg-secondary/10 blur-[120px]" />
+    <section className="section-inverse section-padding relative overflow-hidden">
+      <div className="absolute -left-20 top-1/2 h-[300px] w-[300px] rounded-full bg-secondary/5 blur-[120px]" />
 
       <div className="container-narrow relative z-10 mb-12 text-center md:mb-16">
         <span className="mb-4 inline-block rounded-full bg-secondary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">

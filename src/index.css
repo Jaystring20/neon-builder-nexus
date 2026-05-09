@@ -281,10 +281,25 @@
     --border: var(--surface-inverse-border);
     --card: var(--surface-inverse-card);
     --card-foreground: var(--surface-inverse-foreground);
+    /* Tame neon on light backgrounds — deeper teal/amber for proper contrast (WCAG AA) */
+    --primary: 184 70% 26%;
+    --primary-foreground: 45 30% 98%;
+    --secondary: 22 85% 42%;
+    --secondary-foreground: 45 30% 98%;
+    --accent: 22 85% 42%;
+    --accent-foreground: 45 30% 98%;
+    --ring: 184 70% 26%;
+  }
+
+  /* Soften any raw neon utilities that bleed into light sections */
+  .section-inverse .neon-text-cyan,
+  .section-inverse .neon-text-orange {
+    text-shadow: none;
+    color: hsl(var(--primary));
   }
 
   .section-inverse .gradient-text {
-    background-image: linear-gradient(135deg, hsl(180 100% 35%) 0%, hsl(25 100% 45%) 100%);
+    background-image: linear-gradient(135deg, hsl(184 70% 26%) 0%, hsl(22 85% 38%) 100%);
   }
 
   .font-serif-display {

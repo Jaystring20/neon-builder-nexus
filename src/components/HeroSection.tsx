@@ -101,7 +101,7 @@ const HeroSection = () => {
                   Architected by builders
                 </p>
                 <p className="mt-0.5 text-xs leading-snug text-foreground/85">
-                  40+ brands shipped &amp; growing.
+                  10+ brands shipped &amp; growing.
                 </p>
               </div>
             </div>

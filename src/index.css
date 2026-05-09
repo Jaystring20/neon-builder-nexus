@@ -307,6 +307,21 @@
     letter-spacing: -0.025em;
     line-height: 1;
   }
+
+  .hero-glow-halo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 35% 40%, hsl(var(--neon-cyan) / 0.28) 0%, transparent 55%),
+      radial-gradient(circle at 70% 65%, hsl(var(--neon-orange) / 0.22) 0%, transparent 60%);
+    filter: blur(40px);
+  }
+
+  .logo-strip-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
 }
 
 @keyframes scroll-up {

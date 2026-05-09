@@ -2,6 +2,7 @@ import { ArrowRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroVisual from "@/assets/hero-3d-architecture.png";
+import jerryAvatar from "@/assets/jerry-strategist.png";
 
 const scrollToId = (id: string) => {
   const el = document.getElementById(id);
@@ -95,6 +96,26 @@ const HeroSection = () => {
                 height={1024}
                 className="relative z-10 mx-auto h-auto w-full max-h-[300px] object-contain drop-shadow-[0_30px_60px_rgba(0,255,255,0.15)] sm:max-h-[380px] lg:max-h-[560px]"
               />
+            </div>
+
+            {/* Floating persona chip */}
+            <div
+              className="hero-animate animate-float absolute right-0 top-6 z-20 hidden w-[230px] items-center gap-3 rounded-2xl border border-border/60 bg-card/80 p-3 backdrop-blur-xl shadow-[0_20px_50px_-15px_rgba(0,0,0,0.7)] sm:flex lg:right-2 lg:top-12"
+              style={{ animationDelay: "320ms", animationDuration: "8s" }}
+            >
+              <img
+                src={jerryAvatar}
+                alt="Jeremiah, Lead Strategist"
+                className="h-10 w-10 flex-shrink-0 rounded-full object-cover ring-2 ring-primary/40"
+              />
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+                  Architected by builders
+                </p>
+                <p className="mt-0.5 text-xs leading-snug text-foreground/85">
+                  40+ brands shipped &amp; growing.
+                </p>
+              </div>
             </div>
           </div>
         </div>

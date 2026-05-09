@@ -1,64 +1,52 @@
-## Hero Redesign — Dark Hybrid with 3D Visual
+## Floating Pill Navbar + Persona Chip — adopting two patterns from the GenAI sample
 
-Goal: lift the hero from "type on a black canvas" to a polished, product-launch-grade dark split layout — anchored by a custom 3D abstract render and surrounded by trust signals.
+Two distinct, unique elements from the reference to bring into the site:
 
-### Layout (desktop ≥ lg)
+### 1. Floating "pill" navbar (the unique menu pattern)
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  [★★★★★ 5.0 — trusted by 40+ founders]                  │
-│                                                          │
-│   The Future                          ╭──────────────╮  │
-│   is  Built.                          │   3D abstract │  │
-│   Not Bought.                         │   render with │  │
-│                                       │   cyan/orange │  │
-│   Sub-headline copy (2 lines)         │   glow + soft │  │
-│                                       │   parallax    │  │
-│   [ Start the Build → ]  [ See Work ] ╰──────────────╯  │
-│                                                          │
-│   ── Trusted by ──                                       │
-│   logo  logo  logo  logo  logo  logo  (muted, marquee)   │
-└─────────────────────────────────────────────────────────┘
-```
+Today the navbar is a full-width fixed bar that just changes background on scroll. Replace that chrome with a **centered floating pill** that detaches from the screen edges — logo + nav items + CTA all wrapped in one rounded glass capsule.
 
-- Split: left column ~58% (text), right column ~42% (visual). Stacks vertically on mobile (visual below text, max-h capped).
-- Min height: `min-h-[100svh]` desktop, `min-h-[88svh]` mobile.
+**Visual spec (from reference)**
+- Anchored top-center, ~24px from the viewport top (not edge-to-edge).
+- Single rounded-full container, dark glass (`backdrop-blur-2xl`, `bg-card/70`, hairline border `border-border/60`, soft outer shadow + inner top highlight).
+- Inner padding: `pl-2 pr-2 py-1.5`. Logo sits in a smaller pill on the left, nav links in the middle, "Book a Call" pill (cyan) on the right — all on one row.
+- Mega-menu / dropdowns open as **detached glass cards centered under the pill** (not full-width bars), matching the floating aesthetic.
+- Scroll behavior: pill **shrinks slightly** (less horizontal padding, lower opacity glow) after 50px scroll instead of changing into a different bar.
+- Mobile (<lg): pill collapses to `[logo  ·······  ☰]` only; tapping `☰` opens a full-screen glass sheet (existing mobile menu logic reused).
 
-### Content blocks (top → bottom)
+**Why this works for the brand**: it reads premium and "product-launch", matches the dark glassmorphism core rule, and keeps the existing mega-menu architecture intact (we only restyle the shell).
 
-1. **Reviews badge** — small pill above headline: star icon + "5.0 · trusted by 40+ founders". Subtle bordered glass pill, primary star.
-2. **Headline** — keep current treatment ("The Future / is *Built.* / Not Bought.") but tighten to fit split column. Slightly smaller cap (max ~7rem at lg) so the visual gets room.
-3. **Sub-headline** — current copy, no change.
-4. **Dual CTA** — primary `Start the Build` (pill, scrolls to `#contact`) + ghost `See the Work` (links to `/our-work`).
-5. **Client logo strip** — "Trusted by" eyebrow + 6 muted SVG/text logos in a slow horizontal marquee (already have `scroll-left` keyframe). Use placeholder text-logos for now (Stripe, Notion, Linear, Vercel, Framer, Webflow style — but use generic project-relevant names).
+### 2. Second adopted pattern — Floating "persona" chip on the hero visual
 
-### Right-side visual
+The reference also floats a small circular avatar chip overlapping the phone mockup. That gives it a human, lived-in feel. We can adopt the same pattern on our hero 3D sculpture:
 
-- New asset: `src/assets/hero-3d-architecture.png` generated via `imagegen` (premium, transparent bg).
-- Prompt direction: abstract architectural 3D structure — interlocking translucent geometric blocks/towers, glowing cyan edges, warm orange accent light, glassy material, dark void background, dramatic side lighting, premium product render, octane-style.
-- Placement: floats inside a soft radial glow halo (cyan + orange blooms behind). Subtle `animate-float` (existing utility) for life. No heavy parallax JS.
-- Mobile: render below text at ~280px height, centered.
+- A small circular chip floating top-right of the visual: founder avatar (Jeremiah's existing photo) + a 2-line speech-bubble card pointing to it: *"Architected by builders who've shipped 40+ brands."*
+- The card is glass (`glass-card-subtle`), rounded-2xl, gentle `animate-float` with a different delay than the sculpture so they drift independently.
+- Reinforces the "Growth Architects" positioning without adding a section.
 
 ### File changes
 
-- **`src/components/HeroSection.tsx`** — full rewrite of the section JSX:
-  - Two-column grid (`grid lg:grid-cols-[1.15fr_1fr] gap-12 items-center`)
-  - New `ReviewsBadge` inline subcomponent at top
-  - Headline cap reduced one step (`lg:text-[7rem]`, "Built." `lg:text-[8.5rem]`) to balance split
-  - Dual CTA row (primary pill + ghost variant)
-  - Right column: 3D image inside glow halo
-  - Logo strip below the grid (full-width, marquee)
-- **`src/assets/hero-3d-architecture.png`** — new generated asset (premium, transparent).
-- **`src/index.css`** — add `.hero-glow-halo` helper (cyan + orange radial blooms) and `.logo-strip-fade` edge masks. No token changes.
-- **`src/pages/Index.tsx`** — no structural change; the existing `HeroVisualSection` (two-row marquee on cream) stays as the next section ("Builds that ship.") so we keep the dark→light exhale.
-
-### Out of scope
-- No copy rewrites beyond adding badge + logo eyebrow.
-- No nav, footer, or downstream section changes.
-- No 3D library (react-three-fiber not needed) — single rendered image keeps it fast and crisp.
-- No business logic.
+- **`src/components/Navbar.tsx`** — restructure outer `<header>` into a centered floating container:
+  - Wrapper: `fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(1100px,calc(100%-2rem))]`
+  - Inner pill: `flex items-center gap-2 rounded-full border border-border/60 bg-card/70 backdrop-blur-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)] px-2 py-1.5`
+  - Logo: shrink to compact lockup inside its own subtle inner pill
+  - Nav links: keep current items, smaller text (`text-sm`), rounded-full hover state
+  - CTA: keep cyan pill on the right
+  - Scrolled state: tighten padding + reduce shadow intensity (no width change to avoid layout shift)
+  - Dropdown content: switch to detached `rounded-2xl` glass card, anchored under the trigger, max-w 480px
+- **`src/components/Navbar.tsx`** — adjust mobile sheet so it opens as a top-anchored glass sheet aligned to the floating pill
+- **`src/components/HeroSection.tsx`** — add the floating persona chip absolutely positioned over the right-column visual (top-right on lg, hidden on <sm to keep mobile clean)
+- **`src/index.css`** — small `.nav-pill` utility (just the shadow + inner highlight if not already covered) — only if needed
+- **No changes** to: routes, content, services data, or any downstream section
 
 ### Acceptance
-- Above-the-fold on 1440px shows: badge, full headline, sub, dual CTA, visual, and the top of the logo strip.
-- On 1007px (current preview) the split holds; on <768px text stacks above visual.
-- All animations are CSS keyframes with staggered delays (per project rule), no IntersectionObserver above the fold.
+- Navbar visibly floats with rounded edges on all pages, dark glass shows the page through it.
+- Mega-menu dropdowns open as floating cards under the pill (not full-width).
+- Hero shows the new persona chip on lg+ viewports, gracefully hidden below sm.
+- Mobile menu still works (full-screen sheet) and closes on route change.
+- No regressions to existing nav links, dropdown items, or CTAs.
+
+### Out of scope
+- Copy rewrites for nav items.
+- Restructuring the mega-menu information architecture.
+- Changing brand tokens or fonts.

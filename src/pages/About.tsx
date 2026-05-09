@@ -170,25 +170,31 @@ const About = () => {
                 icon: Search,
                 title: "We Diagnose",
                 copy: "We pinpoint your growth opportunity — where momentum is blocked, where leverage exists, and where markets are ready but execution is absent.",
-                accent: "primary",
+                iconWrap: "bg-primary/10 border-primary/30",
+                iconColor: "text-primary",
+                cardBorder: "border-primary/20",
               },
               {
                 icon: Cpu,
                 title: "We Build",
                 copy: "We architect the intelligence layer — AI-powered workflows that turn rough ideas into production-ready briefs and strategy into operational rhythm.",
-                accent: "secondary",
+                iconWrap: "bg-secondary/10 border-secondary/30",
+                iconColor: "text-secondary",
+                cardBorder: "border-secondary/20",
               },
               {
                 icon: Rocket,
                 title: "We Execute",
                 copy: "Creative, campaigns, partnerships — all of it. We run the engine while training your team, then hand it over so you own it long-term.",
-                accent: "primary",
+                iconWrap: "bg-primary/10 border-primary/30",
+                iconColor: "text-primary",
+                cardBorder: "border-primary/20",
               },
             ].map((step, i) => (
               <ScrollReveal key={step.title} animation="fade-up" delay={i * 100}>
-                <div className={`glass-card-elevated p-8 hover-lift hover-glass-shine h-full border-${step.accent}/20`}>
-                  <div className={`w-12 h-12 rounded-xl bg-${step.accent}/10 border border-${step.accent}/30 flex items-center justify-center mb-5`}>
-                    <step.icon className={`w-6 h-6 text-${step.accent}`} />
+                <div className={`glass-card-elevated p-8 hover-lift hover-glass-shine h-full ${step.cardBorder}`}>
+                  <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-5 ${step.iconWrap}`}>
+                    <step.icon className={`w-6 h-6 ${step.iconColor}`} />
                   </div>
                   <h3 className="text-xl font-heading font-bold mb-3">{step.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{step.copy}</p>

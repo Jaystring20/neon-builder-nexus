@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Target, Eye, ArrowRight, Quote, ExternalLink } from "lucide-react";
+import { Target, Eye, ArrowRight, Quote, ExternalLink, Search, Cpu, Rocket, Sparkles, Layers, Globe2, HandshakeIcon } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import FloatingParticles from "@/components/FloatingParticles";
 import jerryImage from "@/assets/jerry-strategist.png";

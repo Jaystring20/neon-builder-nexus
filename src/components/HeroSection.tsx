@@ -1,4 +1,4 @@
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroVisual from "@/assets/hero-3d-architecture.png";
@@ -33,18 +33,6 @@ const HeroSection = () => {
         <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
           {/* LEFT — Copy */}
           <div className="text-center lg:text-left">
-            {/* Reviews badge */}
-            <div className="hero-animate mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-3 py-1.5 backdrop-blur-md">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-3 w-3 fill-primary text-primary" />
-                ))}
-              </div>
-              <span className="text-xs font-medium text-foreground/85">
-                5.0 · trusted by 40+ founders
-              </span>
-            </div>
-
             <h1 className="font-display-refined hero-animate mb-6 text-foreground leading-[1.05] md:leading-[1] text-[3.25rem] sm:text-6xl md:text-[5.5rem] lg:text-[6.5rem]"
               style={{ animationDelay: "80ms" }}>
               The Future

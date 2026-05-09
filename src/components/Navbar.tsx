@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import dchLogo from "@/assets/dch-logo.jpg";
+import dchLogo from "@/assets/dch-logo-primary.png";
 import { cn } from "@/lib/utils";
 import { serviceCategories } from "@/data/services";
 
@@ -53,20 +53,19 @@ const Navbar = () => {
         )}
       >
           {/* Logo */}
-          <Link to="/" className="group flex items-center gap-2 rounded-full pl-1 pr-3 py-1 hover:bg-muted/30 transition-colors">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full ring-1 ring-border/60">
-              <img src={dchLogo} alt="Digital Creatives Hub" className="h-full w-full object-cover" />
-            </div>
-            <span className="hidden font-heading text-sm font-bold sm:block">
-              <span className="text-primary font-semibold">Digital</span>{" "}
-              <span className="text-secondary font-semibold">Creatives</span>{" "}
-              <span className="text-foreground">Hub</span>
-            </span>
-            <span className="font-heading text-sm font-bold sm:hidden">
-              <span className="text-primary">D</span>
-              <span className="text-secondary">C</span>
-              <span className="text-foreground">H</span>
-            </span>
+          <Link
+            to="/"
+            aria-label="Digital Creatives Hub — Home"
+            className="group flex items-center rounded-full px-2 py-1 hover:bg-muted/30 transition-colors"
+          >
+            <img
+              src={dchLogo}
+              alt="Digital Creatives Hub"
+              className={cn(
+                "w-auto object-contain transition-all duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]",
+                isScrolled ? "h-8 sm:h-9" : "h-9 sm:h-11"
+              )}
+            />
           </Link>
 
           {/* Desktop Navigation */}

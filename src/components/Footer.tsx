@@ -1,6 +1,6 @@
 import { Twitter, Linkedin, Instagram, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import dchLogo from "@/assets/dch-logo.jpg";
+import dchLogo from "@/assets/dch-logo-primary.png";
 
 const Footer = () => {
   const links = {
@@ -42,14 +42,12 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg overflow-hidden">
-                <img
-                  src={dchLogo}
-                  alt="Digital Creatives Hub"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+            <Link to="/" aria-label="Digital Creatives Hub — Home" className="inline-flex items-center mb-4">
+              <img
+                src={dchLogo}
+                alt="Digital Creatives Hub"
+                className="h-12 w-auto object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+              />
             </Link>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Business Development Creative Agency. We build the systems that grow brands.

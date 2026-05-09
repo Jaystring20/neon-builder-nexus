@@ -39,25 +39,30 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-lg"
-          : "bg-transparent"
-      }`}
+      className={cn(
+        "fixed left-1/2 z-50 -translate-x-1/2 transition-all duration-500",
+        isScrolled ? "top-2" : "top-4",
+        "w-[min(1180px,calc(100%-1.5rem))]"
+      )}
     >
-      <nav className="container-narrow">
-        <div className="flex items-center justify-between h-20">
+      <nav
+        className={cn(
+          "relative flex items-center justify-between gap-2 rounded-full border border-border/60 bg-card/70 backdrop-blur-2xl transition-all duration-500",
+          "shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7),inset_0_1px_0_0_hsl(0_0%_100%/0.06)]",
+          isScrolled ? "px-2 py-1 bg-card/80" : "px-2.5 py-1.5"
+        )}
+      >
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative w-12 h-12 rounded-lg overflow-hidden animate-glow">
-              <img src={dchLogo} alt="Digital Creatives Hub" className="w-full h-full object-cover" />
+          <Link to="/" className="group flex items-center gap-2 rounded-full pl-1 pr-3 py-1 hover:bg-muted/30 transition-colors">
+            <div className="relative h-8 w-8 overflow-hidden rounded-full ring-1 ring-border/60">
+              <img src={dchLogo} alt="Digital Creatives Hub" className="h-full w-full object-cover" />
             </div>
-            <span className="font-heading font-bold text-lg hidden sm:block">
+            <span className="hidden font-heading text-sm font-bold sm:block">
               <span className="text-primary font-semibold">Digital</span>{" "}
               <span className="text-secondary font-semibold">Creatives</span>{" "}
               <span className="text-foreground">Hub</span>
             </span>
-            <span className="font-heading font-bold text-base sm:hidden">
+            <span className="font-heading text-sm font-bold sm:hidden">
               <span className="text-primary">D</span>
               <span className="text-secondary">C</span>
               <span className="text-foreground">H</span>

@@ -2,6 +2,7 @@ import { ArrowRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroVisual from "@/assets/hero-3d-architecture.png";
+import jerryAvatar from "@/assets/jerry-strategist.png";
 
 const scrollToId = (id: string) => {
   const el = document.getElementById(id);

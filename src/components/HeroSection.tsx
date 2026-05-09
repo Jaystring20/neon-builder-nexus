@@ -22,7 +22,7 @@ const TRUST_LOGOS = [
 
 const HeroSection = () => {
   return (
-    <section className="relative flex min-h-[88svh] items-center overflow-hidden pt-28 pb-16 md:min-h-screen md:pt-0 md:pb-0">
+    <section className="relative flex min-h-[88svh] items-center overflow-hidden pt-32 pb-16 md:min-h-screen md:pt-32 md:pb-12 lg:pt-36">
       {/* Ambient page glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/4 left-1/3 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[140px]" />

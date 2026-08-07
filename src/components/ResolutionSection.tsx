@@ -5,7 +5,7 @@ const ResolutionSection = () => {
   return (
     <section id="services" className="section-padding relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute top-1/2 -left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
+      <div className="absolute top-1/2 -left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[70px] md:blur-[120px]" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[100px]" />
 
       <div className="container-narrow relative z-10">

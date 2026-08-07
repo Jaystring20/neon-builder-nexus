@@ -105,6 +105,24 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight;
   }
+
+  /* Global focus indicators for accessibility */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  /* Keyboard navigation indicator for non-button interactive elements */
+  *:focus-visible:not(button):not([type="button"]):not([type="submit"]):not([type="reset"]) {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
@@ -142,10 +160,7 @@
       hsl(var(--card) / 0.7) 0%,
       hsl(var(--card) / 0.5) 100%
     );
-    box-shadow: 
-      0 8px 32px hsl(220 50% 3% / 0.4),
-      0 0 0 1px hsl(var(--primary) / 0.05) inset,
-      0 1px 0 0 hsl(0 0% 100% / 0.05) inset;
+    box-shadow: 0 8px 24px hsl(220 50% 3% / 0.4);
   }
 
   .glass-card-elevated {
@@ -155,17 +170,15 @@
       hsl(var(--card) / 0.8) 0%,
       hsl(var(--card) / 0.6) 100%
     );
-    box-shadow: 
-      0 20px 50px hsl(220 50% 3% / 0.5),
-      0 0 80px hsl(var(--primary) / 0.08),
-      0 0 0 1px hsl(var(--primary) / 0.1) inset,
-      0 2px 0 0 hsl(0 0% 100% / 0.08) inset;
+    box-shadow:
+      0 20px 40px hsl(220 50% 3% / 0.5),
+      0 0 40px hsl(var(--primary) / 0.08);
   }
 
   .glass-card-subtle {
     @apply backdrop-blur-xl border border-border/20 rounded-xl;
     background: hsl(var(--card) / 0.4);
-    box-shadow: 0 4px 20px hsl(220 50% 3% / 0.3);
+    box-shadow: 0 4px 16px hsl(220 50% 3% / 0.2);
   }
 
   .glass-border {
@@ -383,7 +396,7 @@
   }
 
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
   }
 
   .animate-pulse-slow {
@@ -597,7 +610,7 @@
   }
 
   .animate-float-drift {
-    animation: floatDriftSlow 30s ease-in-out infinite;
+    animation: floatDriftSlow 12s ease-in-out infinite;
   }
 
   .animation-delay-100 { animation-delay: 100ms; }

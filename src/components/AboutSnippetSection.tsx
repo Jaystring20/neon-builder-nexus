@@ -8,7 +8,7 @@ const AboutSnippetSection = () => {
   return (
     <section className="section-padding relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5" />
-      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[150px] animate-breathe" />
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[80px] md:blur-[150px] animate-breathe" />
 
       <FloatingParticles count={8} />
 

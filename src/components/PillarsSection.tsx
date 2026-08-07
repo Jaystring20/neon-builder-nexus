@@ -40,8 +40,8 @@ const PillarsSection = () => {
   return (
     <section className="section-padding relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-secondary/8 rounded-full blur-[120px]" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[80px] md:blur-[150px]" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-secondary/8 rounded-full blur-[70px] md:blur-[120px]" />
 
       <div className="container-narrow relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">

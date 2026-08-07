@@ -1,7 +1,12 @@
 import { portfolioProjects } from "@/data/portfolio";
+import LazyImage from "@/components/LazyImage";
 
 const HeroVisualSection = () => {
-  // Split into two rows for opposing-direction marquees
+  // Split into two rows for opposing-direction marquees.
+  // Each row's content is duplicated (2x) because the scroll-left/scroll-right
+  // keyframes animate to translateX(-50%) — the loop only reads as seamless
+  // if the second half exactly mirrors the first. This is the standard
+  // infinite-marquee technique (same as Stripe/GitHub logo strips), not a bug.
   const rowA = [...portfolioProjects, ...portfolioProjects];
   const rowB = [...portfolioProjects.slice().reverse(), ...portfolioProjects.slice().reverse()];
 
@@ -56,14 +61,14 @@ const Marquee = ({
             href={p.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block h-[200px] w-[300px] shrink-0 overflow-hidden rounded-2xl border border-border bg-muted shadow-[0_20px_50px_-25px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:-translate-y-1 md:h-[280px] md:w-[440px]"
+            className="group relative block h-[200px] w-[300px] shrink-0 overflow-hidden rounded-2xl border border-border bg-muted shadow-[0_20px_50px_-25px_rgba(0,0,0,0.35)] transition-all duration-500 hover:-translate-y-1 active:scale-[0.98] active:duration-100 md:h-[280px] md:w-[440px]"
           >
             {p.image && (
-              <img
+              <LazyImage
                 src={p.image}
                 alt={p.title}
+                containerClassName="h-full w-full"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
               />
             )}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 md:p-5">

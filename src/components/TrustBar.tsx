@@ -1,6 +1,10 @@
 import { portfolioProjects } from "@/data/portfolio";
 
 const TrustBar = () => {
+  // Duplicated 2x: the scroll-left keyframe animates to translateX(-50%),
+  // which only loops seamlessly when the second half mirrors the first.
+  // Note: this component is not currently mounted anywhere (superseded by
+  // HeroProofSection); kept correct here in case it's reintroduced.
   const items = [...portfolioProjects, ...portfolioProjects];
   return (
     <section aria-label="Trusted by" className="relative border-y border-border/30 bg-card/30 py-8 backdrop-blur-sm">

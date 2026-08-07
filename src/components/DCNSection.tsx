@@ -31,7 +31,7 @@ const DCNSection = () => {
     <section id="dcn" className="section-padding relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-      <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[150px] animate-breathe" />
+      <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[80px] md:blur-[150px] animate-breathe" />
 
       {/* Floating Particles */}
       <FloatingParticles count={12} />

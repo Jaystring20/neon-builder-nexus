@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import heroVisual from "@/assets/hero-3d-architecture.png";
 import jerryAvatar from "@/assets/jerry-strategist.png";
@@ -21,12 +22,20 @@ const TRUST_LOGOS = [
 ];
 
 const HeroSection = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCtaClick = (callback: () => void) => {
+    setIsLoading(true);
+    callback();
+    setTimeout(() => setIsLoading(false), 500);
+  };
+
   return (
     <section className="relative flex min-h-[88svh] items-center overflow-hidden pt-32 pb-16 md:min-h-screen md:pt-32 md:pb-12 lg:pt-36">
       {/* Ambient page glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/4 left-1/3 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[140px]" />
-        <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-secondary/[0.04] blur-[120px]" />
+        <div className="absolute -top-1/4 left-1/3 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-primary/[0.05] blur-[80px] md:blur-[140px]" />
+        <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-secondary/[0.04] blur-[70px] md:blur-[120px]" />
       </div>
 
       <div className="container-narrow relative z-10 w-full">
@@ -37,12 +46,12 @@ const HeroSection = () => {
               style={{ animationDelay: "80ms" }}>
               The Future
               <br />
-              <span className="text-foreground/95">is </span>
+              <span className="text-foreground/95">is&nbsp;</span>
               <span className="font-serif-display text-primary text-[3.75rem] sm:text-[4.75rem] md:text-[6.25rem] lg:text-[7.5rem] leading-none">
                 Built.
               </span>
               <br />
-              Not Bought.
+              Not&nbsp;Bought.
             </h1>
 
             <p className="hero-animate mx-auto mb-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0 lg:text-xl"
@@ -56,19 +65,25 @@ const HeroSection = () => {
               <Button
                 variant="pill"
                 size="xl"
-                onClick={() => scrollToId("contact")}
+                isLoading={isLoading}
+                onClick={() => handleCtaClick(() => scrollToId("contact"))}
                 className="group w-full sm:w-auto"
               >
-                Start the Build
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                {!isLoading && (
+                  <>
+                    Start the Build
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
               </Button>
               <Button
                 asChild
                 variant="outline"
                 size="xl"
+                disabled={isLoading}
                 className="w-full rounded-full border-border/70 bg-transparent hover:bg-card/60 sm:w-auto"
               >
-                <Link to="/our-work">See the Work</Link>
+                <Link to="/our-work" onClick={() => isLoading && false}>See the Work</Link>
               </Button>
             </div>
           </div>
@@ -89,7 +104,7 @@ const HeroSection = () => {
             {/* Floating persona chip */}
             <div
               className="hero-animate animate-float absolute right-0 top-6 z-20 hidden w-[230px] items-center gap-3 rounded-2xl border border-border/60 bg-card/80 p-3 backdrop-blur-xl shadow-[0_20px_50px_-15px_rgba(0,0,0,0.7)] sm:flex lg:right-2 lg:top-12"
-              style={{ animationDelay: "320ms", animationDuration: "8s" }}
+              style={{ animationDelay: "320ms", animationDuration: "4s" }}
             >
               <img
                 src={jerryAvatar}

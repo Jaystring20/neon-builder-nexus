@@ -37,6 +37,7 @@ const CTASection = () => {
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const toggleService = (title: string) => {
@@ -67,12 +68,18 @@ const CTASection = () => {
         return;
       }
       setErrors({});
-      setSubmitted(true);
-      setStep(3);
-      toast({
-        title: "Project brief submitted! 🎉",
-        description: "We'll reach out within 24 hours to start building.",
-      });
+      setIsSubmitting(true);
+
+      // Simulate brief processing delay
+      setTimeout(() => {
+        setSubmitted(true);
+        setStep(3);
+        setIsSubmitting(false);
+        toast({
+          title: "Project brief submitted! 🎉",
+          description: "We'll reach out within 24 hours to start building.",
+        });
+      }, 800);
       return;
     }
     if (canProceed()) setStep((s) => s + 1);
@@ -98,7 +105,7 @@ const CTASection = () => {
   return (
     <section id="contact" className="section-padding relative overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-[120px] animate-breathe" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-[70px] md:blur-[120px] animate-breathe" />
       </div>
 
       <FloatingParticles count={8} />
@@ -332,11 +339,16 @@ const CTASection = () => {
                     variant="hero"
                     size="lg"
                     onClick={handleNext}
-                    disabled={!canProceed()}
+                    disabled={!canProceed() || isSubmitting}
+                    isLoading={isSubmitting && step === 2}
                     className="gap-2 group hover-glow"
                   >
-                    {step === 2 ? "Submit Blueprint" : "Continue"}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {!isSubmitting && (
+                      <>
+                        {step === 2 ? "Submit Blueprint" : "Continue"}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
                 </div>
               )}

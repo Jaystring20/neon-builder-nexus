@@ -51,7 +51,7 @@ const ComparisonSection = () => {
 
   return (
     <section className="section-inverse section-padding relative overflow-hidden">
-      <div className="absolute right-0 top-1/3 h-[400px] w-[400px] rounded-full bg-primary/5 blur-[120px]" />
+      <div className="absolute right-0 top-1/3 h-[400px] w-[400px] rounded-full bg-primary/5 blur-[70px] md:blur-[120px]" />
 
       <div className="container-narrow relative z-10">
         <div className="mb-12 text-center md:mb-16">

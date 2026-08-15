@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import LazyImage from "@/components/LazyImage";
 import { Badge } from "@/components/ui/badge";
 import { portfolioProjects, portfolioCategories } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
@@ -96,7 +97,7 @@ const OurWork = () => {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={cn(
-                    "px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border",
+                    "px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border active:scale-95 active:duration-100",
                     activeCategory === cat
                       ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_hsl(var(--neon-cyan)/0.3)]"
                       : "bg-muted/30 text-muted-foreground border-border/50 hover:border-primary/40 hover:text-primary"
@@ -122,7 +123,7 @@ const OurWork = () => {
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group block h-full"
+                    className="group block h-full active:scale-[0.98] active:duration-100 transition-transform"
                   >
                     <div className="h-full rounded-2xl border border-border/30 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_40px_hsl(var(--neon-cyan)/0.12)] hover:-translate-y-2 glass-card hover-glass-shine relative">
                       {/* Gradient border on hover */}
@@ -131,9 +132,10 @@ const OurWork = () => {
                       {/* Project Screenshot */}
                       <div className="aspect-[16/10] relative overflow-hidden">
                         {project.image ? (
-                          <img
+                          <LazyImage
                             src={project.image}
                             alt={project.title}
+                            containerClassName="h-full w-full"
                             className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                           />
                         ) : (

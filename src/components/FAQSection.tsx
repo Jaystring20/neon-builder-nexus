@@ -32,11 +32,9 @@ const FAQ_ITEMS: FAQItem[] = [
     id: "cost",
     question: "How much does this cost?",
     answer: [
-      "It depends on the scope of what you're building:",
-      "Small system (one core question, limited scope): Starting at $40K–$80K",
-      "Medium system (multiple connected capabilities, multi-team): Starting at $120K–$250K",
-      "Complex system (five+ integrated businesses, scale from day one): Starting at $300K+",
-      "We'll know the real cost after the discovery call. We never estimate before we understand the question.",
+      "It depends on the scope of what you're building.",
+      "A single system with one core question costs less than a set of connected capabilities across multiple teams, which costs less than an architecture that has to hold several integrated businesses at scale from day one.",
+      "We'll give you a real number after the discovery call. We never quote before we understand the question.",
     ],
   },
   {

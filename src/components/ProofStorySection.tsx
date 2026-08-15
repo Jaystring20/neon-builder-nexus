@@ -9,7 +9,6 @@ interface ProofStory {
   details: string[];
   metric: string;
   metricValue: string;
-  deepDiveLink: string;
   category: "question" | "proof" | "metric";
 }
 
@@ -26,7 +25,6 @@ const PROOF_STORIES: ProofStory[] = [
     ],
     metric: "Shipped",
     metricValue: "10,000+ participants · 5 cities · Zero logistics failures",
-    deepDiveLink: "See how registration → logistics → results flow was architected",
     category: "question",
   },
   {
@@ -43,7 +41,6 @@ const PROOF_STORIES: ProofStory[] = [
     ],
     metric: "Proven",
     metricValue: "145 five-star reviews · 2,800+ frames · ₦15K savings per customer",
-    deepDiveLink: "See how try-on → quiz → exam → purchase flow closes the loop",
     category: "proof",
   },
   {
@@ -60,7 +57,6 @@ const PROOF_STORIES: ProofStory[] = [
     ],
     metric: "Scaled",
     metricValue: "3,000+ lives changed · 8+ countries · 5 interconnected businesses",
-    deepDiveLink: "See how five systems were wired together",
     category: "metric",
   },
 ];
@@ -98,15 +94,6 @@ const ExpandedStory: React.FC<ExpandedStoryProps> = ({ story, isExpanded }) => {
             <dd className="text-sm text-foreground font-medium">{story.metricValue}</dd>
           </div>
         </div>
-
-        {/* Deep dive link */}
-        <a
-          href="#"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors mt-4 group"
-        >
-          {story.deepDiveLink}
-          <span className="transition-transform group-hover:translate-x-1">→</span>
-        </a>
       </div>
     </div>
   );

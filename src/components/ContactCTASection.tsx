@@ -42,7 +42,7 @@ const ContactCTASection = () => {
 
           {/* Send Your Brief */}
           <a
-            href="mailto:hello@dch.build?subject=Project%20Brief"
+            href="mailto:hello@digitalcreativeshub.com?subject=Project%20Brief"
             className="group relative rounded-lg border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-primary/30 hover:bg-card/50 transition-all duration-300"
           >
             <div className="space-y-4">
@@ -56,7 +56,7 @@ const ContactCTASection = () => {
                 Write down what you're building and what you're trying to prove.
               </p>
               <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                hello@dch.build
+                hello@digitalcreativeshub.com
                 <ArrowRight className="w-4 h-4" />
               </div>
             </div>
@@ -76,34 +76,6 @@ const ContactCTASection = () => {
             <p className="text-xs text-muted-foreground mt-2">
               We work in distributed teams. Time zones aren't a constraint—they're a feature.
             </p>
-          </div>
-        </div>
-
-        {/* Credibility footer */}
-        <div className="mt-12 pt-12 border-t border-border/30 grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-1.5">
-              Projects shipped
-            </dt>
-            <dd className="text-lg font-semibold text-foreground">18+</dd>
-          </div>
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-1.5">
-              Active users
-            </dt>
-            <dd className="text-lg font-semibold text-foreground">50K+</dd>
-          </div>
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-1.5">
-              System uptime
-            </dt>
-            <dd className="text-lg font-semibold text-foreground">99.9%</dd>
-          </div>
-          <div>
-            <dt className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-1.5">
-              Year founded
-            </dt>
-            <dd className="text-lg font-semibold text-foreground">2020</dd>
           </div>
         </div>
       </div>

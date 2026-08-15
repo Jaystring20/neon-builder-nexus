@@ -1,17 +1,12 @@
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import HeroProofSection from "@/components/HeroProofSection";
-import HeroVisualSection from "@/components/HeroVisualSection";
-import FrictionSection from "@/components/FrictionSection";
-import ResolutionSection from "@/components/ResolutionSection";
-import ComparisonSection from "@/components/ComparisonSection";
-import PillarsSection from "@/components/PillarsSection";
-import WhyUsSection from "@/components/WhyUsSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import AboutSnippetSection from "@/components/AboutSnippetSection";
-import BlueprintSection from "@/components/BlueprintSection";
-import CTASection from "@/components/CTASection";
+import ProofStorySection from "@/components/ProofStorySection";
+import CapabilitiesSection from "@/components/CapabilitiesSection";
+import OriginStorySection from "@/components/OriginStorySection";
+import ProcessSection from "@/components/ProcessSection";
+import FAQSection from "@/components/FAQSection";
+import ContactCTASection from "@/components/ContactCTASection";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 
@@ -19,23 +14,34 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       <SEO
-        title="Build Agency in the AI Age"
-        description="Digital Creatives Hub empowers professionals and organizations to transform uncertainty into opportunity. Build your future with agency and confidence in the AI-driven age."
+        title="Digital Creatives Hub — Systems Built, Not Bought"
+        description="We design the brand, build the infrastructure, and wire in the AI systems that run it. As one connected build, not a stack of vendors."
         path="/"
       />
       <Navbar />
+
+      {/* Hero section — narrative foundation */}
       <HeroSection />
-      <HeroProofSection />
-      <HeroVisualSection />
-      <FrictionSection />
-      <ResolutionSection />
-      <ComparisonSection />
-      <PillarsSection />
-      <WhyUsSection />
-      <TestimonialsSection />
-      <AboutSnippetSection />
-      <BlueprintSection />
-      <CTASection />
+
+      {/* Three proof stories — interactive nested Q&A */}
+      <ProofStorySection />
+
+      {/* Three capabilities — brand, infrastructure, AI */}
+      <CapabilitiesSection />
+
+      {/* Origin story — why Lagos, why this way */}
+      <OriginStorySection />
+
+      {/* Process walkthrough — discovery to post-launch */}
+      <ProcessSection />
+
+      {/* FAQ — conversational depth */}
+      <FAQSection />
+
+      {/* Contact & CTA — conversation starter */}
+      <ContactCTASection />
+
+      {/* Footer */}
       <Footer />
       <FloatingCTA />
     </main>

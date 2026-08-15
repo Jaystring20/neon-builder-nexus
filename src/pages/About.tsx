@@ -27,17 +27,12 @@ const About = () => {
         
         <div className="container-narrow relative z-10 text-center">
           <ScrollReveal animation="fade-up">
-            <span className="inline-block px-4 py-2 rounded-full glass-card-subtle text-primary text-sm font-medium mb-6 border border-primary/20">
-              Where Strategy Meets the Street
-            </span>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
               The World Doesn't Need More Consumers.{" "}
-              <span className="gradient-text">It Needs Builders.</span>
+              <span className="text-primary">It Needs Builders.</span>
             </h1>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={200}>
+          <ScrollReveal animation="fade-up" delay={100}>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Most brands are renting space in a digital maze they don't own. They are trapped by 
               complexity, drowned by noise, and exhausted by fleeting trends. At Digital Creatives Hub, 
@@ -77,11 +72,6 @@ const About = () => {
       {/* Mission & Vision */}
       <section id="mission" className="section-padding bg-muted/20">
         <div className="container-narrow">
-          <div className="text-center mb-12">
-            <ScrollReveal animation="fade-up">
-              <span className="text-primary font-medium uppercase tracking-wider text-sm">Our North Star</span>
-            </ScrollReveal>
-          </div>
           <div className="grid md:grid-cols-2 gap-8">
             <ScrollReveal animation="slide-right">
               <div className="glass-card-elevated p-8 md:p-10 border-primary/20 hover-lift hover-glass-shine h-full">
@@ -122,17 +112,12 @@ const About = () => {
             <div className="glass-card-elevated p-8 md:p-12 max-w-4xl mx-auto hover-glow glass-border">
               <div className="text-center">
                 <ScrollReveal animation="fade-up">
-                  <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                    Business Development, Reimagined
-                  </span>
-                </ScrollReveal>
-                <ScrollReveal animation="fade-up" delay={100}>
                   <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
                     The Innovation Lab for the{" "}
-                    <span className="gradient-text">Agentic Era</span>
+                    <span className="text-primary">Agentic Era</span>
                   </h2>
                 </ScrollReveal>
-                <ScrollReveal animation="fade-up" delay={200}>
+                <ScrollReveal animation="fade-up" delay={100}>
                   <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                     Most agencies deliver projects. We deliver{" "}
                     <span className="text-primary font-semibold">systems</span> — growth operating
@@ -155,11 +140,8 @@ const About = () => {
         <div className="container-narrow">
           <div className="text-center mb-12">
             <ScrollReveal animation="fade-up">
-              <span className="text-primary font-medium uppercase tracking-wider text-sm">How We Work</span>
-            </ScrollReveal>
-            <ScrollReveal animation="fade-up" delay={100}>
               <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">
-                Diagnose. Build. <span className="gradient-text">Execute.</span>
+                Diagnose. Build. <span className="text-primary">Execute.</span>
               </h2>
             </ScrollReveal>
           </div>
@@ -210,14 +192,11 @@ const About = () => {
         <div className="container-narrow">
           <div className="text-center mb-12">
             <ScrollReveal animation="fade-up">
-              <span className="text-secondary font-medium uppercase tracking-wider text-sm">Who We Serve</span>
-            </ScrollReveal>
-            <ScrollReveal animation="fade-up" delay={100}>
               <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">
-                Diagnostic. Deliberate. <span className="gradient-text">Outcome-focused.</span>
+                Diagnostic. Deliberate. <span className="text-secondary">Outcome-focused.</span>
               </h2>
             </ScrollReveal>
-            <ScrollReveal animation="fade-up" delay={200}>
+            <ScrollReveal animation="fade-up" delay={100}>
               <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
                 The approach is never one-size-fits-all. We build for the brands ready to move.
               </p>
@@ -261,11 +240,8 @@ const About = () => {
         <div className="container-narrow">
           <div className="text-center mb-12">
             <ScrollReveal animation="fade-up">
-              <span className="text-primary font-medium uppercase tracking-wider text-sm">What Makes Us Different</span>
-            </ScrollReveal>
-            <ScrollReveal animation="fade-up" delay={100}>
               <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">
-                Not another agency. <span className="gradient-text">A growth operating partner.</span>
+                Not another agency. <span className="text-primary">A growth operating partner.</span>
               </h2>
             </ScrollReveal>
           </div>
@@ -314,17 +290,14 @@ const About = () => {
         <div className="container-narrow">
           <div className="text-center mb-12">
             <ScrollReveal animation="fade-up">
-              <span className="text-primary font-medium uppercase tracking-wider text-sm">The Lead Architect</span>
-            </ScrollReveal>
-            <ScrollReveal animation="fade-up" delay={100}>
               <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">
                 Building Agency. Bridging Gaps.{" "}
-                <span className="gradient-text">Empowering Growth.</span>
+                <span className="text-primary">Empowering Growth.</span>
               </h2>
             </ScrollReveal>
           </div>
 
-          <ScrollReveal animation="blur-in" delay={200}>
+          <ScrollReveal animation="blur-in" delay={100}>
             <div className="glass-card-elevated p-8 md:p-12 hover-glow">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 {/* Image */}
@@ -378,7 +351,7 @@ const About = () => {
 
                   {/* Functional Pun */}
                   <ScrollReveal animation="slide-left" delay={600}>
-                    <div className="glass-card-elevated p-6 border-l-4 border-l-secondary hover-glow">
+                    <div className="glass-card-elevated p-6 hover-glow">
                       <Quote className="w-8 h-8 text-secondary/50 mb-4" />
                       <p className="text-foreground italic font-medium leading-relaxed">
                         "Jeremiah doesn't just draw the map; he builds the road, the car, and the fuel."
@@ -409,17 +382,12 @@ const About = () => {
           <ScrollReveal animation="blur-in">
             <div className="glass-card-elevated p-8 md:p-12 text-center hover-glow glass-border max-w-3xl mx-auto">
               <ScrollReveal animation="fade-up">
-                <span className="inline-block px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
-                  Our Promise
-                </span>
-              </ScrollReveal>
-              <ScrollReveal animation="fade-up" delay={100}>
                 <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
                   Quiet Systems.{" "}
-                  <span className="gradient-text">Loud Results.</span>
+                  <span className="text-secondary">Loud Results.</span>
                 </h2>
               </ScrollReveal>
-              <ScrollReveal animation="fade-up" delay={200}>
+              <ScrollReveal animation="fade-up" delay={100}>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                   We use smart technology and agentic AI behind the scenes so your brand can speak for itself. 
                   We aren't just another vendor; we are your{" "}
@@ -428,7 +396,7 @@ const About = () => {
                   <span className="text-secondary font-semibold">absolute clarity</span>.
                 </p>
               </ScrollReveal>
-              <ScrollReveal animation="fade-up" delay={300}>
+              <ScrollReveal animation="fade-up" delay={200}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Button variant="hero" size="lg" asChild className="hover-glow">
                     <Link to="/services" className="group">

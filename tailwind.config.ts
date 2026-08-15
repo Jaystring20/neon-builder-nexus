@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Poppins", "system-ui", "sans-serif"],
-        heading: ["Montserrat", "system-ui", "sans-serif"],
+        heading: ["Bricolage Grotesque", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

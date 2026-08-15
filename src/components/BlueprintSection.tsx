@@ -54,12 +54,9 @@ const BlueprintSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div>
-            <span className="inline-block px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
-              Free Resource
-            </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
               The Professional{" "}
-              <span className="gradient-text">Builder's Blueprint</span>
+              <span className="text-secondary">Builder's Blueprint</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               7 Days to Start Building Agency in the AI Age — a free, actionable guide 

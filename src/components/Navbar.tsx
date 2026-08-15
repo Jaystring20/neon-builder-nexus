@@ -65,6 +65,13 @@ const Navbar = () => {
                 "w-auto object-contain transition-all duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]",
                 isScrolled ? "h-8 sm:h-9" : "h-9 sm:h-11"
               )}
+              style={{
+                /* Shift the old neon cyan (#00FFFF) to the new desaturated cyan (#4ED0CC).
+                   This is a hue rotation of -2° plus a saturation reduction of ~42%. The
+                   filter approximates the color shift to keep the logo harmonious with the
+                   new palette across the page. */
+                filter: "hue-rotate(-2deg) saturate(0.58)",
+              }}
             />
           </Link>
 

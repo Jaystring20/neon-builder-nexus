@@ -1,4 +1,4 @@
-import { Heart, Globe, BookOpen, Wrench, Users, ArrowUpRight } from "lucide-react";
+import { Globe, BookOpen, Wrench, Users, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import FloatingParticles from "@/components/FloatingParticles";
@@ -40,20 +40,12 @@ const DCNSection = () => {
         {/* Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <ScrollReveal animation="fade-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-subtle border border-primary/20 mb-6">
-              <Heart className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
-                Social Impact Initiative
-              </span>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
               Digital Creatives{" "}
-              <span className="gradient-text">Network</span>
+              <span className="text-primary">Network</span>
             </h2>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={200}>
+          <ScrollReveal animation="fade-up" delay={100}>
             <p className="text-lg text-muted-foreground leading-relaxed">
               The heart of our community and social impact initiatives. Born from the recognition 
               that creativity thrives in collaboration and that talent is universal.

@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DCNSection from "@/components/DCNSection";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, Lightbulb, Target, Rocket } from "lucide-react";
+import { ArrowRight, Lightbulb, Target, Rocket } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const DCN = () => {
@@ -23,15 +23,9 @@ const DCN = () => {
         
         <div className="container-narrow relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
-                Community Initiative
-              </span>
-            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
               Digital Creatives{" "}
-              <span className="gradient-text">Network</span>
+              <span className="text-primary">Network</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-8">
               A thriving community dedicated to empowering digital creators, fostering collaboration, 
@@ -60,7 +54,7 @@ const DCN = () => {
         <div className="container-narrow relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              How DCN <span className="gradient-text">Works</span>
+              How DCN <span className="text-primary">Works</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               A simple pathway to growth and opportunity

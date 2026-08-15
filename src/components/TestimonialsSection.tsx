@@ -106,11 +106,8 @@ const TestimonialsSection = () => {
       <div className="absolute -left-20 top-1/2 h-[300px] w-[300px] rounded-full bg-secondary/5 blur-[70px] md:blur-[120px]" />
 
       <div className="container-narrow relative z-10 mb-12 text-center md:mb-16">
-        <span className="mb-4 inline-block rounded-full bg-secondary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-secondary">
-          Don't take it from us
-        </span>
         <h2 className="mb-4 font-heading text-3xl font-bold md:text-4xl lg:text-5xl">
-          Builder wins, <span className="gradient-text">told by our clients</span>
+          Builder wins, <span className="text-secondary">told by our clients</span>
         </h2>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
           Real founders. Real outcomes. Real momentum.

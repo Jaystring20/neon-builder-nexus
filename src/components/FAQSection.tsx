@@ -76,14 +76,14 @@ const FAQItemComponent: React.FC<FAQItemComponentProps> = ({ item, isExpanded, o
     <div className="border-b border-border/30 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full text-left py-6 flex items-start justify-between gap-4 hover:text-primary transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded px-1"
+        className="w-full text-left py-6 flex items-start justify-between gap-4 hover:text-primary transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 px-1"
       >
         <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors flex-1">
           {item.question}
         </h3>
         <ChevronDown
           className={cn(
-            "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-300",
+            "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform motion-snap",
             isExpanded && "rotate-180"
           )}
         />
@@ -92,7 +92,7 @@ const FAQItemComponent: React.FC<FAQItemComponentProps> = ({ item, isExpanded, o
       {/* Expanded answer */}
       <div
         className={cn(
-          "overflow-hidden transition-all duration-500",
+          "overflow-hidden transition-all motion-reveal",
           isExpanded ? "max-h-[1000px] opacity-100 pb-6" : "max-h-0 opacity-0"
         )}
       >

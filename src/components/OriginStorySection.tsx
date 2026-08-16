@@ -148,7 +148,7 @@ const OriginStorySection = () => {
                 : "opacity-0 translate-y-8"
             )}
           >
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-8">
+            <div className="bg-primary/5 border border-primary/20 rounded-none p-8">
               <h3 className="text-lg font-semibold text-foreground mb-4">
                 The Operating Principle
               </h3>

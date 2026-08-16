@@ -21,7 +21,7 @@ const ContactCTASection = () => {
           {/* Send Your Brief */}
           <a
             href="mailto:hello@digitalcreativeshub.com?subject=Project%20Brief"
-            className="group relative rounded-lg border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-primary/30 hover:bg-card/50 transition-all duration-300"
+            className="group relative rounded-none border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-primary/30 hover:bg-card/50 transition-all motion-snap"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-2">

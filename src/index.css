@@ -1,8 +1,10 @@
+/* Must come first — CSS requires @import before any other statement, and
+   Vite was warning on this. Left after @tailwind it is a silent no-op risk. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600;1,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600;1,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
 
 @layer base {
   :root {
@@ -46,7 +48,16 @@
     --input: 220 20% 18%;
     --ring: 178 58% 56%;
 
-    --radius: 0.75rem;
+    /* Square. Rounded corners are the single strongest "built from a
+       component library" signal; removing the radius does more to make the
+       page look authored than any amount of colour work. */
+    --radius: 0rem;
+
+    /* Two border weights, not one. The hairline separates sections without
+       drawing a line the eye stops on; the heavier value is for anything
+       that needs to read as an actual edge (inputs, focus rings, cards). */
+    --hairline: 0 0% 100%;      /* used as hsl(var(--hairline) / 0.05) */
+    --edge: 0 0% 100%;          /* used as hsl(var(--edge) / 0.12) */
 
     /* Custom design tokens */
     --neon-cyan: 178 58% 56%;
@@ -289,6 +300,65 @@
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* Small uppercase mono label. Measured off the reference: ~10px, +0.09em,
+     muted — it reads as a machine annotation rather than decoration, which
+     is what lets it sit next to a headline without competing. Use for
+     section eyebrows, metric labels, and title-block keys. */
+  .label-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Hairline rule between sections — 5% white, not a border token at 30%.
+     Loud separators chop a page into boxes; this one just registers. */
+  .rule-hairline {
+    border-top: 1px solid hsl(var(--hairline) / 0.05);
+  }
+
+}
+
+/* The motion system, as two real classes rather than arbitrary Tailwind
+   values. `duration-[120ms]` is ambiguous in Tailwind 3 — it matches both
+   transition-duration and animation-duration, so the class silently never
+   gets generated. Defining them here also means the whole site's timing is
+   tunable from one place.
+
+   These live in the utilities layer, not components: they sit alongside
+   `transition-all`, which ships its own 150ms duration and default ease.
+   From the components layer they lose the cascade and do nothing. The
+   doubled selector adds one point of specificity so the override holds
+   regardless of the order Tailwind emits utilities in.
+
+   The curve is a quint-out: it leaves immediately and lands soft, which is
+   what makes a fast duration feel deliberate rather than abrupt. */
+@layer utilities {
+  .motion-snap.motion-snap {
+    transition-duration: 120ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* For height/opacity reveals. 120ms on a collapsing panel reads as a
+     glitch rather than a movement, so disclosure gets its own, longer beat
+     while still landing well under the 500ms it used to take. */
+  .motion-reveal.motion-reveal {
+    transition-duration: 240ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-snap.motion-snap,
+    .motion-reveal.motion-reveal {
+      transition-duration: 0.01ms;
+    }
+  }
+}
+
+/* Back into the components layer for the rest of the shared classes. */
+@layer components {
   /* Light "exhale" surface — flips background, text, borders, muted, cards */
   .section-inverse {
     background-color: hsl(var(--surface-inverse));

@@ -97,7 +97,7 @@ const CapabilityDisplay: React.FC<CapabilityDisplayProps> = ({ capability, isAct
   return (
     <div
       className={cn(
-        "absolute inset-0 transition-all duration-500",
+        "absolute inset-0 transition-all motion-reveal",
         isActive
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
@@ -125,7 +125,7 @@ const CapabilityDisplay: React.FC<CapabilityDisplayProps> = ({ capability, isAct
 
         {/* Real example */}
         <div className="border-t border-border/30 pt-8 animate-fade-up-elegant" style={{ animationDelay: "200ms" }}>
-          <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-2">Real example</h4>
+          <h4 className="label-mono mb-2">Real example</h4>
           <p className="text-sm font-medium text-foreground mb-2">{capability.realExample.title}</p>
           <p className="text-sm leading-relaxed text-muted-foreground">{capability.realExample.description}</p>
         </div>
@@ -166,7 +166,7 @@ const CapabilitiesSection = () => {
               key={cap.id}
               onClick={() => setActiveCapability(cap.id)}
               className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                "px-4 py-2 rounded-none text-sm font-medium transition-all motion-snap",
                 activeCapability === cap.id
                   ? "bg-primary/10 text-primary border border-primary/30"
                   : "text-muted-foreground hover:text-foreground border border-border/30 hover:border-border/60"

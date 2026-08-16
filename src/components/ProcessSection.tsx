@@ -143,7 +143,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
         {/* Content */}
         <button
           onClick={onToggle}
-          className="w-full text-left pl-32 pr-6 py-6 rounded-lg border border-border/30 bg-card/20 hover:bg-card/40 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 group"
+          className="w-full text-left pl-32 pr-6 py-6 rounded-none border border-border/30 bg-card/20 hover:bg-card/40 transition-all motion-snap focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 group"
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
@@ -151,7 +151,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
                 <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                   {step.title}
                 </h3>
-                <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
+                <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-none">
                   {step.duration}
                 </span>
               </div>
@@ -160,7 +160,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
 
             <ChevronDown
               className={cn(
-                "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-300",
+                "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform motion-snap",
                 isExpanded && "rotate-180"
               )}
             />
@@ -170,7 +170,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
         {/* Expanded content */}
         <div
           className={cn(
-            "overflow-hidden transition-all duration-500",
+            "overflow-hidden transition-all motion-reveal",
             isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
           )}
         >
@@ -178,7 +178,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
             {/* Details */}
             {step.details.length > 0 && (
               <div>
-                <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-3">
+                <h4 className="label-mono mb-3">
                   What we do
                 </h4>
                 <ul className="space-y-2">
@@ -199,7 +199,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isExpanded, onToggle, isLast 
             {/* Delivers */}
             {step.delivers.length > 0 && (
               <div className="border-t border-primary/10 pt-6">
-                <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-3">
+                <h4 className="label-mono mb-3">
                   You receive
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

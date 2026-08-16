@@ -40,14 +40,14 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        "fixed left-1/2 z-50 -translate-x-1/2 transition-all duration-500",
+        "fixed left-1/2 z-50 -translate-x-1/2 transition-all motion-snap",
         isScrolled ? "top-2" : "top-4",
         "w-[min(1180px,calc(100%-1.5rem))]"
       )}
     >
       <nav
         className={cn(
-          "relative flex items-center justify-between gap-2 rounded-full border border-border/60 bg-card/70 backdrop-blur-2xl transition-all duration-500",
+          "relative flex items-center justify-between gap-2 rounded-none border border-border/60 bg-card/70 backdrop-blur-2xl transition-all motion-snap",
           "shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7),inset_0_1px_0_0_hsl(0_0%_100%/0.06)]",
           isScrolled ? "px-2 py-1 bg-card/80" : "px-2.5 py-1.5"
         )}
@@ -56,13 +56,13 @@ const Navbar = () => {
           <Link
             to="/"
             aria-label="Digital Creatives Hub — Home"
-            className="group flex items-center rounded-full px-2 py-1 hover:bg-muted/30 transition-colors"
+            className="group flex items-center rounded-none px-2 py-1 hover:bg-muted/30 transition-colors"
           >
             <img
               src={dchLogo}
               alt="Digital Creatives Hub"
               className={cn(
-                "w-auto object-contain transition-all duration-500 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]",
+                "w-auto object-contain transition-all motion-snap drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]",
                 isScrolled ? "h-8 sm:h-9" : "h-9 sm:h-11"
               )}
               style={{
@@ -96,7 +96,7 @@ const Navbar = () => {
                             <div key={cat.slug} className="space-y-2">
                               <Link
                                 to={`/services/${cat.slug}`}
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${borderColor} ${bgColor} ${colorClass} text-[10px] font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity`}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none border ${borderColor} ${bgColor} ${colorClass} text-[10px] font-semibold uppercase tracking-wider hover:opacity-80 transition-opacity`}
                               >
                                 {cat.title}
                                 <ArrowRight className="w-2.5 h-2.5" />
@@ -106,7 +106,7 @@ const Navbar = () => {
                                   <li key={sub.title}>
                                     <Link
                                       to={`/services/${cat.slug}`}
-                                      className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-muted/50 transition-colors group"
+                                      className="flex items-center gap-2 rounded-none px-2 py-1.5 hover:bg-muted/50 transition-colors group"
                                     >
                                       <sub.icon className={`w-3.5 h-3.5 flex-shrink-0 ${colorClass} opacity-70 group-hover:opacity-100 transition-opacity`} />
                                       <span className="text-sm font-medium text-foreground leading-tight">{sub.title}</span>
@@ -132,7 +132,7 @@ const Navbar = () => {
                 <NavigationMenuItem>
                   <Link
                     to="/our-work"
-                    className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
+                    className="inline-flex h-10 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
                   >
                     Our Work
                   </Link>
@@ -148,7 +148,7 @@ const Navbar = () => {
                       {whoWeAreItems.map((item) => {
                         const isHash = item.href.startsWith("#") || item.href.startsWith("/#");
                         const content = (
-                          <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted/50 hover:text-foreground focus:bg-muted/50 focus:text-foreground">
+                          <div className="block select-none space-y-1 rounded-none p-3 leading-none no-underline outline-none transition-colors hover:bg-muted/50 hover:text-foreground focus:bg-muted/50 focus:text-foreground">
                             <div className="text-sm font-semibold leading-none text-foreground">{item.title}</div>
                             <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-1.5">{item.description}</p>
                           </div>
@@ -171,7 +171,7 @@ const Navbar = () => {
                 <NavigationMenuItem>
                   <a
                     href={isHomePage ? "#contact" : "/#contact"}
-                    className="inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
+                    className="inline-flex h-10 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider"
                   >
                     Contact
                   </a>
@@ -199,7 +199,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 rounded-2xl bg-background/95 backdrop-blur-xl border border-border/60 shadow-2xl animate-fade-in max-h-[80vh] overflow-y-auto">
+        <div className="lg:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 rounded-none bg-background/95 backdrop-blur-xl border border-border/60 shadow-2xl animate-fade-in max-h-[80vh] overflow-y-auto">
             <div className="container-narrow py-6 space-y-1">
               {/* What We Do */}
               <div>

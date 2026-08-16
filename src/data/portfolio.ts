@@ -1,4 +1,4 @@
-import { Globe, BookOpen, Palette, Leaf, ShoppingBag, Heart, Stethoscope, Church, Dumbbell, Briefcase } from "lucide-react";
+import { Globe, BookOpen, Palette, Leaf, ShoppingBag, Heart, Stethoscope, Church, Dumbbell, Briefcase, Sparkles } from "lucide-react";
 
 import ddoImg from "@/assets/portfolio/ddo-learning-liberation.png";
 import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.png";
@@ -112,6 +112,19 @@ export const portfolioProjects: PortfolioProject[] = [
     url: "https://www.thediscoverylagos.org",
     icon: Church,
     image: discoveryChurchImg,
+  },
+  {
+    // No screenshot yet — the tile falls back to its category icon, which is
+    // why this can ship before the asset exists. Add viera-amber.png to
+    // src/assets/portfolio and wire it up the same way as the others.
+    id: "viera-amber",
+    title: "Viera Amber — Creative Ecosystem",
+    category: "Creative Ecosystem",
+    description:
+      "Five interconnected businesses running on one nervous system: illustration and design, the VAGIN impact initiative, VIVA fashion, VAM learning, and VASH creator commerce — architected so a single transaction can feed all five.",
+    tags: ["Multi-Brand", "Ecosystem Architecture", "Commerce", "Impact"],
+    url: "https://vieraamber.com",
+    icon: Sparkles,
   },
   {
     id: "fitness-religion",

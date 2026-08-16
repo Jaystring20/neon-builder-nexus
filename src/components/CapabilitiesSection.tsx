@@ -59,7 +59,7 @@ const CAPABILITIES: Capability[] = [
     realExample: {
       title: "Fitness Religion",
       description:
-        "Fitness Religion's system moved 10,000 people across 5 cities simultaneously. That's not a bigger database. That's a different architecture—one that syncs city-to-city in real time, doesn't wait for one location to finish before another starts, and still gives you accurate reporting after everyone's gone home.",
+        "Fitness Religion's platform runs the 2004 M00VE Challenge across 5+ Nigerian cities at once. That's not a bigger database. That's a different architecture—one that syncs city-to-city in real time, doesn't wait for one location to finish before another starts, and still gives you accurate reporting after everyone's gone home.",
     },
     userQuestion: "If we 10x in 6 months, does the system still work, or do we rebuild?",
   },

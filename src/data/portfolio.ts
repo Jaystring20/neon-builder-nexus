@@ -99,7 +99,7 @@ export const portfolioProjects: PortfolioProject[] = [
     category: "Healthcare",
     description: "A dual-brand web presence for an eye clinic and eyewear brand — featuring service listings, product showcase, appointment booking, and patient resources.",
     tags: ["Healthcare", "Eye Care", "Appointments"],
-    url: "https://soteriaeyeclinic.lovable.app",
+    url: "https://mandheyewear.com",
     icon: Stethoscope,
     image: soteriaImg,
   },

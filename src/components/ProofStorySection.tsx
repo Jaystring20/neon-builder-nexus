@@ -15,16 +15,16 @@ interface ProofStory {
 const PROOF_STORIES: ProofStory[] = [
   {
     id: "fitness-religion",
-    question: "Can you move 10,000 people across 5 cities using only systems?",
+    question: "Can one platform run the same event across five cities at once?",
     shortAnswer: "Yes. And the system should disappear while doing it.",
     details: [
       "Fitness Religion needed to coordinate multi-city events—not just schedule them, but turn coordination into automation. No chaos. No manual syncing.",
       "DCH built the infrastructure that handles registrations, city-specific logistics, live syncing between locations, and aftermath reporting. One registration, five cities move in parallel.",
       "The invisible part: The system never asked anyone to think about the system. Participants signup. Attend. Results come back. Done.",
-      "10,000+ people. 5 cities. One platform. Zero logistics failures.",
+      "The 2004 M00VE Challenge. 5+ Nigerian cities. One platform carrying registration, leaderboards, event management and sponsor integration.",
     ],
     metric: "Shipped",
-    metricValue: "10,000+ participants · 5 cities · Zero logistics failures",
+    metricValue: "2004 M00VE Challenge · 5+ Nigerian cities · One platform",
     category: "question",
   },
   {

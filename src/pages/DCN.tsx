@@ -103,12 +103,12 @@ const DCN = () => {
 
       {/* CTA Section */}
       <section className="section-padding relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
         
         <div className="container-narrow relative z-10">
-          <div className="glass-card p-12 md:p-16 text-center border-secondary/30">
+          <div className="glass-card p-12 md:p-16 text-center border-primary/30">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Ready to Join the <span className="text-secondary">Movement</span>?
+              Ready to Join the <span className="text-primary">Movement</span>?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Whether you're a beginner looking to learn or an experienced creative wanting to give back, 

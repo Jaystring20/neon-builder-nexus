@@ -22,7 +22,7 @@ const About = () => {
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-breathe" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-breathe animation-delay-300" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-breathe animation-delay-300" />
         <FloatingParticles count={12} />
         
         <div className="container-narrow relative z-10 text-center">
@@ -51,7 +51,7 @@ const About = () => {
               <p className="text-xl md:text-2xl font-heading text-foreground leading-relaxed mb-4">
                 We exist to bridge the gap between{" "}
                 <span className="text-primary font-semibold">raw imagination</span> and{" "}
-                <span className="text-secondary font-semibold">engineered execution</span>.
+                <span className="text-foreground font-semibold">engineered execution</span>.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
                 <p className="text-muted-foreground">
@@ -61,7 +61,7 @@ const About = () => {
                 <div className="hidden sm:block w-px h-6 bg-border/50" />
                 <p className="text-muted-foreground">
                   We don't just 'create' —{" "}
-                  <span className="text-secondary font-semibold">we build the infrastructure of authority</span>.
+                  <span className="text-foreground font-semibold">we build the infrastructure of authority</span>.
                 </p>
               </div>
             </div>
@@ -88,14 +88,14 @@ const About = () => {
             </ScrollReveal>
 
             <ScrollReveal animation="slide-left" delay={100}>
-              <div className="glass-card-elevated p-8 md:p-10 border-secondary/20 hover-lift hover-glass-shine h-full">
-                <div className="w-14 h-14 rounded-2xl bg-secondary/10 border border-secondary/30 flex items-center justify-center mb-6">
-                  <Eye className="w-7 h-7 text-secondary" />
+              <div className="glass-card-elevated p-8 md:p-10 border-primary/20 hover-lift hover-glass-shine h-full">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6">
+                  <Eye className="w-7 h-7 text-primary" />
                 </div>
                 <h2 className="text-2xl font-heading font-bold mb-4">Our Vision</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   To be the{" "}
-                  <span className="text-secondary font-semibold">global nexus</span> where strategy,
+                  <span className="text-foreground font-semibold">global nexus</span> where strategy,
                   creativity, and intelligent systems converge — defining how the next generation of
                   brands gets built.
                 </p>
@@ -126,7 +126,7 @@ const About = () => {
                   <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                     Strategy is a map. We build the road, the vehicle, and the fuel — then we train
                     your team to drive it. You're not hiring consultants who leave you with a deck.
-                    You're getting a <span className="text-secondary font-semibold">growth engine you own</span>.
+                    You're getting a <span className="text-foreground font-semibold">growth engine you own</span>.
                   </p>
                 </ScrollReveal>
               </div>
@@ -160,9 +160,9 @@ const About = () => {
                 icon: Cpu,
                 title: "We Build",
                 copy: "We architect the intelligence layer — AI-powered workflows that turn rough ideas into production-ready briefs and strategy into operational rhythm.",
-                iconWrap: "bg-secondary/10 border-secondary/30",
-                iconColor: "text-secondary",
-                cardBorder: "border-secondary/20",
+                iconWrap: "bg-primary/10 border-primary/30",
+                iconColor: "text-primary",
+                cardBorder: "border-primary/20",
               },
               {
                 icon: Rocket,
@@ -193,7 +193,7 @@ const About = () => {
           <div className="text-center mb-12">
             <ScrollReveal animation="fade-up">
               <h2 className="text-3xl md:text-4xl font-heading font-bold mt-4">
-                Diagnostic. Deliberate. <span className="text-secondary">Outcome-focused.</span>
+                Diagnostic. Deliberate. <span className="text-primary">Outcome-focused.</span>
               </h2>
             </ScrollReveal>
             <ScrollReveal animation="fade-up" delay={100}>
@@ -308,7 +308,7 @@ const About = () => {
                     </div>
                   </ScrollReveal>
                   <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl animate-breathe" />
-                  <div className="absolute -top-4 -left-4 w-20 h-20 bg-secondary/20 rounded-full blur-2xl animate-breathe animation-delay-300" />
+                  <div className="absolute -top-4 -left-4 w-20 h-20 bg-primary/20 rounded-full blur-2xl animate-breathe animation-delay-300" />
                   
                   <ScrollReveal animation="fade-up" delay={400}>
                     <Button variant="hero" size="lg" asChild className="mt-8 relative z-10 hover-glow">
@@ -337,7 +337,7 @@ const About = () => {
                   <ScrollReveal animation="fade-up" delay={500}>
                     <div className="space-y-4 text-muted-foreground mb-8">
                       <p>
-                        Known as <span className="text-secondary font-semibold">'The DigiTech Strategist,'</span>{" "}
+                        Known as <span className="text-foreground font-semibold">'The DigiTech Strategist,'</span>{" "}
                         Jeremiah founded DCH on a singular philosophy: that true growth requires both the 
                         vision of a creative and the precision of an engineer.
                       </p>
@@ -352,7 +352,7 @@ const About = () => {
                   {/* Functional Pun */}
                   <ScrollReveal animation="slide-left" delay={600}>
                     <div className="glass-card-elevated p-6 hover-glow">
-                      <Quote className="w-8 h-8 text-secondary/50 mb-4" />
+                      <Quote className="w-8 h-8 text-primary/50 mb-4" />
                       <p className="text-foreground italic font-medium leading-relaxed">
                         "Jeremiah doesn't just draw the map; he builds the road, the car, and the fuel."
                       </p>
@@ -384,7 +384,7 @@ const About = () => {
               <ScrollReveal animation="fade-up">
                 <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
                   Quiet Systems.{" "}
-                  <span className="text-secondary">Loud Results.</span>
+                  <span className="text-primary">Loud Results.</span>
                 </h2>
               </ScrollReveal>
               <ScrollReveal animation="fade-up" delay={100}>
@@ -393,7 +393,7 @@ const About = () => {
                   We aren't just another vendor; we are your{" "}
                   <span className="text-primary font-semibold">Growth Architects</span>. We navigate the maze 
                   of uncertainty to architect the engines of{" "}
-                  <span className="text-secondary font-semibold">absolute clarity</span>.
+                  <span className="text-foreground font-semibold">absolute clarity</span>.
                 </p>
               </ScrollReveal>
               <ScrollReveal animation="fade-up" delay={200}>

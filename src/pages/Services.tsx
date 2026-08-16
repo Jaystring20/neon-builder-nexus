@@ -21,7 +21,7 @@ const Services = () => {
       <section className="section-padding pt-32 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow animation-delay-500" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse-slow animation-delay-500" />
         </div>
 
         <div className="container-narrow relative z-10">
@@ -29,7 +29,7 @@ const Services = () => {
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
                 We Build the <span className="text-primary">Systems</span> That{" "}
-                <span className="text-secondary font-semibold">Grow</span> the Brand
+                <span className="text-foreground font-semibold">Grow</span> the Brand
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
                 Four pillars of execution. One unified engine. From brand architecture to AI-powered automation — we engineer the infrastructure that turns vision into velocity.
@@ -53,7 +53,7 @@ const Services = () => {
         <div className="container-narrow">
           <div className="space-y-16">
             {serviceCategories.map((category, index) => {
-              const colorClass = category.color === "primary" ? "text-primary" : "text-secondary";
+              const colorClass = category.color === "primary" ? "text-primary" : "text-primary";
 
               return (
                 <ScrollReveal key={category.slug}>
@@ -109,7 +109,7 @@ const Services = () => {
               </div>
               <div className="relative z-10">
                 <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Ready to <span className="text-secondary font-semibold">Architect</span> Your Growth?
+                  Ready to <span className="text-foreground font-semibold">Architect</span> Your Growth?
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto mb-8">
                   Every empire starts with a blueprint. Let's build yours.

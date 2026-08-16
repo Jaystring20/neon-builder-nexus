@@ -147,7 +147,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Digital Creatives Hub Ltd. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Built with <Heart className="w-4 h-4 text-secondary" /> by Growth Architects
+            {/* Heart sits in the fine print, not in orange. Sentiment is not
+                emphasis, and this glyph was competing with the one CTA a few
+                hundred pixels above it. */}
+            Built with <Heart className="w-4 h-4 text-muted-foreground" /> by Growth Architects
           </p>
         </div>
       </div>

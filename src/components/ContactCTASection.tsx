@@ -21,19 +21,23 @@ const ContactCTASection = () => {
           {/* Send Your Brief */}
           <a
             href="mailto:hello@digitalcreativeshub.com?subject=Project%20Brief"
-            className="group relative rounded-none border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-primary/30 hover:bg-card/50 transition-all motion-snap"
+            className="group relative rounded-none border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-secondary/40 hover:bg-card/50 transition-all motion-snap"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-2">
-                <Mail className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                {/* The one orange moment on the page. Cyan is the structural
+                    accent and appears everywhere; orange appears exactly here,
+                    on the single action the page is asking for. An accent used
+                    twice is a colour scheme — used once, it is a signal. */}
+                <Mail className="w-5 h-5 text-secondary" />
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-secondary transition-colors">
                   Send Your Brief
                 </h3>
               </div>
               <p className="text-sm text-muted-foreground">
                 Write down what you're building and what you're trying to prove.
               </p>
-              <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
+              <div className="flex items-center gap-2 text-sm font-semibold text-secondary group-hover:gap-3 transition-all">
                 hello@digitalcreativeshub.com
                 <ArrowRight className="w-4 h-4" />
               </div>

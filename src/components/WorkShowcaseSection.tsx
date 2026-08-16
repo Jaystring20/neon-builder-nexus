@@ -28,7 +28,62 @@ const SHOWCASE = [...portfolioProjects]
   .sort((a, b) => Number(Boolean(b.image)) - Number(Boolean(a.image)))
   .slice(0, 8);
 
-const CARD_W = 460; // px — card width; the gap is set in the flex container
+
+/**
+ * A card frame showing the top of a full-page capture, which scrolls the whole
+ * site past on hover — the work demonstrating itself instead of sitting still.
+ *
+ * The travel distance is measured from the loaded image rather than expressed
+ * as a percentage, because the captures are not a uniform height: most are
+ * 900x2000, but a short site like Ecopath is 900x1419. One hardcoded
+ * percentage would overshoot the short ones into empty space and stop short
+ * on the tall ones.
+ *
+ * Only `transform` is animated, so the scroll runs on the compositor. The
+ * duration scales with distance to keep the reading speed constant — a tall
+ * site takes longer to travel than a short one instead of whipping past at
+ * the same rate.
+ */
+const PagePreview = ({ src, title }: { src: string; title: string }) => {
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [travel, setTravel] = useState(0);
+
+  const measure = () => {
+    const img = imgRef.current;
+    if (!img || !img.naturalWidth) return;
+    const frame = img.parentElement;
+    if (!frame) return;
+    const rendered = (img.naturalHeight / img.naturalWidth) * frame.clientWidth;
+    setTravel(Math.max(0, Math.round(rendered - frame.clientHeight)));
+  };
+
+  useEffect(() => {
+    if (imgRef.current?.complete) measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ~420px of page per second reads as a deliberate scroll rather than a
+  // slideshow, floored so a short capture still gets a perceptible move.
+  const durationMs = Math.max(1800, Math.round((travel / 420) * 1000));
+
+  return (
+    <img
+      ref={imgRef}
+      src={src}
+      alt={`${title} — full page`}
+      loading="lazy"
+      decoding="async"
+      onLoad={measure}
+      style={{
+        transitionDuration: `${durationMs}ms`,
+        ["--travel" as string]: `-${travel}px`,
+      }}
+      className="absolute inset-x-0 top-0 w-full ease-linear [transition-property:transform] group-hover:[transform:translateY(var(--travel))] motion-reduce:!transition-none motion-reduce:group-hover:[transform:none]"
+    />
+  );
+};
 
 const WorkShowcaseSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -100,18 +155,22 @@ const WorkShowcaseSection = () => {
       style={{ height: `${SHOWCASE.length * 60}vh` }}
       className="relative"
     >
-      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <div className="container-narrow mb-10">
+      {/* pt clears the fixed navbar. Without it the panel centres against the
+          full viewport and the heading sits underneath the nav bar, which is
+          only visible once the section pins — the geometry looks correct in
+          every measurement right up until you look at it. */}
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-20 md:pt-24">
+        <div className="container-narrow mb-4 md:mb-6">
           <div className="max-w-md">
-            <p className="label-mono mb-3">Selected work</p>
+            <p className="label-mono mb-2">Selected work</p>
             <h2
               id="work-showcase-heading"
-              className="font-display-refined mb-3 text-3xl leading-tight text-foreground md:text-4xl"
+              className="font-display-refined mb-2 text-2xl leading-tight text-foreground md:text-3xl"
             >
               Things we shipped, running in production.
             </h2>
             <p className="text-sm text-muted-foreground">
-              Every tile is a live site. Keep scrolling.
+              Every tile is a live site. Hover one to read it.
             </p>
           </div>
         </div>
@@ -130,8 +189,13 @@ const WorkShowcaseSection = () => {
         >
           {SHOWCASE.map((project) => {
             const Icon = project.icon;
+            // Width is responsive rather than a fixed 460px: at 460 the card
+            // stands 374px tall, which together with the header overflows a
+            // short viewport and clips the captions. Because travel is
+            // measured from the DOM, shrinking the cards needs no other
+            // change — the track re-measures itself.
             return (
-              <li key={project.id} className="shrink-0" style={{ width: CARD_W }}>
+              <li key={project.id} className="w-[300px] shrink-0 sm:w-[380px] lg:w-[440px]">
                 <a
                   href={project.url}
                   target="_blank"
@@ -140,13 +204,7 @@ const WorkShowcaseSection = () => {
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-muted/20">
                     {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={`${project.title} — screenshot`}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover object-top"
-                      />
+                      <PagePreview src={project.image} title={project.title} />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center">
                         <Icon className="h-12 w-12 text-primary/25" aria-hidden="true" />

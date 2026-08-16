@@ -1,15 +1,16 @@
 import { Globe, BookOpen, Palette, Leaf, ShoppingBag, Heart, Stethoscope, Church, Dumbbell, Briefcase, Sparkles } from "lucide-react";
 
-import ddoImg from "@/assets/portfolio/ddo-learning-liberation.png";
-import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.png";
-import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.png";
-import everythingHouseholdImg from "@/assets/portfolio/everything-household.png";
-import bunmiFlexImg from "@/assets/portfolio/bunmiflex-yoga.png";
-import digitechImg from "@/assets/portfolio/digitech-strategist.png";
-import healingImg from "@/assets/portfolio/healing-broken-hearted.png";
-import soteriaImg from "@/assets/portfolio/soteria-eye-clinic.png";
+import ddoImg from "@/assets/portfolio/ddo-learning-liberation.webp";
+import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.webp";
+import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.webp";
+import everythingHouseholdImg from "@/assets/portfolio/everything-household.webp";
+import bunmiFlexImg from "@/assets/portfolio/bunmiflex-yoga.webp";
+import digitechImg from "@/assets/portfolio/digitech-strategist.webp";
+import healingImg from "@/assets/portfolio/healing-broken-hearted.webp";
+import soteriaImg from "@/assets/portfolio/soteria-eye-clinic.webp";
 import discoveryChurchImg from "@/assets/portfolio/the-discovery-church.png";
-import fitnessReligionImg from "@/assets/portfolio/fitness-religion.png";
+import fitnessReligionImg from "@/assets/portfolio/fitness-religion.webp";
+import vieraAmberImg from "@/assets/portfolio/viera-amber.webp";
 
 export interface PortfolioProject {
   id: string;
@@ -114,9 +115,6 @@ export const portfolioProjects: PortfolioProject[] = [
     image: discoveryChurchImg,
   },
   {
-    // No screenshot yet — the tile falls back to its category icon, which is
-    // why this can ship before the asset exists. Add viera-amber.png to
-    // src/assets/portfolio and wire it up the same way as the others.
     id: "viera-amber",
     title: "Viera Amber — Creative Ecosystem",
     category: "Creative Ecosystem",
@@ -125,6 +123,7 @@ export const portfolioProjects: PortfolioProject[] = [
     tags: ["Multi-Brand", "Ecosystem Architecture", "Commerce", "Impact"],
     url: "https://vieraamber.com",
     icon: Sparkles,
+    image: vieraAmberImg,
   },
   {
     id: "fitness-religion",

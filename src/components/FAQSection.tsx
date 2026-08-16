@@ -120,10 +120,10 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             Asked Questions
           </h2>
@@ -145,7 +145,7 @@ const FAQSection = () => {
         </div>
 
         {/* Follow-up CTA */}
-        <div className="mt-16 pt-12 border-t border-border/30 max-w-2xl">
+        <div className="mt-12 pt-10 border-t border-border/30 max-w-2xl">
           <p className="text-sm text-muted-foreground mb-4">
             Have a different question? Let's talk about it.
           </p>

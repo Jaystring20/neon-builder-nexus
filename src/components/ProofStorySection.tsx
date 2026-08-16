@@ -107,10 +107,10 @@ const ProofStorySection = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             Three Shipped Systems
           </h2>
@@ -162,7 +162,7 @@ const ProofStorySection = () => {
         </div>
 
         {/* Pattern footer */}
-        <div className="mt-16 pt-12 border-t border-border/30">
+        <div className="mt-12 pt-10 border-t border-border/30">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h4 className="label-mono mb-2">

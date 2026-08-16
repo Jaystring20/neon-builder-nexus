@@ -292,8 +292,13 @@
     opacity: 0.5;
   }
 
+  /* 64px, flat across breakpoints — matching the section rhythm the new
+     homepage sections use. A ramp from 48 to 96px made the same page read
+     at different densities depending on window width; one value keeps the
+     vertical beat constant, which is what makes a long page feel composed
+     rather than assembled. */
   .section-padding {
-    @apply py-12 md:py-20 lg:py-24;
+    @apply py-16;
   }
 
   .container-narrow {

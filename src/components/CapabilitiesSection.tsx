@@ -147,10 +147,10 @@ const CapabilitiesSection = () => {
   );
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             What We Actually Do
           </h2>

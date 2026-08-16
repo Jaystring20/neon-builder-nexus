@@ -240,10 +240,10 @@ const ProcessSection = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             How This Actually Works
           </h2>
@@ -266,7 +266,7 @@ const ProcessSection = () => {
         </div>
 
         {/* Footer note */}
-        <div className="mt-16 pt-12 border-t border-border/30 max-w-2xl">
+        <div className="mt-12 pt-10 border-t border-border/30 max-w-2xl">
           <p className="text-sm text-muted-foreground">
             The real timeline isn't measured in weeks. It's measured in: <span className="italic">how long until your system is actually working and you know it?</span> Sometimes that's 4 weeks. Sometimes it's 6 months. It depends on complexity, not urgency.
           </p>

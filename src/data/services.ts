@@ -31,6 +31,16 @@ export interface ServiceCategory {
   slug: string;
   tagline: string;
   description: string;
+  /* Every category is "primary" now. The field used to alternate
+     primary/secondary down the list, which meant half the categories were
+     orange for no reason other than variety — the colour carried no
+     information, so a reader learned nothing from it and the page paid for
+     it in noise. Cyan is the structural accent; orange is reserved for
+     genuine emphasis, and "this is the second item" is not emphasis.
+
+     The field is kept rather than deleted because the nav, the services
+     index and the category pages all read it, and it is the hook for a
+     future category that genuinely does need to stand apart. */
   color: "primary" | "secondary";
   subServices: SubService[];
 }
@@ -80,7 +90,7 @@ export const serviceCategories: ServiceCategory[] = [
     tagline: "Building the Road",
     description:
       "We build the high-performance environments where your brand lives, breathes, and converts.",
-    color: "secondary",
+    color: "primary",
     subServices: [
       {
         title: "Web & App Architecture",
@@ -149,7 +159,7 @@ export const serviceCategories: ServiceCategory[] = [
     tagline: "Architecting Momentum",
     description:
       "We deploy the strategic fuel that turns your infrastructure into a market-leading empire.",
-    color: "secondary",
+    color: "primary",
     subServices: [
       {
         title: "Campaign Strategy",

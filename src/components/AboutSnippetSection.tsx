@@ -16,19 +16,13 @@ const AboutSnippetSection = () => {
         <div className="glass-card-elevated p-8 md:p-16 text-center relative overflow-hidden hover-glow glass-border">
           <div className="relative z-10">
             <ScrollReveal animation="fade-up">
-              <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                The Innovation Lab
-              </span>
-            </ScrollReveal>
-
-            <ScrollReveal animation="fade-up" delay={100}>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
                 Where Strategy Meets{" "}
-                <span className="gradient-text">the Street.</span>
+                <span className="text-primary">the Street.</span>
               </h2>
             </ScrollReveal>
 
-            <ScrollReveal animation="fade-up" delay={200}>
+            <ScrollReveal animation="fade-up" delay={100}>
               <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
                 Digital Creatives Hub is an Innovation Lab for the Agentic Era. Founded by The DigiTech 
                 Strategist, we exist at the intersection of human imagination and engineered execution.
@@ -41,7 +35,7 @@ const AboutSnippetSection = () => {
               </p>
             </ScrollReveal>
 
-            <ScrollReveal animation="fade-up" delay={300}>
+            <ScrollReveal animation="fade-up" delay={200}>
               <Button variant="hero" size="xl" asChild className="group hover-glow">
                 <Link to="/about">
                   Learn More

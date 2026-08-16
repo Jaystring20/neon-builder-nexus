@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Capability {
@@ -15,7 +14,6 @@ interface Capability {
     description: string;
   };
   userQuestion: string;
-  cta: string;
 }
 
 const CAPABILITIES: Capability[] = [
@@ -41,7 +39,6 @@ const CAPABILITIES: Capability[] = [
         "When M & H Eyewear ships 'Sharp eyes. Sharper style.' in their brand voice, it's not just a tagline. It's the DNA of every interface decision—the quiz pacing, the copy in error states, the way reviews are structured. One voice, everywhere.",
     },
     userQuestion: "Does your brand mean something to the system, or just to the marketing deck?",
-    cta: "Explore: How brand architecture affects infrastructure decisions",
   },
   {
     id: "infrastructure",
@@ -62,10 +59,9 @@ const CAPABILITIES: Capability[] = [
     realExample: {
       title: "Fitness Religion",
       description:
-        "Fitness Religion's system moved 10,000 people across 5 cities simultaneously. That's not a bigger database. That's a different architecture—one that syncs city-to-city in real time, doesn't wait for one location to finish before another starts, and still gives you accurate reporting after everyone's gone home.",
+        "Fitness Religion's platform runs the 2004 M00VE Challenge across 5+ Nigerian cities at once. That's not a bigger database. That's a different architecture—one that syncs city-to-city in real time, doesn't wait for one location to finish before another starts, and still gives you accurate reporting after everyone's gone home.",
     },
     userQuestion: "If we 10x in 6 months, does the system still work, or do we rebuild?",
-    cta: "Explore: How we stress-test infrastructure before launch",
   },
   {
     id: "ai",
@@ -89,7 +85,6 @@ const CAPABILITIES: Capability[] = [
         "M & H Eyewear's virtual try-on uses AI face mapping to show you frames. But it doesn't recommend frames. That's the quiz—human insight about what frames match your confidence level. AI powers the seeing. Humans do the meaning.",
     },
     userQuestion: "Is AI making us move faster in the right direction, or just making us move faster?",
-    cta: "Explore: How we architect AI without losing the brand",
   },
 ];
 
@@ -102,7 +97,7 @@ const CapabilityDisplay: React.FC<CapabilityDisplayProps> = ({ capability, isAct
   return (
     <div
       className={cn(
-        "absolute inset-0 transition-all duration-500",
+        "absolute inset-0 transition-all motion-reveal",
         isActive
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
@@ -130,23 +125,16 @@ const CapabilityDisplay: React.FC<CapabilityDisplayProps> = ({ capability, isAct
 
         {/* Real example */}
         <div className="border-t border-border/30 pt-8 animate-fade-up-elegant" style={{ animationDelay: "200ms" }}>
-          <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-2">Real example</h4>
+          <h4 className="label-mono mb-2">Real example</h4>
           <p className="text-sm font-medium text-foreground mb-2">{capability.realExample.title}</p>
           <p className="text-sm leading-relaxed text-muted-foreground">{capability.realExample.description}</p>
         </div>
 
-        {/* Question & CTA */}
+        {/* Closing question */}
         <div className="border-t border-border/30 pt-8 animate-fade-up-elegant" style={{ animationDelay: "300ms" }}>
           <p className="text-sm font-medium text-foreground mb-3 italic">
             {capability.userQuestion}
           </p>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors group"
-          >
-            {capability.cta}
-            <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
-          </a>
         </div>
       </div>
     </div>
@@ -159,10 +147,10 @@ const CapabilitiesSection = () => {
   );
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             What We Actually Do
           </h2>
@@ -178,7 +166,7 @@ const CapabilitiesSection = () => {
               key={cap.id}
               onClick={() => setActiveCapability(cap.id)}
               className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
+                "px-4 py-2 rounded-none text-sm font-medium transition-all motion-snap",
                 activeCapability === cap.id
                   ? "bg-primary/10 text-primary border border-primary/30"
                   : "text-muted-foreground hover:text-foreground border border-border/30 hover:border-border/60"

@@ -46,45 +46,48 @@ const PillarsSection = () => {
       <div className="container-narrow relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <ScrollReveal animation="fade-up">
-            <span className="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              The Method
-            </span>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
               The 4 Pillars of{" "}
-              <span className="gradient-text">Momentum</span>
+              <span className="text-primary">Momentum</span>
             </h2>
           </ScrollReveal>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 lg:gap-8">
+        <div className="mx-auto max-w-2xl">
           {pillars.map((pillar, index) => (
-            <ScrollReveal key={pillar.title} animation="scale-in" delay={index * 100}>
-              <div className="group glass-card p-8 hover:border-primary/40 transition-all duration-500 glow-effect h-full relative overflow-hidden">
-                {/* Large number watermark */}
-                <span className="absolute top-4 right-6 text-7xl font-heading font-bold text-foreground/[0.03] select-none">
-                  {pillar.number}
-                </span>
+            <ScrollReveal key={pillar.title} animation="fade-up" delay={index * 100}>
+              <div className="group relative flex gap-6 pb-12 last:pb-0">
+                {/* Connecting line down to the next pillar */}
+                {index < pillars.length - 1 && (
+                  <div className="absolute left-7 top-16 bottom-0 w-px bg-border/60" />
+                )}
 
-                <div className="relative z-10">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 ${
-                    pillar.color === "primary" ? "bg-primary/10" : "bg-secondary/10"
-                  } group-hover:scale-110 transition-transform duration-500`}>
-                    <pillar.icon className={`w-7 h-7 ${
-                      pillar.color === "primary" ? "text-primary" : "text-secondary"
-                    }`} />
-                  </div>
-                  
-                  <p className={`text-xs uppercase tracking-widest mb-2 ${
-                    pillar.color === "primary" ? "text-primary/70" : "text-secondary/70"
-                  }`}>
-                    {pillar.subtitle}
+                {/* Icon marker */}
+                <div
+                  className={`relative z-10 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border transition-all duration-500 group-hover:scale-105 ${
+                    pillar.color === "primary"
+                      ? "border-primary/30 bg-primary/10 group-hover:border-primary/60"
+                      : "border-secondary/30 bg-secondary/10 group-hover:border-secondary/60"
+                  }`}
+                >
+                  <pillar.icon
+                    className={`h-6 w-6 ${pillar.color === "primary" ? "text-primary" : "text-secondary"}`}
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 pt-1">
+                  <p
+                    className={`mb-1.5 text-xs font-semibold uppercase tracking-[0.2em] ${
+                      pillar.color === "primary" ? "text-primary/70" : "text-secondary/70"
+                    }`}
+                  >
+                    {pillar.number} · {pillar.subtitle}
                   </p>
-                  <h3 className="text-xl font-heading font-semibold mb-3 text-foreground">
+                  <h3 className="mb-2 font-heading text-2xl font-bold text-foreground">
                     {pillar.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="max-w-xl leading-relaxed text-muted-foreground">
                     {pillar.description}
                   </p>
                 </div>

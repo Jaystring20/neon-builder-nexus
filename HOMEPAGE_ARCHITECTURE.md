@@ -173,7 +173,7 @@
      - Book a Call (Cal.com link)
      - Send Your Brief (mailto link)
   3. **Location info** — Lagos, NY, Remote
-  4. **Credibility footer** — Real metrics (projects, users, uptime, year founded)
+  4. *(Removed)* A credibility metrics footer used to sit here. It asserted numbers nobody verified, so it was deleted. Do not re-add metrics without real figures from the business owner.
 - **Interactions:**
   - CTA cards hover state changes border + background
   - Smooth 300ms transitions

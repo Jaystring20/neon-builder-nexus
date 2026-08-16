@@ -37,7 +37,7 @@ const OurWork = () => {
         {/* Background effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--neon-cyan)/0.08)_0%,transparent_60%)]" />
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-[radial-gradient(circle,hsl(var(--neon-cyan)/0.06)_0%,transparent_70%)] blur-3xl" />
-        <div className="absolute top-40 right-1/4 w-80 h-80 bg-[radial-gradient(circle,hsl(var(--neon-orange)/0.04)_0%,transparent_70%)] blur-3xl" />
+        <div className="absolute top-40 right-1/4 w-80 h-80 bg-[radial-gradient(circle,hsl(var(--neon-cyan)/0.04)_0%,transparent_70%)] blur-3xl" />
 
         <div className="container-narrow relative z-10 text-center">
           <ScrollReveal animation="fade-up">
@@ -48,7 +48,7 @@ const OurWork = () => {
           <ScrollReveal animation="fade-up" delay={100}>
             <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]">
               Brands We've{" "}
-              <span className="bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
+              <span className="text-primary">
                 Engineered
               </span>
             </h1>
@@ -72,7 +72,7 @@ const OurWork = () => {
                   return (
                     <div key={stat.label} className="flex flex-col items-center gap-2 px-4">
                       <Icon className="w-5 h-5 text-primary/60 hidden md:block" />
-                      <span className="font-heading text-2xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                      <span className="font-heading text-2xl md:text-4xl font-bold text-primary">
                         {stat.value}
                       </span>
                       <span className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider text-center">
@@ -127,7 +127,7 @@ const OurWork = () => {
                   >
                     <div className="h-full rounded-2xl border border-border/30 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_40px_hsl(var(--neon-cyan)/0.12)] hover:-translate-y-2 glass-card hover-glass-shine relative">
                       {/* Gradient border on hover */}
-                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15) 0%, transparent 40%, transparent 60%, hsl(var(--neon-orange) / 0.1) 100%)' }} />
+                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15) 0%, transparent 40%, transparent 60%, hsl(var(--neon-cyan) / 0.08) 100%)' }} />
 
                       {/* Project Screenshot */}
                       <div className="aspect-[16/10] relative overflow-hidden">
@@ -214,7 +214,7 @@ const OurWork = () => {
               <div className="relative z-10">
                 <h2 className="font-heading text-2xl md:text-4xl font-bold mb-4">
                   Ready to Be{" "}
-                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  <span className="text-primary">
                     Next?
                   </span>
                 </h2>

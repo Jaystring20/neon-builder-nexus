@@ -30,34 +30,37 @@ const WhyUsSection = () => {
       <div className="container-narrow relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <ScrollReveal animation="fade-up">
-            <span className="inline-block px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
-              Why Us
-            </span>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
-              Why <span className="gradient-text">Digital Creatives Hub</span>
+              Why <span className="text-secondary">Digital Creatives Hub</span>
             </h2>
           </ScrollReveal>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="mx-auto max-w-3xl divide-y divide-border/40">
           {differentiators.map((item, index) => (
-            <ScrollReveal key={item.title} animation="fade-up" delay={index * 150}>
-              <div className="glass-card-elevated p-8 hover-lift hover-glass-shine h-full text-center group">
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 ${
-                  item.color === "primary" ? "bg-primary/10" : "bg-secondary/10"
-                } group-hover:scale-110 transition-transform duration-500`}>
-                  <item.icon className={`w-8 h-8 ${
-                    item.color === "primary" ? "text-primary" : "text-secondary"
-                  }`} />
+            <ScrollReveal key={item.title} animation="fade-up" delay={index * 100}>
+              <div
+                className={`group flex flex-col gap-5 py-8 first:pt-0 last:pb-0 sm:flex-row sm:items-center ${
+                  index % 2 === 1 ? "sm:flex-row-reverse" : ""
+                }`}
+              >
+                <div
+                  className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl transition-transform duration-500 group-hover:scale-105 ${
+                    item.color === "primary" ? "bg-primary/10" : "bg-secondary/10"
+                  }`}
+                >
+                  <item.icon
+                    className={`h-8 w-8 ${item.color === "primary" ? "text-primary" : "text-secondary"}`}
+                  />
                 </div>
-                <h3 className="text-lg font-heading font-semibold mb-3 text-foreground leading-snug">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">
-                  {item.description}
-                </p>
+                <div>
+                  <h3 className="mb-2 font-heading text-xl font-bold text-foreground sm:text-2xl">
+                    {item.title}
+                  </h3>
+                  <p className="max-w-md leading-relaxed text-muted-foreground">
+                    {item.description}
+                  </p>
+                </div>
               </div>
             </ScrollReveal>
           ))}

@@ -9,17 +9,12 @@ const FrictionSection = () => {
       <div className="container-narrow relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <ScrollReveal animation="fade-up">
-            <span className="inline-block px-4 py-1 rounded-full bg-destructive/10 text-destructive text-sm font-medium mb-6">
-              The Friction
-            </span>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
               Strategy is a Map.{" "}
               <span className="text-destructive">Most Brands are Just Lost.</span>
             </h2>
           </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={200}>
+          <ScrollReveal animation="fade-up" delay={100}>
             <p className="text-lg text-muted-foreground leading-relaxed">
               A beautiful website is a map to nowhere without an engine to drive it. 
               In the age of rapid obsolescence, 'pretty' is a commodity.

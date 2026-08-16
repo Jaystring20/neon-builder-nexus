@@ -9,24 +9,22 @@ interface ProofStory {
   details: string[];
   metric: string;
   metricValue: string;
-  deepDiveLink: string;
   category: "question" | "proof" | "metric";
 }
 
 const PROOF_STORIES: ProofStory[] = [
   {
     id: "fitness-religion",
-    question: "Can you move 10,000 people across 5 cities using only systems?",
+    question: "Can one platform run the same event across five cities at once?",
     shortAnswer: "Yes. And the system should disappear while doing it.",
     details: [
       "Fitness Religion needed to coordinate multi-city events—not just schedule them, but turn coordination into automation. No chaos. No manual syncing.",
       "DCH built the infrastructure that handles registrations, city-specific logistics, live syncing between locations, and aftermath reporting. One registration, five cities move in parallel.",
       "The invisible part: The system never asked anyone to think about the system. Participants signup. Attend. Results come back. Done.",
-      "10,000+ people. 5 cities. One platform. Zero logistics failures.",
+      "The 2004 M00VE Challenge. 5+ Nigerian cities. One platform carrying registration, leaderboards, event management and sponsor integration.",
     ],
     metric: "Shipped",
-    metricValue: "10,000+ participants · 5 cities · Zero logistics failures",
-    deepDiveLink: "See how registration → logistics → results flow was architected",
+    metricValue: "2004 M00VE Challenge · 5+ Nigerian cities · One platform",
     category: "question",
   },
   {
@@ -43,7 +41,6 @@ const PROOF_STORIES: ProofStory[] = [
     ],
     metric: "Proven",
     metricValue: "145 five-star reviews · 2,800+ frames · ₦15K savings per customer",
-    deepDiveLink: "See how try-on → quiz → exam → purchase flow closes the loop",
     category: "proof",
   },
   {
@@ -60,7 +57,6 @@ const PROOF_STORIES: ProofStory[] = [
     ],
     metric: "Scaled",
     metricValue: "3,000+ lives changed · 8+ countries · 5 interconnected businesses",
-    deepDiveLink: "See how five systems were wired together",
     category: "metric",
   },
 ];
@@ -74,7 +70,7 @@ const ExpandedStory: React.FC<ExpandedStoryProps> = ({ story, isExpanded }) => {
   return (
     <div
       className={cn(
-        "overflow-hidden transition-all duration-500 ease-out",
+        "overflow-hidden transition-all motion-reveal",
         isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
       )}
     >
@@ -92,21 +88,12 @@ const ExpandedStory: React.FC<ExpandedStoryProps> = ({ story, isExpanded }) => {
         {/* Metric callout */}
         <div className="mt-6 pt-6 border-t border-border/20 flex items-start gap-4">
           <div className="flex-1">
-            <dt className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-1.5">
+            <dt className="label-mono mb-1.5">
               {story.metric}
             </dt>
             <dd className="text-sm text-foreground font-medium">{story.metricValue}</dd>
           </div>
         </div>
-
-        {/* Deep dive link */}
-        <a
-          href="#"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors mt-4 group"
-        >
-          {story.deepDiveLink}
-          <span className="transition-transform group-hover:translate-x-1">→</span>
-        </a>
       </div>
     </div>
   );
@@ -120,10 +107,10 @@ const ProofStorySection = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             Three Shipped Systems
           </h2>
@@ -137,18 +124,18 @@ const ProofStorySection = () => {
           {PROOF_STORIES.map((story, idx) => (
             <div
               key={story.id}
-              className="group relative rounded-lg border border-border/40 bg-card/30 backdrop-blur-sm transition-all duration-300 hover:border-border/60 hover:bg-card/50"
+              className="group relative rounded-none border border-border/40 bg-card/30 backdrop-blur-sm transition-all motion-snap hover:border-border/60 hover:bg-card/50"
               style={{ animationDelay: `${idx * 80}ms` }}
             >
               {/* Clickable header */}
               <button
                 onClick={() => toggleExpand(story.id)}
-                className="w-full text-left p-6 md:p-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg"
+                className="w-full text-left p-6 md:p-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-none"
               >
                 {/* Question */}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors motion-snap">
                       {story.question}
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
@@ -160,7 +147,7 @@ const ProofStorySection = () => {
                   <div className="flex-shrink-0">
                     <ChevronDown
                       className={cn(
-                        "w-5 h-5 text-muted-foreground transition-transform duration-300",
+                        "w-5 h-5 text-muted-foreground transition-transform motion-snap",
                         expandedId === story.id && "rotate-180"
                       )}
                     />
@@ -175,10 +162,10 @@ const ProofStorySection = () => {
         </div>
 
         {/* Pattern footer */}
-        <div className="mt-16 pt-12 border-t border-border/30">
+        <div className="mt-12 pt-10 border-t border-border/30">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-2">
+              <h4 className="label-mono mb-2">
                 Fitness Religion
               </h4>
               <p className="text-sm text-foreground font-medium">
@@ -187,7 +174,7 @@ const ProofStorySection = () => {
               <span className="text-xs text-primary mt-1 inline-block">✓ Answered by infrastructure</span>
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-2">
+              <h4 className="label-mono mb-2">
                 M & H Eyewear
               </h4>
               <p className="text-sm text-foreground font-medium">
@@ -196,7 +183,7 @@ const ProofStorySection = () => {
               <span className="text-xs text-primary mt-1 inline-block">✓ Answered by three systems</span>
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-[0.16em] text-foreground/50 mb-2">
+              <h4 className="label-mono mb-2">
                 Viera Amber
               </h4>
               <p className="text-sm text-foreground font-medium">

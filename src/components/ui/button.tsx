@@ -6,7 +6,11 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.97] active:duration-100 disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  // Square corners and a 120ms release. Rounded corners plus a 300ms ease is
+  // the default shape of a component library, which is why it reads as one;
+  // sharp edges and a fast settle read as something built on purpose. The
+  // easing curve is a quint-out — it leaves immediately and lands softly.
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none text-sm font-semibold ring-offset-background transition-all motion-snap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.97] active:duration-75 disabled:pointer-events-none disabled:opacity-50 disabled:active:scale-100 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -21,13 +25,16 @@ const buttonVariants = cva(
         glass: "bg-card/50 backdrop-blur-md border border-border/50 text-foreground hover:bg-card/70 hover:border-primary/50",
         subtle: "bg-transparent border-2 border-primary/50 text-primary hover:bg-primary/10 hover:border-primary transition-colors",
         subtleSecondary: "bg-transparent border-2 border-secondary/50 text-secondary hover:bg-secondary/10 hover:border-secondary transition-colors",
-        pill: "bg-primary text-primary-foreground rounded-full font-bold hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.6)] transition-all duration-300",
+        // Name kept for the existing call sites; the geometry is now square
+        // like everything else. A lone pill among sharp edges reads as a
+        // leftover, not an accent.
+        pill: "bg-primary text-primary-foreground font-bold hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.6)]",
       },
       size: {
         default: "h-11 px-6 py-2",
-        sm: "h-9 rounded-md px-4",
-        lg: "h-14 rounded-xl px-8 text-base",
-        xl: "h-16 rounded-xl px-10 text-lg",
+        sm: "h-9 px-4",
+        lg: "h-14 px-8 text-base",
+        xl: "h-16 px-10 text-lg",
         icon: "h-10 w-10",
       },
     },

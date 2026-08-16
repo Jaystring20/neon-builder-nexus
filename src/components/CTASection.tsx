@@ -118,9 +118,9 @@ const CTASection = () => {
               <div className="text-center mb-10">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">
                   {step < 3 ? (
-                    <>Architect Your <span className="gradient-text">Project Brief</span></>
+                    <>Architect Your <span className="text-primary">Project Brief</span></>
                   ) : (
-                    <>Blueprint <span className="gradient-text">Submitted</span></>
+                    <>Blueprint <span className="text-primary">Submitted</span></>
                   )}
                 </h2>
                 {step < 3 && (

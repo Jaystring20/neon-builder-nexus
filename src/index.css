@@ -1,33 +1,44 @@
+/* Must come first — CSS requires @import before any other statement, and
+   Vite was warning on this. Left after @tailwind it is a silent no-op risk. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600;1,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600;1,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
-
 @layer base {
   :root {
-    /* Dark theme - primary colors */
+    /* Dark theme - primary colors.
+       The accent pair keeps its near-complementary hue relationship (cyan ~180
+       against warm ~22) because that relationship was never the problem — the
+       execution was. Both were previously set at 100% saturation, which is the
+       single most recognisable signature of a generated dark tech site and
+       optically glares at display sizes. Saturation is now pulled back to 58%
+       and 72%: unmistakably the same identity, no longer shouting. The accents
+       also now carry different weights rather than competing as equal neons —
+       cyan is the dominant voice, warm is punctuation and so holds slightly
+       more saturation over its much smaller area. */
     --background: 220 25% 8%;
-    --foreground: 180 100% 95%;
+    /* Body text was a 100%-saturation cyan-tinted white; a faint cool cast
+       keeps brand coherence without the text itself reading as coloured. */
+    --foreground: 180 12% 94%;
 
     --card: 220 25% 12%;
-    --card-foreground: 180 100% 95%;
+    --card-foreground: 180 12% 94%;
 
     --popover: 220 25% 10%;
-    --popover-foreground: 180 100% 95%;
+    --popover-foreground: 180 12% 94%;
 
-    /* Neon Cyan primary */
-    --primary: 180 100% 50%;
+    --primary: 178 58% 56%;
     --primary-foreground: 220 25% 8%;
 
-    /* Neon Orange secondary */
-    --secondary: 25 100% 55%;
+    --secondary: 22 72% 56%;
     --secondary-foreground: 220 25% 8%;
 
     --muted: 220 20% 18%;
     --muted-foreground: 220 15% 60%;
 
-    --accent: 25 100% 55%;
+    --accent: 22 72% 56%;
     --accent-foreground: 220 25% 8%;
 
     --destructive: 0 84% 60%;
@@ -35,43 +46,53 @@
 
     --border: 220 20% 20%;
     --input: 220 20% 18%;
-    --ring: 180 100% 50%;
+    --ring: 178 58% 56%;
 
-    --radius: 0.75rem;
+    /* Square. Rounded corners are the single strongest "built from a
+       component library" signal; removing the radius does more to make the
+       page look authored than any amount of colour work. */
+    --radius: 0rem;
+
+    /* Two border weights, not one. The hairline separates sections without
+       drawing a line the eye stops on; the heavier value is for anything
+       that needs to read as an actual edge (inputs, focus rings, cards). */
+    --hairline: 0 0% 100%;      /* used as hsl(var(--hairline) / 0.05) */
+    --edge: 0 0% 100%;          /* used as hsl(var(--edge) / 0.12) */
 
     /* Custom design tokens */
-    --neon-cyan: 180 100% 50%;
-    --neon-orange: 25 100% 55%;
-    --neon-cyan-glow: 180 100% 60%;
-    --neon-orange-glow: 25 100% 65%;
+    --neon-cyan: 178 58% 56%;
+    --neon-orange: 22 72% 56%;
+    --neon-cyan-glow: 178 58% 64%;
+    --neon-orange-glow: 22 72% 64%;
     --dark-navy: 220 25% 8%;
     --dark-surface: 220 25% 12%;
     --dark-elevated: 220 25% 16%;
 
     /* Gradients */
     --gradient-hero: linear-gradient(135deg, hsl(220 25% 8%) 0%, hsl(220 30% 12%) 50%, hsl(220 25% 8%) 100%);
-    --gradient-cyan: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(180 100% 40%) 100%);
-    --gradient-orange: linear-gradient(135deg, hsl(25 100% 55%) 0%, hsl(35 100% 50%) 100%);
-    --gradient-mixed: linear-gradient(135deg, hsl(180 100% 50%) 0%, hsl(25 100% 55%) 100%);
+    --gradient-cyan: linear-gradient(135deg, hsl(178 58% 56%) 0%, hsl(178 58% 44%) 100%);
+    --gradient-orange: linear-gradient(135deg, hsl(22 72% 56%) 0%, hsl(32 72% 52%) 100%);
+    --gradient-mixed: linear-gradient(135deg, hsl(178 58% 56%) 0%, hsl(22 72% 56%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(220 25% 14%) 0%, hsl(220 25% 10%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(180 100% 50% / 0.15) 0%, transparent 70%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(178 58% 56% / 0.12) 0%, transparent 70%);
 
-    /* Shadows with neon glow */
-    --shadow-cyan: 0 0 30px hsl(180 100% 50% / 0.4);
-    --shadow-orange: 0 0 30px hsl(25 100% 55% / 0.4);
-    --shadow-cyan-intense: 0 0 60px hsl(180 100% 50% / 0.6);
+    /* Accent glows. Alpha is reduced alongside the desaturation — a softened
+       hue behind a heavy halo still reads as neon, so both had to move. */
+    --shadow-cyan: 0 0 30px hsl(178 58% 56% / 0.22);
+    --shadow-orange: 0 0 30px hsl(22 72% 56% / 0.22);
+    --shadow-cyan-intense: 0 0 60px hsl(178 58% 56% / 0.32);
     --shadow-card: 0 10px 40px hsl(220 50% 3% / 0.5);
     --shadow-elevated: 0 20px 50px hsl(220 50% 3% / 0.7);
 
     /* Sidebar */
     --sidebar-background: 220 25% 10%;
-    --sidebar-foreground: 180 100% 95%;
-    --sidebar-primary: 180 100% 50%;
+    --sidebar-foreground: 180 12% 94%;
+    --sidebar-primary: 178 58% 56%;
     --sidebar-primary-foreground: 220 25% 8%;
     --sidebar-accent: 220 25% 16%;
-    --sidebar-accent-foreground: 180 100% 95%;
+    --sidebar-accent-foreground: 180 12% 94%;
     --sidebar-border: 220 20% 20%;
-    --sidebar-ring: 180 100% 50%;
+    --sidebar-ring: 178 58% 56%;
 
     /* Inverse / cream surface tokens (for light "exhale" sections) */
     --surface-inverse: 45 30% 96%;
@@ -83,7 +104,7 @@
 
   .dark {
     --background: 220 25% 8%;
-    --foreground: 180 100% 95%;
+    --foreground: 180 12% 94%;
   }
 }
 
@@ -271,19 +292,78 @@
     opacity: 0.5;
   }
 
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-mixed);
-  }
-
+  /* 64px, flat across breakpoints — matching the section rhythm the new
+     homepage sections use. A ramp from 48 to 96px made the same page read
+     at different densities depending on window width; one value keeps the
+     vertical beat constant, which is what makes a long page feel composed
+     rather than assembled. */
   .section-padding {
-    @apply py-12 md:py-20 lg:py-24;
+    @apply py-16;
   }
 
   .container-narrow {
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* Small uppercase mono label. Measured off the reference: ~10px, +0.09em,
+     muted — it reads as a machine annotation rather than decoration, which
+     is what lets it sit next to a headline without competing. Use for
+     section eyebrows, metric labels, and title-block keys. */
+  .label-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Hairline rule between sections — 5% white, not a border token at 30%.
+     Loud separators chop a page into boxes; this one just registers. */
+  .rule-hairline {
+    border-top: 1px solid hsl(var(--hairline) / 0.05);
+  }
+
+}
+
+/* The motion system, as two real classes rather than arbitrary Tailwind
+   values. `duration-[120ms]` is ambiguous in Tailwind 3 — it matches both
+   transition-duration and animation-duration, so the class silently never
+   gets generated. Defining them here also means the whole site's timing is
+   tunable from one place.
+
+   These live in the utilities layer, not components: they sit alongside
+   `transition-all`, which ships its own 150ms duration and default ease.
+   From the components layer they lose the cascade and do nothing. The
+   doubled selector adds one point of specificity so the override holds
+   regardless of the order Tailwind emits utilities in.
+
+   The curve is a quint-out: it leaves immediately and lands soft, which is
+   what makes a fast duration feel deliberate rather than abrupt. */
+@layer utilities {
+  .motion-snap.motion-snap {
+    transition-duration: 120ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* For height/opacity reveals. 120ms on a collapsing panel reads as a
+     glitch rather than a movement, so disclosure gets its own, longer beat
+     while still landing well under the 500ms it used to take. */
+  .motion-reveal.motion-reveal {
+    transition-duration: 240ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-snap.motion-snap,
+    .motion-reveal.motion-reveal {
+      transition-duration: 0.01ms;
+    }
+  }
+}
+
+/* Back into the components layer for the rest of the shared classes. */
+@layer components {
   /* Light "exhale" surface — flips background, text, borders, muted, cards */
   .section-inverse {
     background-color: hsl(var(--surface-inverse));
@@ -311,10 +391,6 @@
     color: hsl(var(--primary));
   }
 
-  .section-inverse .gradient-text {
-    background-image: linear-gradient(135deg, hsl(184 70% 26%) 0%, hsl(22 85% 38%) 100%);
-  }
-
   .font-serif-display {
     font-family: 'Playfair Display', Georgia, serif;
     font-style: italic;
@@ -322,7 +398,7 @@
   }
 
   .font-display-bold {
-    font-family: 'Bricolage Grotesque', 'Montserrat', system-ui, sans-serif;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
     font-weight: 800;
     font-stretch: 110%;
     letter-spacing: -0.035em;
@@ -330,10 +406,41 @@
   }
 
   .font-display-refined {
-    font-family: 'Bricolage Grotesque', 'Montserrat', system-ui, sans-serif;
-    font-weight: 500;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight: 400;
     letter-spacing: -0.025em;
     line-height: 1;
+  }
+
+  /* Subtle tactile grain — breaks up flat dark gradients without adding visual noise */
+  .grain-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Drafting substrate — an engineering-drawing plane, not a generic tech grid.
+     The distinction is hierarchy: fine 40px divisions under heavier 200px major
+     rules, the way real drafting paper is ruled. A uniform grid reads as "tech
+     wallpaper"; ruled hierarchy reads as measured. Brand colour arrives through
+     the major rules themselves rather than through a separate glow, so the
+     structure carries the cyan instead of a blur blob sitting behind it. */
+  .blueprint-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(to right, hsl(var(--neon-cyan) / 0.06) 0 1px, transparent 1px 200px),
+      repeating-linear-gradient(to bottom, hsl(var(--neon-cyan) / 0.06) 0 1px, transparent 1px 200px),
+      repeating-linear-gradient(to right, hsl(var(--foreground) / 0.022) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(to bottom, hsl(var(--foreground) / 0.022) 0 1px, transparent 1px 40px);
+    /* Focal point sits left of centre to follow the left-aligned composition —
+       a centred mask would pull weight away from where the headline actually is. */
+    -webkit-mask-image: radial-gradient(ellipse 82% 70% at 38% 46%, #000 0%, #000 38%, transparent 84%);
+            mask-image: radial-gradient(ellipse 82% 70% at 38% 46%, #000 0%, #000 38%, transparent 84%);
   }
 
   .hero-glow-halo {

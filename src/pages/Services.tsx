@@ -21,18 +21,15 @@ const Services = () => {
       <section className="section-padding pt-32 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow animation-delay-500" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse-slow animation-delay-500" />
         </div>
 
         <div className="container-narrow relative z-10">
           <ScrollReveal>
             <div className="text-center max-w-4xl mx-auto">
-              <span className="inline-block px-4 py-2 rounded-full border border-primary/30 bg-primary/5 text-primary text-sm font-medium mb-6">
-                The Growth Architect's Toolkit
-              </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                We Build the <span className="gradient-text">Systems</span> That{" "}
-                <span className="text-secondary font-semibold">Grow</span> the Brand
+                We Build the <span className="text-primary">Systems</span> That{" "}
+                <span className="text-foreground font-semibold">Grow</span> the Brand
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
                 Four pillars of execution. One unified engine. From brand architecture to AI-powered automation — we engineer the infrastructure that turns vision into velocity.
@@ -56,9 +53,7 @@ const Services = () => {
         <div className="container-narrow">
           <div className="space-y-16">
             {serviceCategories.map((category, index) => {
-              const colorClass = category.color === "primary" ? "text-primary" : "text-secondary";
-              const borderColor = category.color === "primary" ? "border-primary/30" : "border-secondary/30";
-              const bgColor = category.color === "primary" ? "bg-primary/10" : "bg-secondary/10";
+              const colorClass = category.color === "primary" ? "text-primary" : "text-primary";
 
               return (
                 <ScrollReveal key={category.slug}>
@@ -66,12 +61,12 @@ const Services = () => {
                     <div className="grid md:grid-cols-2 gap-8 items-start">
                       {/* Left: Info */}
                       <div>
-                        <span className={`inline-block px-3 py-1 rounded-full border ${borderColor} ${bgColor} ${colorClass} text-xs font-medium mb-4 uppercase tracking-wider`}>
-                          {category.tagline}
-                        </span>
-                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-foreground">
+                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-1 text-foreground">
                           {category.title}
                         </h2>
+                        <p className={`font-serif-display text-lg mb-4 ${colorClass}`}>
+                          {category.tagline}
+                        </p>
                         <p className="text-muted-foreground mb-6 leading-relaxed">
                           {category.description}
                         </p>
@@ -114,7 +109,7 @@ const Services = () => {
               </div>
               <div className="relative z-10">
                 <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Ready to <span className="text-secondary font-semibold">Architect</span> Your Growth?
+                  Ready to <span className="text-foreground font-semibold">Architect</span> Your Growth?
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto mb-8">
                   Every empire starts with a blueprint. Let's build yours.

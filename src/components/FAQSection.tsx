@@ -32,11 +32,9 @@ const FAQ_ITEMS: FAQItem[] = [
     id: "cost",
     question: "How much does this cost?",
     answer: [
-      "It depends on the scope of what you're building:",
-      "Small system (one core question, limited scope): Starting at $40K–$80K",
-      "Medium system (multiple connected capabilities, multi-team): Starting at $120K–$250K",
-      "Complex system (five+ integrated businesses, scale from day one): Starting at $300K+",
-      "We'll know the real cost after the discovery call. We never estimate before we understand the question.",
+      "It depends on the scope of what you're building.",
+      "A single system with one core question costs less than a set of connected capabilities across multiple teams, which costs less than an architecture that has to hold several integrated businesses at scale from day one.",
+      "We'll give you a real number after the discovery call. We never quote before we understand the question.",
     ],
   },
   {
@@ -78,14 +76,14 @@ const FAQItemComponent: React.FC<FAQItemComponentProps> = ({ item, isExpanded, o
     <div className="border-b border-border/30 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full text-left py-6 flex items-start justify-between gap-4 hover:text-primary transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded px-1"
+        className="w-full text-left py-6 flex items-start justify-between gap-4 hover:text-primary transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 px-1"
       >
         <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors flex-1">
           {item.question}
         </h3>
         <ChevronDown
           className={cn(
-            "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-300",
+            "w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform motion-snap",
             isExpanded && "rotate-180"
           )}
         />
@@ -94,7 +92,7 @@ const FAQItemComponent: React.FC<FAQItemComponentProps> = ({ item, isExpanded, o
       {/* Expanded answer */}
       <div
         className={cn(
-          "overflow-hidden transition-all duration-500",
+          "overflow-hidden transition-all motion-reveal",
           isExpanded ? "max-h-[1000px] opacity-100 pb-6" : "max-h-0 opacity-0"
         )}
       >
@@ -122,10 +120,10 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative py-20 md:py-28 overflow-hidden">
+    <section className="relative py-16 overflow-hidden">
       <div className="container-narrow relative z-10">
         {/* Header */}
-        <div className="max-w-2xl mb-16">
+        <div className="max-w-2xl mb-12">
           <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-4">
             Asked Questions
           </h2>
@@ -147,7 +145,7 @@ const FAQSection = () => {
         </div>
 
         {/* Follow-up CTA */}
-        <div className="mt-16 pt-12 border-t border-border/30 max-w-2xl">
+        <div className="mt-12 pt-10 border-t border-border/30 max-w-2xl">
           <p className="text-sm text-muted-foreground mb-4">
             Have a different question? Let's talk about it.
           </p>

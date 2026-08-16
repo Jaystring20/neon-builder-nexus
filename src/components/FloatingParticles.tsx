@@ -22,8 +22,11 @@ const FloatingParticles = ({ count = 15, className = "" }: FloatingParticlesProp
 
   useEffect(() => {
     const shapes: Particle["shape"][] = ["circle", "square", "triangle", "ring"];
-    const colors: Particle["color"][] = ["primary", "secondary"];
-    
+    // Cyan only. Randomly colouring half the field orange spent the emphasis
+    // accent on background decoration — the one place it can carry no meaning
+    // at all, since a drifting particle is not pointing at anything.
+    const colors: Particle["color"][] = ["primary"];
+
     const generated = Array.from({ length: count }, (_, i) => ({
       id: i,
       x: Math.random() * 100,

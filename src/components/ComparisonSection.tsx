@@ -55,12 +55,9 @@ const ComparisonSection = () => {
 
       <div className="container-narrow relative z-10">
         <div className="mb-12 text-center md:mb-16">
-          <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-            DCH vs. The Alternatives
-          </span>
           <h2 className="mb-4 font-heading text-3xl font-bold md:text-4xl lg:text-5xl">
             Hiring an agency, freelancers, or AI tools?{" "}
-            <span className="gradient-text">None of the above.</span>
+            <span className="text-primary">None of the above.</span>
           </h2>
           <p className="mx-auto max-w-2xl text-base text-muted-foreground md:text-lg">
             We're a Growth Architect — pairing strategic creative with AI-first systems so you ship

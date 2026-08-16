@@ -1,5 +1,4 @@
 import { ArrowRight, Mail, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const ContactCTASection = () => {
   return (
@@ -15,31 +14,10 @@ const ContactCTASection = () => {
           </p>
         </div>
 
-        {/* CTA Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {/* Book a Call */}
-          <a
-            href="https://cal.com/dch"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative rounded-lg border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-primary/30 hover:bg-card/50 transition-all duration-300"
-          >
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
-                  Book a Call
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  30-minute discovery conversation to understand your project.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                Let's talk
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </div>
-          </a>
-
+        {/* One route in, not two. A booking card used to sit beside this
+            pointing at a scheduling link the studio doesn't use — a single
+            real path beats a real one next to a dead one. */}
+        <div className="mb-16 max-w-xl">
           {/* Send Your Brief */}
           <a
             href="mailto:hello@digitalcreativeshub.com?subject=Project%20Brief"
@@ -71,7 +49,7 @@ const ContactCTASection = () => {
               Where We're Built
             </h3>
             <p className="text-sm text-muted-foreground">
-              Lagos, Nigeria. New York, USA. Remote, everywhere.
+              Headquartered in Lagos, Nigeria. Operating globally.
             </p>
             <p className="text-xs text-muted-foreground mt-2">
               We work in distributed teams. Time zones aren't a constraint—they're a feature.

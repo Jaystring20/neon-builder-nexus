@@ -57,42 +57,6 @@ export const portfolioProjects: PortfolioProject[] = [
     },
   },
   {
-    id: "viera-viva",
-    title: "VIVA",
-    category: "Fashion Commerce",
-    description:
-      "Contemporary made-to-order fashion inside the Viera Amber ecosystem — every garment produced only after it is ordered, so nothing goes to waste.",
-    tags: ["E-commerce", "Made-to-Order", "Fashion"],
-    url: "https://vieraamber.com/viva",
-    displayDomain: "vieraamber.com/viva",
-    icon: Shirt,
-    image: vieraVivaImg,
-    story: {
-      problem:
-        "Made-to-order means nothing is stocked. The storefront has to sell intent before the garment exists.",
-      built: ["Made-to-order flow", "Collection storytelling", "Zero-waste ordering"],
-      outcome: "Every garment made only after it's ordered.",
-    },
-  },
-  {
-    id: "viera-illustrations",
-    title: "Illustrations & Designs",
-    category: "Creative Studio",
-    description:
-      "The illustration arm of Viera Amber — digital illustration and bespoke brand identity, from editorial campaigns to custom commissions.",
-    tags: ["Illustration", "Brand Identity", "Commissions"],
-    url: "https://vieraamber.com/illustrations",
-    displayDomain: "vieraamber.com/illustrations",
-    icon: Palette,
-    image: vieraIllustrationsImg,
-    story: {
-      problem:
-        "Bespoke commission work has to be sold from a catalogue of pieces that do not exist until someone asks for them.",
-      built: ["Commission pipeline", "Portfolio system", "Licensing paths"],
-      outcome: "Art that wears itself.",
-    },
-  },
-  {
     id: "innerspace",
     title: "Innerspace",
     category: "Interior Design",
@@ -138,7 +102,6 @@ export const portfolioProjects: PortfolioProject[] = [
     url: "https://mandheyewear.com/",
     displayDomain: "mandheyewear.com",
     icon: Stethoscope,
-    image: mhEyewearImg,
     story: {
       problem:
         "Frames at ₦1.9M sell on fit, and fit is the one thing that cannot be shipped ahead of the sale.",

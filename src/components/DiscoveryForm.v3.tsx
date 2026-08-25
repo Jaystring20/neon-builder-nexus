@@ -168,7 +168,7 @@ const questions: DiscoveryQuestion[] = [
     subtitle: "Can you lead, delegate, and build culture?",
     type: "scale",
     labels: ["Never", "Once", "Few times", "Several", "Built culture"],
-    followUpTrigger: () => true,
+    followUpTrigger: (answer) => answer >= 2, // Only if they have some experience
     followUp: {
       question: "Do you want to build a team?",
       type: "single_select",
@@ -473,6 +473,35 @@ export function DiscoveryFormV3() {
                         onClick={() => handleAnswer(currentQ.id, opt.value)}
                         className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                           formState[currentQ.id as keyof FormState] === opt.value
+                            ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                            : "border-slate-200 dark:border-slate-700 hover:border-cyan-300 dark:hover:border-cyan-600"
+                        }`}
+                      >
+                        <span className="font-medium text-slate-900 dark:text-slate-50">
+                          {opt.label}
+                        </span>
+                      </motion.button>
+                    ))}
+                  </>
+                )}
+
+                {currentQ.type === "multi_select" && currentQ.options && (
+                  <>
+                    {currentQ.options.map((opt) => (
+                      <motion.button
+                        key={opt.value}
+                        initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        onClick={() => {
+                          const current = (formState[currentQ.id as keyof FormState] as string[]) || [];
+                          if (current.includes(opt.value)) {
+                            handleAnswer(currentQ.id, current.filter(v => v !== opt.value));
+                          } else {
+                            handleAnswer(currentQ.id, [...current, opt.value]);
+                          }
+                        }}
+                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                          (formState[currentQ.id as keyof FormState] as string[])?.includes(opt.value)
                             ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
                             : "border-slate-200 dark:border-slate-700 hover:border-cyan-300 dark:hover:border-cyan-600"
                         }`}

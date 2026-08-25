@@ -18,7 +18,8 @@ import {
   generateEmail2,
   generateEmail3,
   sendEmailViaResend,
-} from "../lib/resend";
+  type EmailContext,
+} from "../lib/resend.v3";
 import { getProgramBySegment } from "../data/programDefinitions";
 
 // ============================================================
@@ -96,8 +97,9 @@ export default async function handler(
       // Continue anyway—emails are more important than storage
     }
 
-    // Prepare email context (personalization data)
-    const emailContext = {
+    // Prepare email context (personalization data for all 3 emails)
+    // v3: Full personalization using actual founder answers
+    const emailContext: EmailContext = {
       vision: answers.q2_vision,
       values: answers.q3_values,
       challenge: answers.q9_challenge,
@@ -132,7 +134,7 @@ export default async function handler(
     // For now, we'll schedule via environment-specific setup
 
     try {
-      await scheduleFollowupEmails(email, segment, program, founderName);
+      await scheduleFollowupEmails(email, segment, program, founderName, answers, emailContext);
     } catch (err) {
       console.error("Failed to schedule follow-up emails:", err);
       // Don't fail the response—Email 1 was sent successfully
@@ -173,7 +175,9 @@ async function scheduleFollowupEmails(
   email: string,
   segment: any,
   program: any,
-  founderName: string
+  founderName: string,
+  answers: DiscoveryAnswers,
+  emailContext: EmailContext
 ) {
   // Option 1: Using Supabase scheduled functions (if available)
   // This assumes you have a scheduled task runner configured
@@ -185,17 +189,8 @@ async function scheduleFollowupEmails(
   const email2ScheduledTime = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 1 day
   const email3ScheduledTime = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
 
-  // Prepare email context for consistency across all emails
-  const emailContext = {
-    vision: (segment as any).answers?.q2_vision,
-    values: (segment as any).answers?.q3_values,
-    challenge: (segment as any).answers?.q9_challenge,
-    priority: (segment as any).answers?.q10_priority,
-    revenueModel: (segment as any).answers?.q7_revenue,
-    scale: (segment as any).answers?.q6_scale,
-  };
-
-  // Generate email payloads
+  // Generate email payloads using the same context passed from main handler
+  // This ensures Email 2 and 3 have the same personalization as Email 1
   const email2Payload = generateEmail2(founderName, email, segment, program, emailContext);
   const email3Payload = generateEmail3(founderName, email, segment, program, emailContext);
 

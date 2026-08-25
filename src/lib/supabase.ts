@@ -30,7 +30,7 @@ export interface DiscoveryRecord {
   email: string;
   segment: string;
   program: string;
-  answers: Record<string, any>; // Full Q1-Q10 answers
+  answers: Record<string, any>; // Full Q1-Q12 answers (including capability assessment)
   capability_gap?: string;
   created_at?: string;
   updated_at?: string;

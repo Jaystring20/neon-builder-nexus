@@ -96,8 +96,23 @@ export default async function handler(
       // Continue anyway—emails are more important than storage
     }
 
+    // Prepare email context (personalization data)
+    const emailContext = {
+      vision: answers.q2_vision,
+      values: answers.q3_values,
+      challenge: answers.q9_challenge,
+      priority: answers.q10_priority,
+      revenueModel: answers.q7_revenue,
+      scale: answers.q6_scale,
+      expertise: answers.q4_expertise,
+      management: answers.q4_management,
+      leadership: answers.q4_leadership,
+      advantage: answers.q8_advantage,
+      pressure: answers.q5_pressure,
+    };
+
     // Send Email 1 (immediate)
-    const email1Payload = generateEmail1(founderName, email, segment, program);
+    const email1Payload = generateEmail1(founderName, email, segment, program, emailContext);
     const email1Sent = await sendEmailViaResend(email1Payload);
 
     if (!email1Sent) {
@@ -170,9 +185,19 @@ async function scheduleFollowupEmails(
   const email2ScheduledTime = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 1 day
   const email3ScheduledTime = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
 
+  // Prepare email context for consistency across all emails
+  const emailContext = {
+    vision: (segment as any).answers?.q2_vision,
+    values: (segment as any).answers?.q3_values,
+    challenge: (segment as any).answers?.q9_challenge,
+    priority: (segment as any).answers?.q10_priority,
+    revenueModel: (segment as any).answers?.q7_revenue,
+    scale: (segment as any).answers?.q6_scale,
+  };
+
   // Generate email payloads
-  const email2Payload = generateEmail2(founderName, email, segment, program);
-  const email3Payload = generateEmail3(founderName, email, segment, program);
+  const email2Payload = generateEmail2(founderName, email, segment, program, emailContext);
+  const email3Payload = generateEmail3(founderName, email, segment, program, emailContext);
 
   // Store in database for later processing
   // (Assumes you have a scheduled_emails table in Supabase)

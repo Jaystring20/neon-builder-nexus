@@ -78,121 +78,85 @@ interface DiscoveryQuestion {
 
 const questions: DiscoveryQuestion[] = [
   {
-    id: "q1_current_situation",
+    id: "q1_brings_you",
     section: "Foundation",
-    question: "What's your current situation?",
-    subtitle: "Where are you right now with your business?",
+    question: "Where are you in your journey?",
+    subtitle: "What stage are you at right now?",
     type: "single_select",
     options: [
-      { value: "idea", label: "Just have an idea / concept stage" },
-      { value: "building_v1", label: "Building the first version / MVP" },
-      { value: "early_revenue", label: "Got early customers / revenue starting" },
-      { value: "steady", label: "Growing steadily / established revenue" },
-      { value: "scaling", label: "Scaling fast / raising capital" },
-      { value: "plateau", label: "Plateaued / hitting a ceiling" },
-      { value: "unsure", label: "Not sure where I am" },
+      { value: "starting", label: "Starting from scratch" },
+      { value: "building", label: "Building early (pre-product fit)" },
+      { value: "scaling", label: "Scaling (product-market fit, growing fast)" },
+      { value: "team", label: "Building a team / hiring" },
+      { value: "confused", label: "Honestly, I'm confused about where I am" },
     ],
-    followUpTrigger: (answer) => answer === "plateau" || answer === "unsure",
+    followUpTrigger: (answer) => answer === "confused",
     followUp: {
-      question: "Tell us more about your situation:",
+      question: "Tell us more about what's confusing:",
       type: "text_input",
     },
     getInsight: (answer: string) => {
       const insights: Record<string, string> = {
-        idea: "You have room to shape your model deliberately. Most founders don't have that advantage.",
-        building_v1: "This is when foundational decisions matter most. Revenue model, positioning, and team structure start NOW.",
-        early_revenue: "You've proven traction. Now the question is: what's the sustainable model?",
-        steady: "Steady revenue is stable. The question is: do you want to scale this, or is this the goal?",
-        scaling: "Fast scaling requires different skills than getting to this point. Team, systems, and unit economics become critical.",
-        plateau: "Hitting a ceiling is usually a model signal, not an execution signal. Which ceiling: revenue per customer, hours capacity, team leverage?",
-        unsure: "Not knowing where you are usually means your model isn't clear yet. That's actually the conversation we need to have.",
+        starting: "Starting gives you freedom. You can shape your business model deliberately.",
+        building: "Building early is the hardest phase. Decisions now ripple forever.",
+        scaling: "Scaling means your model works. Now it's about systems and team.",
+        team: "Building a team changes everything. It requires different skills.",
+        confused: "Confusion is real. Let's get specific about what's actually happening.",
       };
       return insights[answer] || "";
     },
   },
 
   {
-    id: "q2_core_business",
+    id: "q2_vision",
     section: "Foundation",
-    question: "How would you describe your core business?",
-    subtitle: "What do you actually do?",
-    type: "single_select",
-    options: [
-      { value: "solve_problem", label: "Solving a specific problem for customers" },
-      { value: "provide_service", label: "Providing a service or skill they need" },
-      { value: "sell_product", label: "Selling a product/software they want" },
-      { value: "create_impact", label: "Creating social or environmental impact" },
-      { value: "hybrid", label: "Combination of above" },
-      { value: "unsure", label: "Not sure how to describe it" },
-    ],
-    followUpTrigger: (answer) => answer === "hybrid" || answer === "unsure",
-    followUp: {
-      question: "Describe your business model more:",
-      type: "text_input",
-    },
+    question: "What are you building?",
+    subtitle: "In 1-2 sentences, what's the vision?",
+    type: "text_input",
+    placeholder: "A premium interior design studio for high-net-worth clients...",
     getInsight: (answer: string) => {
-      const insights: Record<string, string> = {
-        solve_problem: "Problem-solving businesses scale by reaching more people with the solution.",
-        provide_service: "Service businesses scale by leverage: productizing, systemizing, or building a team.",
-        sell_product: "Product businesses scale by improving unit economics and distribution.",
-        create_impact: "Impact businesses need a sustainable revenue model. Impact + money is the real conversation.",
-        hybrid: "Hybrid models are real, but they require clarity on which is primary and which is secondary.",
-        unsure: "Not knowing how to describe your business usually means it's not yet defined. That's the work ahead.",
-      };
-      return insights[answer] || "";
+      if (answer.length < 20) return "Tell us more. What problem does this solve?";
+      return "This is the foundation. Everything flows from this vision.";
     },
   },
 
   {
     id: "q3_values",
     section: "Foundation",
-    question: "What actually drives your decisions?",
-    subtitle: "What matters most when you choose what to do next?",
+    question: "What matters most to you?",
+    subtitle: "Pick 1-3 values that guide your decisions",
     type: "multi_select",
     options: [
-      { value: "impact", label: "Impact: Making real difference" },
-      { value: "growth", label: "Growth: Expanding reach or revenue" },
-      { value: "quality", label: "Quality: Obsessive excellence" },
-      { value: "freedom", label: "Freedom: Autonomy and control" },
-      { value: "profitability", label: "Profitability: Making money" },
-      { value: "speed", label: "Speed: Move fast, iterate" },
-      { value: "sustainability", label: "Sustainability: Long-term viability" },
+      { value: "Impact", label: "Impact: Making real difference" },
+      { value: "Quality", label: "Quality: Obsessive excellence" },
+      { value: "Growth", label: "Growth: Expanding reach or revenue" },
+      { value: "Freedom", label: "Freedom: Autonomy and control" },
+      { value: "Money", label: "Money: Profitability" },
+      { value: "Speed", label: "Speed: Move fast" },
+      { value: "Sustainability", label: "Sustainability: Long-term viability" },
     ],
-    followUpTrigger: (answer) => {
-      // If they select conflicting values
-      const hasGrowth = answer?.includes("growth");
-      const hasFreedom = answer?.includes("freedom");
-      return (hasGrowth && hasFreedom) || answer?.length === 0;
-    },
-    followUp: {
-      question: "When your values conflict (e.g., growth vs. freedom), which usually wins?",
-      type: "text_input",
-    },
     getInsight: (answer: string[]) => {
-      if (answer?.includes("impact")) {
-        return "Impact-driven founders often struggle with the money conversation. Impact + sustainable revenue is the real model.";
+      if (answer?.includes("Growth") && answer?.includes("Freedom")) {
+        return "Growth and freedom can conflict. Scaling usually requires giving up some autonomy.";
       }
-      if (answer?.includes("growth") && answer?.includes("freedom")) {
-        return "Growth and freedom can conflict. Venture scale requires team/capital; lifestyle scale means staying lean.";
+      if (answer?.includes("Impact")) {
+        return "Impact-driven founders often struggle with the money conversation. You need both.";
       }
-      if (answer?.includes("quality")) {
-        return "Quality-focused businesses are usually premium positioned. The question is: are you protecting that positioning?";
-      }
-      return "Your values reveal your actual priorities. Everything flows from this.";
+      return "Your values reveal what you'll protect. Everything else is negotiable.";
     },
   },
 
   {
-    id: "q4_capabilities",
+    id: "q4_expertise",
     section: "Capabilities",
-    question: "How would you rate your expertise in your domain?",
+    question: "How would you rate your domain expertise?",
     subtitle: "What's your actual domain knowledge?",
     type: "scale",
-    labels: ["Beginner", "Some experience", "Competent", "Expert", "Master"],
+    labels: ["Beginner", "Some", "Good", "Strong", "Master"],
     getInsight: (answer: number) => {
-      if (answer <= 2) return "You're learning as you go. That's fine for some models (startup, developing product), risky for others (professional service).";
-      if (answer === 3) return "Competent is the minimum for most models. Growth depends on leveraging this competence.";
-      if (answer >= 4) return "Domain expertise is valuable. The question is: are you protecting it (premium) or scaling it (product/team)?";
+      if (answer <= 1) return "You're learning as you go. That works for some models, not others.";
+      if (answer <= 2) return "Domain basics are there. Growth depends on deepening this.";
+      if (answer >= 3) return "You have real expertise. The question is: are you protecting or scaling it?";
       return "";
     },
   },
@@ -200,125 +164,95 @@ const questions: DiscoveryQuestion[] = [
   {
     id: "q4_management",
     section: "Capabilities",
-    question: "How would you rate your ability to manage a team?",
+    question: "How would you rate your team management ability?",
     subtitle: "Can you lead, delegate, and build culture?",
     type: "scale",
-    labels: ["Never managed", "Managed 1-2", "Led small team", "Led larger team", "Built culture"],
-    followUpTrigger: (answer) => {
-      // This matters for scaling decisions
-      return true; // Always follow up
-    },
+    labels: ["Never", "Once", "Few times", "Several", "Built culture"],
+    followUpTrigger: () => true,
     followUp: {
-      question: "Do you want to build a team, or would you prefer to stay solo/small?",
+      question: "Do you want to build a team?",
       type: "single_select",
       options: [
-        { value: "solo", label: "Solo/small team is my end goal" },
-        { value: "scale", label: "I want to build a significant team" },
-        { value: "unsure", label: "I'm not sure yet" },
+        { value: "solo", label: "Keep it solo/small" },
+        { value: "scale", label: "Scale with a team" },
+        { value: "unsure", label: "Unsure" },
       ],
-    },
-    getInsight: (answer: number) => {
-      if (answer <= 1) return "You're not a natural team builder (yet). That's fine if solo/small is your goal, but it limits scaling.";
-      if (answer === 2) return "You've managed before. Scaling depends on whether you want to do it again.";
-      if (answer >= 3) return "Team building is a skill you have. The question is: do you want to scale this?";
-      return "";
     },
   },
 
   {
     id: "q4_leadership",
     section: "Capabilities",
-    question: "How would you rate your leadership capabilities?",
+    question: "How would you rate your leadership capability?",
     subtitle: "Can you make hard calls and inspire confidence?",
     type: "scale",
-    labels: ["Still learning", "Growing", "Solid", "Strong", "Exceptional"],
+    labels: ["Developing", "Growing", "Solid", "Strong", "Exceptional"],
   },
 
   {
-    id: "q5_lifestyle",
+    id: "q5_pressure",
     section: "Constraints",
-    question: "What's your actual work capacity right now?",
+    question: "What's your work capacity right now?",
     subtitle: "How much can you work without burning out?",
     type: "single_select",
     options: [
-      { value: "part_time", label: "Part-time / side project" },
-      { value: "full_time", label: "Full-time, but need balance (40-50 hrs/week)" },
-      { value: "all_in", label: "All-in, high intensity (60-80+ hrs/week)" },
-      { value: "variable", label: "Varies by season / project" },
+      { value: "balance", label: "I want balance and sustainability" },
+      { value: "real_but_bounded", label: "I can push hard, but with limits (40-50 hrs/week)" },
+      { value: "80_hours", label: "I'm ready to go all-in (60-80+ hrs/week)" },
+      { value: "mission", label: "Varies by what matters most that season" },
     ],
-    followUpTrigger: (answer) => answer === "variable" || answer === "part_time",
-    followUp: {
-      question: "Tell us about your actual situation:",
-      type: "text_input",
-    },
     getInsight: (answer: string) => {
       const insights: Record<string, string> = {
-        part_time: "Part-time is fine for some models (side projects, long-term builds), but ventures need full-time commitment.",
-        full_time: "Full-time with balance is achievable. The model matters: professional service, premium MSME, or productized offering work here.",
-        all_in: "High intensity is normal for early-stage ventures and volume scaling. Unsustainable long-term unless something changes.",
-        variable: "Variable work means you're juggling. Either commit to one thing, or build a model that works part-time.",
+        balance: "Balance is sustainable. Some models support it; others don't.",
+        real_but_bounded: "Realistic intensity. You can do a lot in those hours.",
+        "80_hours": "High intensity is normal early on. Not sustainable forever.",
+        mission: "You're flexible. That's an advantage.",
       };
       return insights[answer] || "";
     },
   },
 
   {
-    id: "q6_ambition_scale",
+    id: "q6_scale",
     section: "Model",
-    question: "What's your actual geographic ambition?",
-    subtitle: "Where do you want your customers?",
+    question: "What's your geographic scope?",
+    subtitle: "Where do you want customers?",
     type: "single_select",
     options: [
       { value: "local", label: "Local (my city/region)" },
-      { value: "national", label: "National (my country)" },
-      { value: "international", label: "International (global)" },
-      { value: "not_sure", label: "Not sure yet" },
+      { value: "national", label: "National" },
+      { value: "international", label: "International" },
     ],
-    followUpTrigger: (answer) => answer === "not_sure",
-    followUp: {
-      question: "What's holding you back from deciding?",
-      type: "text_input",
-    },
     getInsight: (answer: string) => {
       const insights: Record<string, string> = {
-        local: "Local is strong for premium positioning (relationships matter) and professional services.",
-        national: "National requires systems and scalable model. Can work for product, MSME volume, or productized service.",
-        international: "International is venture-scale thinking. Requires international market fit and capital.",
-        not_sure: "Not knowing your geographic ambition usually means your model isn't clear yet.",
+        local: "Local works well for premium and professional services.",
+        national: "National requires systems and scalable delivery.",
+        international: "International is venture-scale thinking.",
       };
       return insights[answer] || "";
     },
   },
 
   {
-    id: "q7_revenue_model",
+    id: "q7_revenue",
     section: "Model",
-    question: "How do you make money (or plan to)?",
+    question: "How do you make money?",
     subtitle: "What's your revenue model?",
     type: "single_select",
     options: [
-      { value: "one_time", label: "One-time fees per project/transaction" },
-      { value: "recurring", label: "Recurring subscription/retainer" },
-      { value: "hybrid", label: "Both one-time and recurring" },
-      { value: "licensed", label: "Licensing/royalties/affiliate" },
-      { value: "donations", label: "Donations/grants (for impact work)" },
-      { value: "product_plus_service", label: "Product + service combination" },
+      { value: "project", label: "Project-based / one-time fees" },
+      { value: "subscription", label: "Subscription / recurring" },
+      { value: "transaction", label: "Per-transaction / commission" },
+      { value: "upfront", label: "Upfront + ongoing" },
       { value: "unsure", label: "Not sure yet" },
     ],
-    followUpTrigger: (answer) => answer === "unsure" || answer === "hybrid",
-    followUp: {
-      question: "What's your concern or question about your revenue model?",
-      type: "text_input",
-    },
     getInsight: (answer: string) => {
       const insights: Record<string, string> = {
-        one_time: "One-time revenue hits a ceiling: limited by hours (service) or market size (product). Scaling requires different model.",
-        recurring: "Recurring revenue is powerful. Requires acquisition, retention, and unit economics clarity.",
-        hybrid: "Hybrid models are real but require clarity on which is primary and which subsidizes.",
-        licensed: "Licensing is leverage: you build once, get paid multiple times. Requires upfront work.",
-        donations: "Donations work for impact organizations but need to be predictable (not one-time).",
-        product_plus_service: "Product + service is tricky. Clarify: is service a stepping stone to product, or permanent part of model?",
-        unsure: "Not knowing your revenue model is the #1 reason businesses plateau. This is the conversation.",
+        project: "Project revenue scales by hours/projects. It has a ceiling.",
+        subscription: "Subscription is powerful. Requires acquisition and retention focus.",
+        transaction: "Transaction models need volume and unit economics.",
+        upfront: "Upfront creates cash flow. Ongoing builds relationships.",
+        unsure: "Revenue model clarity is critical. This matters.",
       };
       return insights[answer] || "";
     },
@@ -327,105 +261,36 @@ const questions: DiscoveryQuestion[] = [
   {
     id: "q8_advantage",
     section: "Model",
-    question: "Why would a customer choose you instead of an alternative?",
-    subtitle: "What's your actual competitive advantage?",
-    type: "single_select",
-    options: [
-      { value: "unique_access", label: "Unique access or relationships" },
-      { value: "proprietary", label: "Proprietary process or IP" },
-      { value: "expertise", label: "Domain expertise or credibility" },
-      { value: "quality", label: "Superior quality" },
-      { value: "price", label: "Better price" },
-      { value: "speed", label: "Speed or responsiveness" },
-      { value: "values", label: "Values or mission alignment" },
-      { value: "not_sure", label: "Not sure I have one" },
-    ],
-    followUpTrigger: (answer) => answer === "not_sure" || answer === "price",
-    followUp: {
-      question: "If price: Do you have a cost advantage, or are you just undercutting?",
-      type: "single_select",
-      options: [
-        { value: "cost_advantage", label: "I have a structural cost advantage" },
-        { value: "undercutting", label: "I'm undercutting to compete" },
-        { value: "not_sure", label: "Not sure" },
-      ],
-    },
-    getInsight: (answer: string) => {
-      const insights: Record<string, string> = {
-        unique_access: "Unique access is a strong moat. Protect it.",
-        proprietary: "Proprietary advantage requires investment to maintain and defend.",
-        expertise: "Expertise is strong but erodes if you don't stay current or market it.",
-        quality: "Quality is valuable if customers can see and pay for it. Otherwise it's invisible.",
-        price: "Price is dangerous as a competitive advantage (race to the bottom). Usually signals you need a real moat.",
-        speed: "Speed is competitive until competitors match it. What's underneath speed that they can't copy?",
-        values: "Values-based advantage is real for impact/premium positioning. Protect it by staying aligned.",
-        not_sure: "Not having a clear advantage is a warning sign. This is the work you need to do.",
-      };
-      return insights[answer] || "";
-    },
+    question: "Why would customers choose you?",
+    subtitle: "What's your competitive advantage?",
+    type: "text_input",
+    placeholder: "Deep relationships with [industry], proprietary system, best quality in my niche...",
   },
 
   {
-    id: "q9_constraint",
+    id: "q9_challenge",
     section: "Reality Check",
-    question: "What's blocking growth or progress right now?",
-    subtitle: "What's the actual bottleneck?",
+    question: "What's your biggest constraint right now?",
+    subtitle: "What's the real bottleneck?",
     type: "single_select",
     options: [
-      { value: "customer_acquisition", label: "Getting customers (not enough leads/sales)" },
-      { value: "operations", label: "Operations/delivery (can't fulfill, scaling breaks)" },
-      { value: "team", label: "Team/people (need to hire, or current team isn't right)" },
-      { value: "product", label: "Product/offering (doesn't solve the problem right)" },
-      { value: "model", label: "Business model (revenue model is broken or unclear)" },
-      { value: "funding", label: "Funding/capital (ran out of money)" },
-      { value: "clarity", label: "Clarity (I don't know what to focus on)" },
-      { value: "none", label: "Nothing is really blocking us" },
-      { value: "multiple", label: "Multiple things at once" },
+      { value: "customers", label: "Getting customers / sales" },
+      { value: "team", label: "Building the right team" },
+      { value: "model", label: "Clarity on business model" },
+      { value: "scaling", label: "Scaling delivery without breaking" },
+      { value: "corporate_access", label: "Access to the right customers" },
+      { value: "cash", label: "Cash / funding" },
+      { value: "motivation", label: "Motivation / belief" },
     ],
-    followUpTrigger: (answer) => answer !== "none",
-    followUp: {
-      question: "Is this the ROOT problem, or a symptom of something deeper?",
-      type: "single_select",
-      options: [
-        { value: "root", label: "This IS the root problem" },
-        { value: "symptom", label: "This is a symptom of a deeper issue" },
-        { value: "unsure", label: "I'm not sure" },
-      ],
-    },
-    getInsight: (answer: string) => {
-      const insights: Record<string, string> = {
-        customer_acquisition: "Customer acquisition is the lifeblood. Everything else is secondary.",
-        operations: "Operations are breaking because the model is wrong or you're trying to scale too fast.",
-        team: "Team issues usually hide model issues. Fix the model first; then hiring makes sense.",
-        product: "Product issues are real, but sometimes they're actually market-fit issues.",
-        model: "Business model problems don't fix themselves. This is the core conversation.",
-        funding: "Money is usually a symptom (model isn't working, or you need to invest to scale).",
-        clarity: "Lack of clarity kills businesses. Getting specific about your constraint is step 1.",
-        none: "No blocking issues means you're either early or you've found product-market fit. Which is it?",
-        multiple: "Multiple issues usually point to a core model problem. Get specific about priority.",
-      };
-      return insights[answer] || "";
-    },
   },
 
   {
     id: "q10_priority",
     section: "Reality Check",
-    question: "What would be a meaningful win in the next 90 days?",
-    subtitle: "What's one thing that would actually change your trajectory?",
+    question: "What's your 90-day win?",
+    subtitle: "What would meaningfully change your trajectory?",
     type: "text_input",
-    placeholder: "Landing 5 enterprise clients, proving product-market fit, building a content engine...",
-    followUpTrigger: () => true,
-    followUp: {
-      question: "Is this realistic to achieve in 90 days?",
-      type: "single_select",
-      options: [
-        { value: "yes", label: "Yes, absolutely achievable" },
-        { value: "maybe", label: "Possible, but would need focused effort" },
-        { value: "unlikely", label: "Unlikely in 90 days; more like 6-12 months" },
-        { value: "unsure", label: "Not sure" },
-      ],
-    },
+    placeholder: "Land 5 enterprise customers, hit $20k MRR, hire first team member...",
   },
 ];
 

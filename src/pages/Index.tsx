@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import WorkShowcaseSection from "@/components/WorkShowcaseSection";
 import ProofStorySection from "@/components/ProofStorySection";
 import CapabilitiesSection from "@/components/CapabilitiesSection";
 import OriginStorySection from "@/components/OriginStorySection";
@@ -22,6 +23,10 @@ const Index = () => {
 
       {/* Hero section — narrative foundation */}
       <HeroSection />
+
+      {/* The work itself, moving — sits directly after the fold so the first
+          thing below the headline is evidence rather than more prose. */}
+      <WorkShowcaseSection />
 
       {/* Three proof stories — interactive nested Q&A */}
       <ProofStorySection />

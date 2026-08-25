@@ -1,0 +1,12 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "crons": [
+    {
+      "path": "/api/cron/send-scheduled-emails",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

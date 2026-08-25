@@ -71,7 +71,7 @@ export function DiscoveryForm() {
 
   const questions = [
     // ============================================================
-    // FOUNDATION QUESTIONS (Q1-Q5)
+    // FOUNDATION QUESTIONS (Q1-Q7)
     // ============================================================
     {
       id: "q1_brings_you",
@@ -122,6 +122,24 @@ export function DiscoveryForm() {
       scaleType: "expertise",
     },
     {
+      id: "q4_management",
+      section: "Foundation",
+      question: "How would you rate your ability to manage a team?",
+      subtitle: "Can you lead, delegate, and build a team around you?",
+      type: "scale" as const,
+      labels: ["Never managed", "Managed 1-2 people", "Led a small team (3-5)", "Led a team (6-10)", "Built a large team (10+)"],
+      scaleType: "management",
+    },
+    {
+      id: "q4_leadership",
+      section: "Foundation",
+      question: "How would you rate your leadership capabilities?",
+      subtitle: "Can you inspire, make tough calls, and drive vision?",
+      type: "scale" as const,
+      labels: ["Still learning", "Growing", "Solid", "Strong", "Exceptional"],
+      scaleType: "leadership",
+    },
+    {
       id: "q5_pressure",
       section: "Foundation",
       question: "What's your relationship with work pressure?",
@@ -141,7 +159,7 @@ export function DiscoveryForm() {
       ],
     },
     // ============================================================
-    // BUSINESS MODEL QUESTIONS (Q6-Q8)
+    // BUSINESS MODEL QUESTIONS (Q8-Q10)
     // ============================================================
     {
       id: "q6_scale",
@@ -178,7 +196,7 @@ export function DiscoveryForm() {
       placeholder: "Example: Unique access to suppliers, proprietary process, deep relationships in industry...",
     },
     // ============================================================
-    // GAPS QUESTIONS (Q9-Q10)
+    // GAPS QUESTIONS (Q11-Q12)
     // ============================================================
     {
       id: "q9_challenge",

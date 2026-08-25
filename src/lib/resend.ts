@@ -364,29 +364,58 @@ export function generateEmail3(
  */
 export async function sendEmailViaResend(payload: EmailPayload): Promise<boolean> {
   try {
+    // Use server-side API key (RESEND_API_KEY from .env)
+    // This function is called from server-side API routes only
+    const apiKey = process.env.RESEND_API_KEY || import.meta.env.VITE_RESEND_API_KEY;
+
+    if (!apiKey) {
+      console.error("Resend API key not configured. Set RESEND_API_KEY in .env");
+      return false;
+    }
+
+    const senderEmail = process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com";
+    const replyToEmail = process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com";
+
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: payload.from || "hello@digitalcreativeshub.com",
+        from: payload.from || senderEmail,
         to: payload.to,
         subject: payload.subject,
         html: payload.html,
-        reply_to: payload.replyTo,
+        reply_to: payload.replyTo || replyToEmail,
       }),
     });
 
     if (!response.ok) {
-      console.error("Resend error:", await response.text());
+      const errorText = await response.text();
+      console.error("Resend API error:", {
+        status: response.status,
+        error: errorText,
+        to: payload.to,
+        subject: payload.subject,
+      });
       return false;
     }
 
+    const data = await response.json();
+    console.log("Email sent successfully:", {
+      messageId: data.id,
+      to: payload.to,
+      subject: payload.subject,
+    });
+
     return true;
   } catch (err) {
-    console.error("Failed to send email:", err);
+    console.error("Failed to send email:", {
+      error: err instanceof Error ? err.message : String(err),
+      to: payload.to,
+      subject: payload.subject,
+    });
     return false;
   }
 }

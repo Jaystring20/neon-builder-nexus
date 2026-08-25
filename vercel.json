@@ -3,6 +3,7 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
+  "outputDirectory": "dist",
   "crons": [
     {
       "path": "/api/cron/send-scheduled-emails",

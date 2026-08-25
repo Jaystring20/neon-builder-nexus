@@ -1,0 +1,9 @@
+# Don't ignore dist/ - it contains our production build
+# Standard ignores
+.git
+.gitignore
+README.md
+node_modules
+.env
+.env.local
+.env.*.local

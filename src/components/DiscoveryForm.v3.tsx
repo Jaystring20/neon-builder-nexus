@@ -310,6 +310,48 @@ export function DiscoveryFormV3() {
   const reduce = useReducedMotion();
   const currentQ = questions[currentQuestion];
 
+  /**
+   * Send the completed form to the API.
+   *
+   * formState carries the twelve answers alongside a few fields that belong to
+   * this component rather than to the founder's submission, so those are peeled
+   * off here and the rest goes through as `answers` — the question ids are
+   * already the keys DiscoveryAnswers declares.
+   */
+  const submitDiscovery = async (submittedEmail: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { email: _email, clarityScore, hasContradictions, isHybrid, ...answers } =
+        formState;
+
+      const response = await fetch("/api/discovery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: submittedEmail, answers }),
+      });
+
+      // A non-JSON body means something upstream failed (an HTML error page,
+      // typically). Fall back rather than throwing on the parse.
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        setError(
+          result?.error ?? "We couldn't save your answers. Please try again."
+        );
+        return;
+      }
+
+      setFormState((prev) => ({ ...prev, email: submittedEmail }));
+      setStage("thank_you");
+    } catch {
+      setError("We couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Calculate clarity score based on answers
   const calculateClarity = useMemo(() => {
     let score = 0;
@@ -612,6 +654,22 @@ export function DiscoveryFormV3() {
             </motion.div>
           )}
 
+          {/* Email capture — the only stage that actually submits */}
+          {stage === "email_capture" && (
+            <motion.div
+              key="emailcapture"
+              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? { opacity: 1 } : { opacity: 0, y: -20 }}
+            >
+              <EmailCaptureStage
+                isLoading={isLoading}
+                error={error}
+                onSubmit={submitDiscovery}
+              />
+            </motion.div>
+          )}
+
           {/* Thank You */}
           {stage === "thank_you" && (
             <motion.div
@@ -651,11 +709,86 @@ function VerificationStage({
   );
 }
 
-function ThankYouStage({ email }: { email?: string }) {
+function EmailCaptureStage({
+  isLoading,
+  error,
+  onSubmit,
+}: {
+  isLoading: boolean;
+  error: string | null;
+  onSubmit: (email: string) => void;
+}) {
+  const [email, setEmail] = useState("");
+  const looksValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
   return (
-    <div className="text-center">
-      <h2 className="text-2xl font-bold">Thank you!</h2>
-      <p className="mt-4 text-slate-600">Email sent to {email}</p>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (looksValid && !isLoading) onSubmit(email.trim());
+      }}
+      className="max-w-lg mx-auto text-center"
+    >
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+        Where should we send it?
+      </h2>
+      <p className="mt-3 text-slate-600 dark:text-slate-400">
+        We'll email your breakdown — what you're building, where the gaps are,
+        and what to do next.
+      </p>
+
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@company.com"
+        autoFocus
+        autoComplete="email"
+        disabled={isLoading}
+        aria-label="Email address"
+        aria-invalid={error ? true : undefined}
+        className="mt-6 w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-md bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-60"
+      />
+
+      {error && (
+        <p role="alert" className="mt-3 text-sm text-red-600 dark:text-red-400">
+          {error}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={!looksValid || isLoading}
+        className="mt-4 w-full px-6 py-3 bg-cyan-600 text-white font-medium rounded-md hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      >
+        {isLoading ? "Sending…" : "Send me my breakdown"}
+      </button>
+
+      <p className="mt-4 text-xs text-slate-500 dark:text-slate-500">
+        Three emails about your results. No list, no reselling your address.
+      </p>
+    </form>
+  );
+}
+
+function ThankYouStage({ email }: { email?: string }) {
+  // Deliberately says "on its way" rather than "sent": the answers are saved
+  // before the email is attempted, so this screen can be reached while Resend
+  // is failing. Promising a delivery we cannot confirm would be a lie the
+  // founder discovers by waiting on an empty inbox.
+  return (
+    <div className="max-w-lg mx-auto text-center">
+      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+        That's it — your answers are in.
+      </h2>
+      <p className="mt-4 text-slate-600 dark:text-slate-400">
+        Your breakdown is on its way to{" "}
+        <span className="font-medium text-slate-900 dark:text-slate-100">{email}</span>.
+        Two more follow — one tomorrow, one in three days.
+      </p>
+      <p className="mt-4 text-sm text-slate-500 dark:text-slate-500">
+        Nothing in a few minutes? Check spam before assuming it's lost.
+      </p>
     </div>
   );
 }

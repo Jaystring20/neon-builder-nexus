@@ -1,27 +1,23 @@
 /**
- * Scheduled Email Sender (Cron Job)
+ * Scheduled email sender (cron job).
  *
- * Runs every hour to send queued emails (Email 2 and Email 3)
+ * Drains the scheduled_emails queue: the day-1 and day-3 follow-ups that
+ * /api/discovery enqueues after a founder completes the form. Email 1 is sent
+ * synchronously by that handler and never passes through here.
  *
- * Deploy to:
- * - Vercel: Add to vercel.json
- *   {
- *     "crons": [{
- *       "path": "/api/cron/send-scheduled-emails",
- *       "schedule": "0 * * * *"
- *     }]
- *   }
+ * Runs once daily — see the schedule in vercel.json. Do not restore the hourly
+ * expression: Vercel's Hobby plan permits at most one run per day and rejects
+ * the whole deployment at config validation if a cron asks for more, before the
+ * build even starts. That silently froze production on a stale commit for
+ * hours. Sub-daily delivery requires a Pro plan, not a code change.
  *
- * - Netlify: Rename to netlify/functions/send-scheduled-emails.ts
- *   and add to netlify.toml:
- *   [[functions]]
- *   path = "netlify/functions/send-scheduled-emails"
- *   schedule = "0 * * * *"
+ * Because a run happens once a day, an email can go out up to a day after its
+ * scheduled_for timestamp. That is within tolerance for day-scale follow-ups.
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabase } from "../../lib/supabase";
-import { sendEmailViaResend } from "../../lib/resend";
+import { supabase } from "../../src/lib/supabase.server";
+import { sendEmailViaResend } from "../../src/lib/resend.v3";
 
 interface ScheduledEmail {
   id: string;

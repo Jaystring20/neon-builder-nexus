@@ -67,6 +67,16 @@ export interface DiscoveryRecord {
 /**
  * Persist one completed discovery. Returns the stored row, or null if the
  * write failed — callers decide whether that is fatal.
+ *
+ * Upsert rather than insert. discovery_results declares `email TEXT NOT NULL
+ * UNIQUE`, so a plain insert failed for anyone who had filled the form before:
+ * they answered all twelve questions again and were told their answers could
+ * not be saved and to try again, which could never succeed. Retaking the
+ * discovery is a reasonable thing to do — a founder's model changes — so the
+ * latest answers replace the previous ones and each founder keeps one row.
+ *
+ * created_at is deliberately not sent: the column defaults on insert, and
+ * omitting it here leaves the original signup date intact on update.
  */
 export async function saveDiscoveryResult(
   email: string,
@@ -77,16 +87,19 @@ export async function saveDiscoveryResult(
 ): Promise<DiscoveryRecord | null> {
   const { data, error } = await getSupabase()
     .from("discovery_results")
-    .insert([
-      {
-        email,
-        segment,
-        program,
-        answers,
-        capability_gap: capabilityGap ?? null,
-        created_at: new Date().toISOString(),
-      },
-    ])
+    .upsert(
+      [
+        {
+          email,
+          segment,
+          program,
+          answers,
+          capability_gap: capabilityGap ?? null,
+          updated_at: new Date().toISOString(),
+        },
+      ],
+      { onConflict: "email" }
+    )
     .select()
     .single();
 

@@ -21,7 +21,7 @@
  */
 
 import React, { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useReducedMotion } from "framer-motion";
 import { DiscoveryAnswers, SegmentResult, calculateSegment } from "../data/segmentLogic";
 import { getProgramBySegment } from "../data/programDefinitions";
@@ -448,7 +448,11 @@ export function DiscoveryFormV3() {
           </p>
         </motion.div>
 
-        {/* Progress */}
+        {/* Progress — only while questions are being answered. It sits outside
+            the stage blocks, so without this guard it kept reading
+            "Question 12 of 12 / 100%" above the email form and the thank-you
+            screen, long after there were no questions left. */}
+        {(stage === "intro" || stage === "questions") && (
         <motion.div
           initial={reduce ? { opacity: 1 } : { opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -471,15 +475,29 @@ export function DiscoveryFormV3() {
             />
           </div>
         </motion.div>
+        )}
 
-        <AnimatePresence mode="wait">
+        {/* No AnimatePresence here.
+ 
+            The four stages below are separate conditional slots, not one child
+            being swapped. AnimatePresence tracks its children by position and
+            waits for a leaving child to report that its exit animation has
+            finished before releasing it; across separate slots that report
+            never arrives. With mode="wait" the form dead-ended at question 12 —
+            the segment was calculated and the stage was set, but the entering
+            screen was held back forever. Without it, the stale stage simply
+            stayed on screen underneath the new one.
+ 
+            The stages are already mutually exclusive, so plain conditional
+            rendering unmounts the old one immediately and correctly. Each stage
+            keeps its own initial/animate entrance. */}
+        <>
           {/* Questions Stage */}
           {stage === "intro" || stage === "questions" ? (
             <motion.div
               key="questions"
               initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 1 } : { opacity: 0, y: -20 }}
               className="bg-white dark:bg-slate-900 rounded-xl shadow-lg p-8 mb-6 border border-slate-200 dark:border-slate-700"
             >
               {/* Question */}
@@ -685,7 +703,6 @@ export function DiscoveryFormV3() {
               key="verification"
               initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 1 } : { opacity: 0, y: -20 }}
             >
               <VerificationStage
                 segment={segment}
@@ -701,7 +718,6 @@ export function DiscoveryFormV3() {
               key="emailcapture"
               initial={reduce ? { opacity: 1 } : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 1 } : { opacity: 0, y: -20 }}
             >
               <EmailCaptureStage
                 isLoading={isLoading}
@@ -721,7 +737,7 @@ export function DiscoveryFormV3() {
               <ThankYouStage email={formState.email} />
             </motion.div>
           )}
-        </AnimatePresence>
+        </>
       </div>
     </div>
   );

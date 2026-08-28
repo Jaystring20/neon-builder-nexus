@@ -168,7 +168,9 @@ const questions: DiscoveryQuestion[] = [
     subtitle: "Can you lead, delegate, and build culture?",
     type: "scale",
     labels: ["Never", "Once", "Few times", "Several", "Built culture"],
-    followUpTrigger: () => true,
+    // Only ask the follow-up of founders with some management experience.
+    // `() => true` fired it for every answer, including "Never".
+    followUpTrigger: (answer) => answer >= 2,
     followUp: {
       question: "Do you want to build a team?",
       type: "single_select",
@@ -524,6 +526,45 @@ export function DiscoveryFormV3() {
                         </span>
                       </motion.button>
                     ))}
+                  </>
+                )}
+
+                {/* Q3 (values) is the only multi-select. Without this branch the
+                    question renders its heading and nothing to choose from, so
+                    the form dead-ends a quarter of the way through. */}
+                {currentQ.type === "multi_select" && currentQ.options && (
+                  <>
+                    {currentQ.options.map((opt) => {
+                      const selected =
+                        (formState[currentQ.id as keyof FormState] as string[]) || [];
+                      const isSelected = selected.includes(opt.value);
+                      return (
+                        <motion.button
+                          key={opt.value}
+                          type="button"
+                          aria-pressed={isSelected}
+                          initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          onClick={() =>
+                            handleAnswer(
+                              currentQ.id,
+                              isSelected
+                                ? selected.filter((v) => v !== opt.value)
+                                : [...selected, opt.value]
+                            )
+                          }
+                          className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                            isSelected
+                              ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900/20"
+                              : "border-slate-200 dark:border-slate-700 hover:border-cyan-300 dark:hover:border-cyan-600"
+                          }`}
+                        >
+                          <span className="font-medium text-slate-900 dark:text-slate-50">
+                            {opt.label}
+                          </span>
+                        </motion.button>
+                      );
+                    })}
                   </>
                 )}
 

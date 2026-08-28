@@ -21,7 +21,6 @@ import DiscoveryPage from "./pages/discovery";
 import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
-// Deployment marker - Aug 25 2026 - Force rebuild
 const App = () => (
   <HelmetProvider>
   <QueryClientProvider client={queryClient}>

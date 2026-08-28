@@ -12,7 +12,6 @@ import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 
 const Index = () => {
-  console.log('✅ Homepage loaded - v2.0.2 - Fixed portfolio');
   return (
     <main className="min-h-screen bg-background">
       <SEO

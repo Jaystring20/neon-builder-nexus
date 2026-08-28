@@ -302,8 +302,8 @@ export function generateEmail1(
     to: email,
     subject: `${emoji} ${title}: Your Program Match`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "noreply@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "support@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
   };
 }
 
@@ -474,8 +474,8 @@ export function generateEmail2(
     to: email,
     subject: `${emoji} Deep Dive: ${program?.name || "Your Program"}`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "noreply@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "support@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
   };
 }
 
@@ -723,8 +723,8 @@ export function generateEmail3(
     to: email,
     subject: `${emoji} ${title}: Let's Get Started →`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "noreply@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "support@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
   };
 }
 
@@ -889,11 +889,11 @@ export async function sendEmailViaResendDetailed(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: payload.from || process.env.RESEND_FROM_EMAIL || "noreply@digitalcreativeshub.com",
+        from: payload.from || process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
         to: payload.to,
         subject: payload.subject,
         html: payload.html,
-        reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "support@digitalcreativeshub.com",
+        reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
       }),
     });
 

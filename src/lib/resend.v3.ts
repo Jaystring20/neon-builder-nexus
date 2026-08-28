@@ -12,8 +12,8 @@
  * 6. Works equally for all 5 segments: MSME Value, MSME Volume, Startup, Professional Service, Development Org
  */
 
-import { SegmentResult } from "../data/segmentLogic";
-import { Program } from "../data/programDefinitions";
+import type { SegmentResult } from "../data/segmentLogic";
+import type { Program } from "../data/programDefinitions";
 
 // ============================================================
 // TYPES
@@ -856,13 +856,30 @@ function getNextStepsForSegment(
 // SEND VIA RESEND
 // ============================================================
 
+/**
+ * Boolean wrapper kept for callers that only branch on success.
+ */
 export async function sendEmailViaResend(payload: EmailPayload): Promise<boolean> {
+  return (await sendEmailViaResendDetailed(payload)).ok;
+}
+
+/**
+ * Same send, but returns why it failed.
+ *
+ * The boolean form discards Resend's response body into a console line, which
+ * is unreachable without log access — leaving "the email did not send" with no
+ * way to tell an unverified sending domain from a bad key. Callers that can
+ * surface a reason should use this.
+ */
+export async function sendEmailViaResendDetailed(
+  payload: EmailPayload
+): Promise<{ ok: boolean; error?: string }> {
   try {
     const apiKey = process.env.RESEND_API_KEY;
 
     if (!apiKey) {
       console.error("RESEND_API_KEY not configured");
-      return false;
+      return { ok: false, error: "RESEND_API_KEY is not set" };
     }
 
     const response = await fetch("https://api.resend.com/emails", {
@@ -883,14 +900,17 @@ export async function sendEmailViaResend(payload: EmailPayload): Promise<boolean
     if (!response.ok) {
       const error = await response.text();
       console.error("Resend API error:", error);
-      return false;
+      return { ok: false, error: `${response.status}: ${error.slice(0, 300)}` };
     }
 
     const result = (await response.json()) as { id?: string };
     console.log("Email sent successfully:", result.id);
-    return true;
+    return { ok: true };
   } catch (error) {
     console.error("Failed to send email via Resend:", error);
-    return false;
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }

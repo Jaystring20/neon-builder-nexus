@@ -16,8 +16,8 @@
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getSupabase } from "../../src/lib/supabase.server";
-import { sendEmailViaResend } from "../../src/lib/resend.v3";
+import { getSupabase } from "../../src/lib/supabase.server.js";
+import { sendEmailViaResend } from "../../src/lib/resend.v3.js";
 
 interface ScheduledEmail {
   id: string;

@@ -14,16 +14,16 @@
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { calculateSegment, type DiscoveryAnswers } from "../src/data/segmentLogic";
-import { getProgramBySegment } from "../src/data/programDefinitions";
-import { saveDiscoveryResult, getSupabase, missingServerEnv } from "../src/lib/supabase.server";
+import { calculateSegment, type DiscoveryAnswers } from "../src/data/segmentLogic.js";
+import { getProgramBySegment } from "../src/data/programDefinitions.js";
+import { saveDiscoveryResult, getSupabase, missingServerEnv } from "../src/lib/supabase.server.js";
 import {
   generateEmail1,
   generateEmail2,
   generateEmail3,
-  sendEmailViaResend,
+  sendEmailViaResendDetailed,
   type EmailContext,
-} from "../src/lib/resend.v3";
+} from "../src/lib/resend.v3.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -103,13 +103,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Everything below is best-effort. The answers are already safe.
     let emailQueued = false;
+    let emailError: string | undefined;
     try {
-      emailQueued = await sendEmailViaResend(
+      const sent = await sendEmailViaResendDetailed(
         generateEmail1(founderName, trimmedEmail, segment, program, emailContext)
       );
+      emailQueued = sent.ok;
+      emailError = sent.error;
     } catch (err) {
+      emailError = err instanceof Error ? err.message : String(err);
       console.error("Email 1 send failed:", err);
     }
+
+    // Logged, never returned: this is a public endpoint, and the reason a send
+    // failed can name the sending domain and other configuration. `emailQueued`
+    // is enough for the caller; the detail belongs in the runtime logs.
+    if (emailError) console.error("Email 1 not sent:", emailError);
 
     try {
       const now = Date.now();

@@ -16,7 +16,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { supabase } from "../../src/lib/supabase.server";
+import { getSupabase } from "../../src/lib/supabase.server";
 import { sendEmailViaResend } from "../../src/lib/resend.v3";
 
 interface ScheduledEmail {
@@ -47,7 +47,7 @@ export default async function handler(
   try {
     // Get all unsent emails that are past their scheduled time
     const now = new Date().toISOString();
-    const { data: scheduledEmails, error: fetchError } = await supabase
+    const { data: scheduledEmails, error: fetchError } = await getSupabase()
       .from("scheduled_emails")
       .select("*")
       .eq("sent", false)
@@ -90,7 +90,7 @@ export default async function handler(
 
         if (success) {
           // Mark as sent
-          const { error: updateError } = await supabase
+          const { error: updateError } = await getSupabase()
             .from("scheduled_emails")
             .update({
               sent: true,
@@ -119,7 +119,7 @@ export default async function handler(
 
           // If less than 3 retries, keep in queue; otherwise mark as failed
           if (retryCount < 3) {
-            await supabase
+            await getSupabase()
               .from("scheduled_emails")
               .update({
                 retry_count: retryCount,
@@ -132,7 +132,7 @@ export default async function handler(
             );
           } else {
             // Mark as permanently failed after 3 retries
-            await supabase
+            await getSupabase()
               .from("scheduled_emails")
               .update({
                 sent: true, // Mark as "processed" to stop retrying

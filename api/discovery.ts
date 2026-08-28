@@ -16,7 +16,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { calculateSegment, type DiscoveryAnswers } from "../src/data/segmentLogic";
 import { getProgramBySegment } from "../src/data/programDefinitions";
-import { saveDiscoveryResult, supabase } from "../src/lib/supabase.server";
+import { saveDiscoveryResult, getSupabase, missingServerEnv } from "../src/lib/supabase.server";
 import {
   generateEmail1,
   generateEmail2,
@@ -31,6 +31,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ success: false, error: "Method not allowed" });
+  }
+
+  // Named up front so a misconfigured deployment says which variable is absent
+  // instead of failing later as a generic 500. Names only, never values.
+  const missing = missingServerEnv();
+  if (missing.length > 0) {
+    console.error("Refusing to accept submissions, missing env:", missing.join(", "));
+    return res.status(500).json({
+      success: false,
+      error: "The server is not configured to accept submissions yet.",
+      missingEnv: missing,
+    });
   }
 
   try {
@@ -104,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const email2 = generateEmail2(founderName, trimmedEmail, segment, program, emailContext);
       const email3 = generateEmail3(founderName, trimmedEmail, segment, program, emailContext);
 
-      const { error } = await supabase.from("scheduled_emails").insert([
+      const { error } = await getSupabase().from("scheduled_emails").insert([
         {
           email: trimmedEmail,
           email_type: "email_2",

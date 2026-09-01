@@ -708,6 +708,14 @@ export function DiscoveryFormV3() {
                 segment={segment}
                 formState={formState}
                 onConfirm={() => setStage("email_capture")}
+                onRevise={() => {
+                  // Answers are left intact — this is a correction, not a
+                  // restart, and retyping twelve answers to fix one is the
+                  // fastest way to lose someone this close to the end.
+                  setShowFollowUp(false);
+                  setCurrentQuestion(0);
+                  setStage("questions");
+                }}
               />
             </motion.div>
           )}
@@ -744,24 +752,118 @@ export function DiscoveryFormV3() {
 }
 
 // ============================================================
-// SUB-COMPONENTS (Placeholder)
+// SUB-COMPONENTS
 // ============================================================
 
+/**
+ * Turn a stored answer back into the wording the founder actually saw.
+ *
+ * Selections are persisted as values ("corporate_access"), so echoing the raw
+ * state would show them something they never read and undercut the whole point
+ * of asking them to check it.
+ */
+function labelForAnswer(questionId: string, value: unknown): string | null {
+  const question = questions.find((q) => q.id === questionId);
+  const option = question?.options?.find((o) => o.value === value);
+  if (option) return option.label;
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+/**
+ * The last screen before we ask for an email.
+ *
+ * The segment was inferred from twelve answers, and an inference the founder
+ * disagrees with is worth catching here rather than in an email they delete.
+ * So this states the conclusion, shows the answers it rests on, and offers a
+ * way back — confirming is a decision, not just a Next button.
+ */
 function VerificationStage({
   segment,
   formState,
   onConfirm,
+  onRevise,
 }: {
   segment: SegmentResult;
   formState: FormState;
   onConfirm: () => void;
+  onRevise: () => void;
 }) {
+  const vision =
+    typeof formState.q2_vision === "string" ? formState.q2_vision.trim() : "";
+  const priority =
+    typeof formState.q10_priority === "string" ? formState.q10_priority.trim() : "";
+  const challenge = labelForAnswer("q9_challenge", formState.q9_challenge);
+  const values = Array.isArray(formState.q3_values) ? formState.q3_values : [];
+
+  const recap: Array<{ label: string; value: string; quoted?: boolean }> = [];
+  if (vision) recap.push({ label: "What you're building", value: vision, quoted: true });
+  if (challenge) recap.push({ label: "Your biggest constraint", value: challenge });
+  if (priority) recap.push({ label: "Your 90-day win", value: priority, quoted: true });
+  if (values.length) recap.push({ label: "What drives you", value: values.join(" · ") });
+
   return (
-    <div className="text-center">
-      <p>Verification stage coming...</p>
-      <button onClick={onConfirm} className="mt-4 px-6 py-3 bg-orange-600 text-white rounded">
-        Continue
-      </button>
+    <div className="max-w-2xl mx-auto">
+      <p className="text-xs font-mono uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        Before we send anything
+      </p>
+
+      <h2 className="mt-3 text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+        {segment.program}
+      </h2>
+
+      <p className="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+        {segment.emailPersonalization.modelDescription}
+      </p>
+
+      {recap.length > 0 && (
+        <dl className="mt-8 divide-y divide-slate-200 dark:divide-slate-700 border-y border-slate-200 dark:border-slate-700">
+          {recap.map((item) => (
+            <div key={item.label} className="py-4 sm:flex sm:gap-6">
+              <dt className="sm:w-48 shrink-0 text-sm font-medium text-slate-500 dark:text-slate-400">
+                {item.label}
+              </dt>
+              <dd className="mt-1 sm:mt-0 text-slate-900 dark:text-slate-100">
+                {item.quoted ? `“${item.value}”` : item.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      {/* Stated plainly rather than softened. A founder heading into a model
+          their answers say they are not yet equipped for is the single most
+          useful thing this form can tell them, and burying it helps nobody. */}
+      {segment.capabilityGap && (
+        <div className="mt-6 rounded-lg border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-950/40 p-4">
+          <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+            One thing worth flagging
+          </p>
+          <p className="mt-1 text-sm text-amber-900/90 dark:text-amber-100/90 leading-relaxed">
+            {segment.capabilityGap}
+          </p>
+        </div>
+      )}
+
+      <p className="mt-8 text-slate-600 dark:text-slate-400">
+        Does this match what you're building?
+      </p>
+
+      <div className="mt-4 flex flex-col-reverse sm:flex-row gap-3">
+        <button
+          type="button"
+          onClick={onRevise}
+          className="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95"
+        >
+          Let me change an answer
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          className="flex-1 px-6 py-3 rounded-lg bg-orange-600 dark:bg-orange-500 text-white font-medium hover:bg-orange-700 dark:hover:bg-orange-600 transition-colors active:scale-95"
+        >
+          Yes, that's right →
+        </button>
+      </div>
     </div>
   );
 }

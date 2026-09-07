@@ -17,7 +17,6 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { calculateSegment, type DiscoveryAnswers } from "../src/data/segmentLogic.js";
 import { getProgramBySegment } from "../src/data/programDefinitions.js";
 import { saveDiscoveryResult, getSupabase, missingServerEnv } from "../src/lib/supabase.server.js";
-import { ensureSchemaExists } from "../src/lib/db-init.js";
 import {
   generateEmail1,
   generateEmail2,
@@ -47,17 +46,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Ensure database schema exists (idempotent, runs once)
-    try {
-      await ensureSchemaExists();
-    } catch (err) {
-      console.error("Database initialization failed:", err);
-      return res.status(500).json({
-        success: false,
-        error: "Database is not ready. Please try again in a moment.",
-      });
-    }
-
     // Vercel parses JSON bodies, but a raw string arrives if the caller sent an
     // unusual content-type. Normalise rather than crashing on `.answers`.
     const body =

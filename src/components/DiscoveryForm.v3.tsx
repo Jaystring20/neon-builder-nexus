@@ -558,7 +558,7 @@ export function DiscoveryFormV3() {
                       const isSelected = selected.includes(opt.value);
                       return (
                         <motion.button
-                          key={opt.value}
+                          key={`${opt.value}-${isSelected}`}
                           type="button"
                           aria-pressed={isSelected}
                           initial={reduce ? { opacity: 1 } : { opacity: 0 }}

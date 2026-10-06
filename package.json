@@ -9,9 +9,11 @@
     "check:identifiers": "node scripts/check-undefined-identifiers.mjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "higgsfield:example": "node --env-file=.env.local higgsfield/index.ts"
   },
   "dependencies": {
+    "@higgsfield/client": "^0.2.6",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",

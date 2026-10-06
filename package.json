@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "higgsfield:example": "node --env-file=.env.local higgsfield/index.ts",
-    "studio:create-access": "tsx --env-file=.env.local scripts/create-studio-access.ts"
+    "studio:create-access": "tsx --env-file=.env.local scripts/create-studio-access.ts",
+    "images:generate": "tsx --env-file=.env.local scripts/site-images/generate.ts"
   },
   "dependencies": {
     "@higgsfield/client": "^0.2.6",

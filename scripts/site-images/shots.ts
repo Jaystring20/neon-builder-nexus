@@ -42,14 +42,14 @@ export const SHOTS: Shot[] = [
   {
     id: "proof-clarity-lens",
     section: "Proof: M & H Eyewear",
-    aspect_ratio: "4:5",
+    aspect_ratio: "3:4",
     prompt:
       "Macro photograph of a single optical lens held in a beam of teal light; behind the lens the world is soft and blurred, through the lens it is perfectly sharp. A thin warm amber rim light on the lens edge. Dark background.",
   },
   {
     id: "proof-five-threads",
     section: "Proof: Viera Amber",
-    aspect_ratio: "4:5",
+    aspect_ratio: "3:4",
     prompt:
       "Five strands of different materials (silk, copper wire, cotton, linen, paper cord) twisting together into one strong cord, lit from one side with teal light, warm amber highlights where they meet. Dark studio background, extreme detail.",
   },
@@ -77,14 +77,14 @@ export const SHOTS: Shot[] = [
   {
     id: "origin-lagos-night",
     section: "Why Lagos",
-    aspect_ratio: "21:9",
+    aspect_ratio: "16:9",
     prompt:
       "Long-exposure photograph of the Third Mainland Bridge in Lagos at night, light trails of traffic running across the lagoon, the city skyline beyond, water reflecting teal and amber light. Real, documentary feel.",
   },
   {
     id: "process-sketch-to-building",
     section: "How it works",
-    aspect_ratio: "21:9",
+    aspect_ratio: "16:9",
     prompt:
       "One continuous panoramic scene read left to right: a pencil sketch on paper, which becomes a precise technical drawing, which becomes a steel frame under construction, which becomes a finished glass building lit from inside at night. Seamless transitions, teal light throughout.",
   },

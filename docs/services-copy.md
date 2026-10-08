@@ -114,12 +114,22 @@ Grouped from first steps to building:
 
 ### 2. Workforce Development Training
 
-One line: Skills, leadership and ways of working for teams that are growing.
-[Topics, audience and format from DCH]
+One line: AI capability for the people who teach, lead and do the work.
+
+| Course | Who it's for | One line |
+|---|---|---|
+| AI for Educators | Teachers, lecturers and school leaders | Bring AI into teaching, planning and assessment with confidence. |
+| AI for Professionals | Teams in the workplace | Integrate AI into everyday workflows and grow what each person can do. |
+| Learning & Development | L&D and HR teams, organisations | AI-led programmes built around productivity and measurable outcomes. |
 
 ### 3. STEAM Training
 
-One line: Science, technology, engineering, arts and maths, taught hands-on.
-[Audience (schools, young people, educators?) and format from DCH]
+One line: AI and robotics for young innovators aged 6 to 20, and for youths.
+For schools, through **STEAM Foundry**, DCH's own platform built for this
+(https://apen.digitalcreativeshubltd.com/), delivered in partnership with the
+**Artificial Intelligence & Robotics School (AIRS)**
+(https://airsafrica.com/aicafe.html) across different programmes.
 
-Format line for all training: [cohorts / workshops / one-to-one, online or in person: from DCH]
+CTA on this block: Explore STEAM Foundry (external link).
+
+Format line for all training: Cohorts, workshops or one-to-one, online or in person.

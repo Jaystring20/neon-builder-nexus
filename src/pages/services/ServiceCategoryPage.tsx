@@ -1,11 +1,114 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
-import { serviceCategories } from "@/data/services";
+import ServicesCTA from "@/components/ServicesCTA";
+import { serviceCategories, steamLinks, type ServiceCategory, type SubService } from "@/data/services";
+import { BOOK_A_CALL } from "@/lib/contact";
+
+// Copy: docs/services-copy.md. Four practices list their services; Training
+// groups its courses into tracks and points each AI course at the practice
+// that builds the same thing for clients.
+
+const practiceTitle = (slug: string) => serviceCategories.find((c) => c.slug === slug)?.title ?? slug;
+
+const ServiceRow = ({ sub }: { sub: SubService }) => (
+  <li className="grid gap-4 border-t border-border/40 py-8 md:grid-cols-[1fr_1.4fr] md:gap-12">
+    <div className="flex items-start gap-4">
+      <sub.icon aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-primary" />
+      <h3 className="font-heading text-xl font-medium tracking-tight text-foreground sm:text-2xl">{sub.title}</h3>
+    </div>
+    <div>
+      <p className="text-lg leading-snug text-foreground/90">{sub.description}</p>
+      <p className="mt-3 text-base leading-relaxed text-muted-foreground">{sub.detail}</p>
+      {sub.audience && <p className="mt-3 text-sm text-primary">For: {sub.audience}</p>}
+      {sub.pairsWith && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Pairs with{" "}
+          {sub.pairsWith.map((slug, i) => (
+            <span key={slug}>
+              {i > 0 && " and "}
+              <Link to={`/services/${slug}`} className="font-medium text-primary hover:text-foreground">
+                {practiceTitle(slug)}
+              </Link>
+            </span>
+          ))}
+          : we build it, then train your team to run it.
+        </p>
+      )}
+    </div>
+  </li>
+);
+
+const TrackHeading = ({ title, line }: { title: string; line: string }) => (
+  <div className="max-w-2xl pt-16 md:pt-20">
+    <h2 className="font-display-refined text-3xl leading-[1.05] text-foreground sm:text-4xl">{title}</h2>
+    <p className="mt-3 text-lg text-muted-foreground">{line}</p>
+  </div>
+);
+
+const TrainingBody = ({ category }: { category: ServiceCategory }) => {
+  const ai = category.subServices.filter((s) => s.track === "AI Training");
+  const stages = ["Foundations", "Automate", "Create & build"] as const;
+  const workforce = category.subServices.filter((s) => s.track === "Workforce Development");
+  const steam = category.subServices.filter((s) => s.track === "STEAM Training");
+
+  return (
+    <>
+      <TrackHeading title="AI Training" line="From first steps to building, in three stages." />
+      {stages.map((stage) => (
+        <div key={stage} className="mt-10">
+          <h3 className="text-sm font-medium text-primary">{stage}</h3>
+          <ul className="mt-2">
+            {ai.filter((s) => s.stage === stage).map((sub) => (
+              <ServiceRow key={sub.title} sub={sub} />
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <TrackHeading
+        title="Workforce Development"
+        line="AI capability for the people who teach, lead and do the work."
+      />
+      <ul className="mt-8">
+        {workforce.map((sub) => (
+          <ServiceRow key={sub.title} sub={sub} />
+        ))}
+      </ul>
+
+      <TrackHeading title="STEAM Training" line="AI and robotics for young innovators aged 6 to 20, and for youths." />
+      <ul className="mt-8">
+        {steam.map((sub) => (
+          <ServiceRow key={sub.title} sub={sub} />
+        ))}
+      </ul>
+      <div className="mt-2 flex flex-col gap-4 border-t border-border/40 pt-8 sm:flex-row sm:items-center sm:gap-8">
+        <Button asChild variant="pill" size="lg" className="group w-full sm:w-auto">
+          <a href={steamLinks.foundry} target="_blank" rel="noreferrer">
+            Explore STEAM Foundry
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+        </Button>
+        <a
+          href={steamLinks.airs}
+          target="_blank"
+          rel="noreferrer"
+          className="group inline-flex items-center gap-2 text-base text-foreground/80 hover:text-foreground"
+        >
+          In partnership with the Artificial Intelligence &amp; Robotics School (AIRS)
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+      </div>
+
+      <p className="mt-16 border-l-2 border-secondary pl-5 text-lg text-foreground md:mt-20">
+        Every course runs as a cohort, workshop or one-to-one, online or in person.
+      </p>
+    </>
+  );
+};
 
 const ServiceCategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -13,125 +116,101 @@ const ServiceCategoryPage = () => {
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-heading font-bold mb-4">Service Not Found</h1>
-          <Link to="/services">
-            <Button variant="hero">Back to Services</Button>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="container-narrow pt-40 pb-24">
+          <h1 className="font-display-refined text-4xl text-foreground sm:text-5xl">We couldn&rsquo;t find that service.</h1>
+          <Link
+            to="/services"
+            className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-primary hover:text-foreground"
+          >
+            See all services
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
+        </main>
+        <Footer />
       </div>
     );
   }
 
-  const colorClass = category.color === "primary" ? "text-primary" : "text-secondary";
-  const borderColor = category.color === "primary" ? "border-primary/30" : "border-secondary/30";
-  const bgColor = category.color === "primary" ? "bg-primary/10" : "bg-secondary/10";
-  const bgAccent = category.color === "primary" ? "bg-primary/5" : "bg-secondary/5";
+  const others = serviceCategories.filter((c) => c.slug !== category.slug);
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO
-        title={category.title}
-        description={category.description}
-        path={`/services/${category.slug}`}
-      />
+      <SEO title={category.title} description={`${category.tagline} ${category.description}`} path={`/services/${category.slug}`} />
       <Navbar />
 
-      {/* Hero */}
-      <section className="section-padding pt-32 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className={`absolute top-1/4 left-1/4 w-96 h-96 ${category.color === "primary" ? "bg-primary/10" : "bg-secondary/10"} rounded-full blur-3xl animate-pulse-slow`} />
-        </div>
-
-        <div className="container-narrow relative z-10">
-          <ScrollReveal>
+      <main>
+        <section className="relative overflow-hidden pt-32 pb-12 md:pt-40 md:pb-16">
+          <div className="blueprint-grid" />
+          <div className="container-narrow relative z-10">
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
             >
-              <ArrowLeft className="w-4 h-4" />
-              All Services
+              <ArrowLeft className="h-4 w-4" />
+              All services
             </Link>
-
-            <div className="max-w-4xl">
-              <span className={`inline-block px-4 py-2 rounded-full border ${borderColor} ${bgAccent} ${colorClass} text-sm font-medium mb-6`}>
-                {category.tagline}
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                <span className={colorClass}>{category.title}</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mb-8">
-                {category.description}
-              </p>
-              <Button variant="hero" size="lg">
-                Start the Build
-                <ArrowRight className="w-5 h-5 ml-2" />
+            <p className="mt-10 text-sm font-medium text-primary">{category.pillar}</p>
+            <h1 className="font-display-refined hero-animate mt-3 max-w-4xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+              {category.title}
+            </h1>
+            <p className="hero-animate mt-6 max-w-2xl text-2xl leading-snug text-foreground/90" style={{ animationDelay: "100ms" }}>
+              {category.tagline}
+            </p>
+            <p className="hero-animate mt-3 max-w-xl text-lg leading-relaxed text-muted-foreground" style={{ animationDelay: "160ms" }}>
+              {category.description}
+            </p>
+            <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
+              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
+                <a href={BOOK_A_CALL}>
+                  Book a call
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </a>
               </Button>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Sub-services */}
-      <section className="section-padding">
-        <div className="container-narrow">
-          <div className="space-y-20">
-            {category.subServices.map((sub, index) => (
-              <ScrollReveal key={sub.title}>
-                <div className={`grid md:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
-                  <div className={index % 2 === 1 ? "md:order-2" : ""}>
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 border ${borderColor} ${bgColor}`}>
-                      <sub.icon className={`w-8 h-8 ${colorClass}`} />
-                    </div>
-                    <h2 className="text-3xl font-heading font-bold mb-4 text-foreground">
-                      {sub.title}
-                    </h2>
-                    <p className={`text-lg ${colorClass} font-medium mb-4`}>
-                      {sub.description}
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {sub.detail}
-                    </p>
-                  </div>
-
-                  <div className={`${index % 2 === 1 ? "md:order-1" : ""}`}>
-                    <div className={`glass-card p-12 flex items-center justify-center aspect-square max-w-sm mx-auto`}>
-                      <sub.icon className={`w-24 h-24 ${colorClass} opacity-20`} />
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA */}
-      <section className="section-padding">
-        <div className="container-narrow">
-          <ScrollReveal>
-            <div className="glass-card p-12 md:p-16 text-center relative overflow-hidden">
-              <div className="absolute inset-0 pointer-events-none">
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 ${category.color === "primary" ? "bg-primary/10" : "bg-secondary/10"} rounded-full blur-3xl`} />
-              </div>
-              <div className="relative z-10">
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Ready to Build Your{" "}
-                  <span className={colorClass}>{category.title}</span>?
-                </h2>
-                <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-                  Let's architect the systems that will drive your next phase of growth.
-                </p>
-                <Button variant="hero" size="lg">
-                  Book a Strategy Call
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+        <section aria-label={`${category.title} services`} className="pb-8">
+          <div className="container-narrow">
+            {category.slug === "training" ? (
+              <TrainingBody category={category} />
+            ) : (
+              <ul className="mt-8">
+                {category.subServices.map((sub) => (
+                  <ServiceRow key={sub.title} sub={sub} />
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+
+        {/* The rest of the engine */}
+        <section aria-labelledby="others-heading" className="mt-16 border-t border-border/40 pt-16 md:mt-24">
+          <div className="container-narrow">
+            <h2 id="others-heading" className="font-heading text-2xl font-medium tracking-tight text-foreground">
+              The rest of the engine
+            </h2>
+            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {others.map((c) => (
+                <li key={c.slug}>
+                  <Link to={`/services/${c.slug}`} className="group block border-t border-border/40 pt-4">
+                    <span className="text-sm text-primary">{c.pillar}</span>
+                    <span className="mt-1 flex items-center gap-2 font-heading text-lg font-medium text-foreground group-hover:text-primary">
+                      {c.title}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{c.tagline}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <ServicesCTA />
+      </main>
 
       <Footer />
     </div>

@@ -47,24 +47,69 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
   return JSON.parse(text) as T;
 }
 
+/** Node reports a dropped connection as "fetch failed"; the real reason is in `cause`. */
+export function describe(error: unknown): string {
+  if (!(error instanceof Error)) return String(error);
+  const cause = (error as Error & { cause?: { code?: string; message?: string } }).cause;
+  const detail = cause?.code ?? cause?.message;
+  return detail ? `${error.message} (${detail})` : error.message;
+}
+
+const isNetworkError = (error: unknown) => error instanceof TypeError;
+
+/**
+ * Retries a read-only step when the connection drops. Never used for the
+ * request that starts a generation, so a retry can never pay twice.
+ */
+async function retrying<T>(what: string, step: () => Promise<T>): Promise<T> {
+  const delays = [2000, 4000, 8000, 16000, 30000];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await step();
+    } catch (error) {
+      if (!isNetworkError(error) || attempt >= delays.length) throw error;
+      console.log(`      connection dropped while ${what} (${describe(error)}); retrying in ${delays[attempt] / 1000}s`);
+      await new Promise((r) => setTimeout(r, delays[attempt]));
+    }
+  }
+}
+
 const TERMINAL = new Set(["completed", "failed", "nsfw", "canceled"]);
 
 /**
- * Submits one generation and polls until it reaches a terminal state.
- * Throws on anything but `completed`, with moderation called out because
- * Higgsfield refunds it.
+ * Submits one generation (or, with `resumeId`, picks up one already paid for)
+ * and polls until it reaches a terminal state. Throws on anything but
+ * `completed`, with moderation called out because Higgsfield refunds it.
  */
-export async function generate(model: string, body: object, maxWaitMs: number): Promise<Result> {
-  let result = await call<Result>(`/${model}`, { method: "POST", body: JSON.stringify(body) });
-  console.log(`      request ${result.request_id}`);
+export async function generate(
+  model: string,
+  body: object,
+  maxWaitMs: number,
+  resumeId?: string
+): Promise<Result> {
+  let result: Result;
+  if (resumeId) {
+    console.log(`      resuming request ${resumeId} (no new charge)`);
+    result = await retrying("checking the request", () => call<Result>(`/requests/${resumeId}/status`));
+  } else {
+    result = await call<Result>(`/${model}`, { method: "POST", body: JSON.stringify(body) });
+    console.log(`      request ${result.request_id}`);
+  }
 
+  const id = result.request_id ?? resumeId;
   const started = Date.now();
   while (!TERMINAL.has(result.status)) {
     if (Date.now() - started > maxWaitMs) {
-      throw new Error(`still ${result.status} after ${Math.round(maxWaitMs / 60000)} minutes`);
+      throw new Error(
+        `still ${result.status} after ${Math.round(maxWaitMs / 60000)} minutes; resume later with --request ${id}`
+      );
     }
     await new Promise((r) => setTimeout(r, POLL_MS));
-    result = await call<Result>(`/requests/${result.request_id}/status`);
+    try {
+      result = await retrying("waiting for the result", () => call<Result>(`/requests/${id}/status`));
+    } catch (error) {
+      throw new Error(`${describe(error)}. The request is paid for; resume it with --request ${id}`);
+    }
   }
 
   if (result.status === "nsfw") throw new Error("rejected by moderation (refunded)");
@@ -74,7 +119,7 @@ export async function generate(model: string, body: object, maxWaitMs: number): 
 
 /** Downloads a generated file. Returns its bytes and a file extension. */
 export async function download(url: string): Promise<{ bytes: Buffer; ext: string }> {
-  const res = await fetch(url);
+  const res = await retrying("downloading", () => fetch(url));
   if (!res.ok) throw new Error(`download failed with HTTP ${res.status}`);
   const type = res.headers.get("content-type") ?? "";
   const ext = type.includes("webp")
@@ -88,7 +133,8 @@ export async function download(url: string): Promise<{ bytes: Buffer; ext: strin
           : type.includes("video")
             ? "mp4"
             : (url.split("?")[0].split(".").pop() ?? "bin");
-  return { bytes: Buffer.from(await res.arrayBuffer()), ext };
+  const bytes = await retrying("downloading", async () => Buffer.from(await res.arrayBuffer()));
+  return { bytes, ext };
 }
 
 /**

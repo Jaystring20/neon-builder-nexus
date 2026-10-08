@@ -15,9 +15,15 @@
  *
  * Existing files are reused rather than regenerated; pass --force to redo
  * the step you are running.
+ *
+ * If the connection drops after a request was accepted, the script prints its
+ * id. Re-run the same step with --request <id> to collect the result without
+ * paying again:
+ *
+ *   npm run hero:video -- --keyframe --request <id>
  */
 
-import { generate, download, upload } from "./api.js";
+import { generate, download, upload, describe } from "./api.js";
 import { access, mkdir, readdir, writeFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 
@@ -69,6 +75,7 @@ const { values } = parseArgs({
     keyframe: { type: "boolean", default: false },
     force: { type: "boolean", default: false },
     duration: { type: "string", default: "8" },
+    request: { type: "string" },
   },
 });
 
@@ -94,12 +101,13 @@ async function run(): Promise<number> {
   let keyframe = await findKeyframe();
   let keyframeUrl: string | null = null;
 
-  if (!keyframe || (values.keyframe && values.force)) {
+  if (!keyframe || (values.keyframe && (values.force || values.request))) {
     console.log(`make  hero keyframe (${KEYFRAME_MODEL}, 16:9, 1080p) ...`);
     const result = await generate(
       KEYFRAME_MODEL,
       { prompt: KEYFRAME_PROMPT, aspect_ratio: "16:9", resolution: "1080p", batch_size: 1, enhance_prompt: false },
-      10 * 60 * 1000
+      10 * 60 * 1000,
+      values.keyframe ? values.request : undefined
     );
     const url = result.images?.[0]?.url;
     if (!url) throw new Error("keyframe completed but no image returned");
@@ -125,7 +133,7 @@ async function run(): Promise<number> {
     return 0;
   }
 
-  if (!keyframeUrl) {
+  if (!keyframeUrl && !values.request) {
     const ext = keyframe.pathname.split(".").pop() ?? "png";
     console.log("send  keyframe to Higgsfield storage ...");
     keyframeUrl = await upload(keyframe, CONTENT_TYPES[ext] ?? "image/png");
@@ -137,14 +145,15 @@ async function run(): Promise<number> {
     VIDEO_MODEL,
     {
       prompt: VIDEO_PROMPT,
-      image_url: keyframeUrl,
-      end_image_url: keyframeUrl,
+      image_url: keyframeUrl ?? undefined,
+      end_image_url: keyframeUrl ?? undefined,
       duration,
       resolution: "1080p",
       bitrate_mode: "high",
       generate_audio: false,
     },
-    20 * 60 * 1000
+    20 * 60 * 1000,
+    values.request
   );
   const url = result.video?.url;
   if (!url) throw new Error("video completed but no video returned");
@@ -160,7 +169,7 @@ run().then(
     process.exitCode = code;
   },
   (error: unknown) => {
-    console.error(`fail  ${error instanceof Error ? error.message : String(error)}`);
+    console.error(`fail  ${describe(error)}`);
     process.exitCode = 1;
   }
 );

@@ -18,7 +18,7 @@
  * is skipped unless --force is passed, so a rerun never pays twice.
  */
 
-import { generate, download } from "./api.js";
+import { generate, download, describe } from "./api.js";
 import { mkdir, writeFile, access } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { SHOTS, STYLE } from "./shots.js";
@@ -89,7 +89,7 @@ for (const shot of wanted) {
     await writeFile(new URL(`${shot.id}.${ext}`, OUT_DIR), bytes);
     console.log(`done  ${shot.id} -> public/images/story/${shot.id}.${ext}`);
   } catch (error) {
-    console.error(`fail  ${shot.id}: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(`fail  ${shot.id}: ${describe(error)}`);
     failures++;
   }
 }

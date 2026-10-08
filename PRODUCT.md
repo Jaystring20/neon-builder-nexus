@@ -105,6 +105,10 @@ people) with AI embedded, then compound (measure and iterate after launch).
 - Training of individuals: real past work exists; the owner will supply the
   material. Until it arrives, the People capability is described without
   invented outcomes.
+- Key partner: Artificial Intelligence & Robotics School (AIRS). Most DCH
+  training is co-organised with AIRS; credit it as a partner (no outbound
+  link). STEAM training runs on STEAM Foundry, DCH's own platform
+  (https://apen.digitalcreativeshubltd.com/).
 - **Absent, must not be fabricated:** testimonials not supplied by the owner,
   client logos, revenue or growth figures, team headcount, awards, press,
   training results.

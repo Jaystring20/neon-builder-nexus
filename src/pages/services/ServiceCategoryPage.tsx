@@ -5,7 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesCTA from "@/components/ServicesCTA";
-import { serviceCategories, steamLinks, type ServiceCategory, type SubService } from "@/data/services";
+import { serviceCategories, steamLinks, trainingPartner, type ServiceCategory, type SubService } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
 
 // Copy: docs/services-copy.md. Four practices list their services; Training
@@ -57,6 +57,15 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
 
   return (
     <>
+      {/* Partner credit: most of the training is co-organised by DCH and
+          AIRS, so the partnership sits over all three tracks, not one. */}
+      <div className="mt-12 flex flex-col gap-2 border-y border-border/40 py-6 sm:flex-row sm:items-baseline sm:gap-6">
+        <p className="text-sm font-medium text-primary">Co-organised with</p>
+        <p className="font-heading text-xl font-medium tracking-tight text-foreground">
+          {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
+        </p>
+      </div>
+
       <TrackHeading title="AI Training" line="From first steps to building, in three stages." />
       {stages.map((stage) => (
         <div key={stage} className="mt-10">
@@ -92,15 +101,6 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         </Button>
-        <a
-          href={steamLinks.airs}
-          target="_blank"
-          rel="noreferrer"
-          className="group inline-flex items-center gap-2 text-base text-foreground/80 hover:text-foreground"
-        >
-          In partnership with the Artificial Intelligence &amp; Robotics School (AIRS)
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
       </div>
 
       <p className="mt-16 border-l-2 border-secondary pl-5 text-lg text-foreground md:mt-20">

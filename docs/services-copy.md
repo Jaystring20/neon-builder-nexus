@@ -126,10 +126,12 @@ One line: AI capability for the people who teach, lead and do the work.
 
 One line: AI and robotics for young innovators aged 6 to 20, and for youths.
 For schools, through **STEAM Foundry**, DCH's own platform built for this
-(https://apen.digitalcreativeshubltd.com/), delivered in partnership with the
-**Artificial Intelligence & Robotics School (AIRS)**
-(https://airsafrica.com/aicafe.html) across different programmes.
+(https://apen.digitalcreativeshubltd.com/).
 
 CTA on this block: Explore STEAM Foundry (external link).
 
 Format line for all training: Cohorts, workshops or one-to-one, online or in person.
+
+Partner credit (top of the training page, over all three tracks): **Co-organised
+with Artificial Intelligence & Robotics School (AIRS).** AIRS is a key DCH
+partner; most training is co-organised by both brands. Credited, not linked.

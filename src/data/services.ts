@@ -335,7 +335,7 @@ export const serviceCategories: ServiceCategory[] = [
         title: "AI & Robotics for Young Innovators",
         description: "AI and robotics for innovators aged 6 to 20, and for youths.",
         detail:
-          "Hands-on AI and robotics for schools, delivered through STEAM Foundry, DCH's own platform built for this, in partnership with the Artificial Intelligence & Robotics School (AIRS).",
+          "Hands-on AI and robotics for schools, delivered through STEAM Foundry, DCH's own platform built for this.",
         icon: Cpu,
         track: "STEAM Training",
         audience: "Schools, young innovators aged 6 to 20, and youths",
@@ -347,7 +347,15 @@ export const serviceCategories: ServiceCategory[] = [
 /** External links for the STEAM track. */
 export const steamLinks = {
   foundry: "https://apen.digitalcreativeshubltd.com/",
-  airs: "https://airsafrica.com/aicafe.html",
+};
+
+/**
+ * Key partners. Most of DCH's training is co-organised with AIRS, so it is
+ * credited as a partner on the training page rather than linked out to.
+ */
+export const trainingPartner = {
+  name: "Artificial Intelligence & Robotics School",
+  short: "AIRS",
 };
 
 export const pillarOrder: Pillar[] = ["Brand", "Platforms", "People"];

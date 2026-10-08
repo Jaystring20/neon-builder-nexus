@@ -1,9 +1,12 @@
-import { Globe, Sparkles, Stethoscope, Church, Dumbbell } from "lucide-react";
+import { Globe, Sparkles, Stethoscope, Church, Dumbbell, Leaf, ShoppingBag, Briefcase } from "lucide-react";
 
 import vieraAmberImg from "@/assets/portfolio/viera-amber.webp";
 import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.webp";
 import discoveryImg from "@/assets/portfolio/the-discovery-church.png";
 import fitnessReligionImg from "@/assets/portfolio/fitness-religion.webp";
+import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.webp";
+import everythingHouseholdImg from "@/assets/portfolio/everything-household.webp";
+import digitechImg from "@/assets/portfolio/digitech-strategist.webp";
 
 /**
  * Screenshots not imported above are picked up by file name, so adding one
@@ -39,8 +42,11 @@ export interface PortfolioProject {
   icon: typeof Globe;
   image?: string;
 
-  /** The narrative, as structured facts rather than paragraphs. */
-  story: {
+  /**
+   * The narrative, as structured facts rather than paragraphs. Projects with a
+   * story are featured on Our Work; the rest appear in its grid.
+   */
+  story?: {
     /** The constraint that made the build hard. One sentence. */
     problem: string;
     /** The systems built to answer it. Three, short — these are read as chips. */
@@ -56,7 +62,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "Viera Amber",
     category: "Creative Ecosystem",
     description:
-      "A creative ecosystem built for feminine empowerment — five businesses sharing one identity, one codebase and one commerce spine.",
+      "A creative ecosystem built for feminine empowerment: five businesses sharing one identity, one codebase and one commerce spine.",
     tags: ["Multi-Brand", "Ecosystem Architecture", "Commerce"],
     url: "https://vieraamber.com",
     displayDomain: "vieraamber.com",
@@ -64,7 +70,7 @@ export const portfolioProjects: PortfolioProject[] = [
     image: vieraAmberImg,
     story: {
       problem:
-        "Five businesses that would normally need five teams, five sites and five stacks — and would drift apart the moment they launched.",
+        "Five businesses that would normally need five teams, five sites and five stacks, and would drift apart the moment they launched.",
       built: ["Shared identity layer", "Cross-brand routing", "One commerce spine"],
       outcome: "One brand. Five expressions.",
     },
@@ -74,7 +80,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "Innerspace",
     category: "Interior Design",
     description:
-      "A portfolio and consultation platform for a Nigerian interior design studio — turning a browsing visitor into a booked assessment.",
+      "A portfolio and consultation platform for a Nigerian interior design studio, turning a browsing visitor into a booked assessment.",
     tags: ["Portfolio", "Booking", "Design Studio"],
     url: "https://innerspace-innovations.lovable.app/",
     displayDomain: "Innerspace Innovations",
@@ -92,7 +98,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "The Discovery",
     category: "Community",
     description:
-      "A digital front door for a Lagos congregation — an onboarding flow that welcomes first-time visitors before it asks anything of them.",
+      "A digital front door for a congregation: an onboarding flow that welcomes first-time visitors before it asks anything of them.",
     tags: ["Community", "Onboarding", "Events"],
     url: "https://www.thediscoverylagos.org/",
     displayDomain: "thediscoverylagos.org",
@@ -110,7 +116,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "M & H Eyewear",
     category: "Optical Retail",
     description:
-      "Premium eye care and designer eyewear — AI try-on, a styling quiz and clinic booking wired into one purchase flow.",
+      "Premium eye care and designer eyewear: AI try-on, a styling quiz and clinic booking wired into one purchase flow.",
     tags: ["E-commerce", "AI Try-On", "Healthcare"],
     url: "https://mandheyewear.com/",
     displayDomain: "mandheyewear.com",
@@ -128,7 +134,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "The Fitness Religion Company",
     category: "Community & Events",
     description:
-      "The platform behind the 2004 M00VE Challenge — registration, leaderboards, event management and sponsor integration across 5+ Nigerian cities.",
+      "The platform behind the 2004 M00VE Challenge: registration, leaderboards, event management and sponsor integration across 5+ Nigerian cities.",
     tags: ["Web Platform", "Event Management", "Community"],
     url: "https://www.thefitnessreligioncompany.com.ng/",
     displayDomain: "thefitnessreligioncompany.com.ng",
@@ -136,10 +142,46 @@ export const portfolioProjects: PortfolioProject[] = [
     image: fitnessReligionImg,
     story: {
       problem:
-        "One event, five cities, running at the same time — with no room for a city to fall out of sync.",
+        "One event, five cities, running at the same time, with no room for a city to fall out of sync.",
       built: ["Multi-city registration", "Live leaderboards", "Sponsor integration"],
       outcome: "The 2004 M00VE Challenge across 5+ Nigerian cities.",
     },
+  },
+  {
+    id: "ecopath",
+    title: "Ecopath",
+    category: "Sustainability",
+    description:
+      "A circular-economy platform that connects universities with cartridge remanufacturing: waste collection, impact tracking and token rewards in one system.",
+    tags: ["Sustainability", "Circular Economy", "Platform"],
+    url: "https://ecopath.lovable.app",
+    displayDomain: "Ecopath",
+    icon: Leaf,
+    image: ecopathImg,
+  },
+  {
+    id: "everything-household",
+    title: "Everything Household",
+    category: "E-commerce",
+    description:
+      "An online store for premium household essentials sourced from Turkey and across the globe, with a full catalogue, cart and checkout.",
+    tags: ["E-commerce", "Catalogue", "Online Store"],
+    url: "https://everythinghousehold.lovable.app",
+    displayDomain: "Everything Household",
+    icon: ShoppingBag,
+    image: everythingHouseholdImg,
+  },
+  {
+    id: "digitech-strategist",
+    title: "The DigiTech Strategist",
+    category: "Personal Brand",
+    description:
+      "A personal brand and consulting platform for a digital transformation strategist, with paths for professionals, business owners and educators.",
+    tags: ["Personal Brand", "Consulting", "Strategy"],
+    url: "https://thedigitechstrategist.lovable.app",
+    displayDomain: "The DigiTech Strategist",
+    icon: Briefcase,
+    image: digitechImg,
   },
 ];
 

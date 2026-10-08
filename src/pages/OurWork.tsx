@@ -1,241 +1,151 @@
-import { useState } from "react";
-import { ExternalLink, ArrowUpRight, Layers, Globe, Zap } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
-import LazyImage from "@/components/LazyImage";
-import { Badge } from "@/components/ui/badge";
-import { portfolioProjects, portfolioCategories } from "@/data/portfolio";
-import { cn } from "@/lib/utils";
+import ContactCTASection from "@/components/ContactCTASection";
+import { portfolioProjects, type PortfolioProject } from "@/data/portfolio";
 
-const stats = [
-  { value: "10+", label: "Projects Delivered", icon: Layers },
-  { value: "8+", label: "Industries Served", icon: Globe },
-  { value: "100%", label: "Client Retention", icon: Zap },
-];
+// Copy: docs/our-work-copy.md. Real screenshots only (PRODUCT.md, principle
+// 2): projects with a story are told as problem, what we built, and what
+// exists now; the rest sit in a grid. No totals or percentages, because the
+// list is hand-picked rather than complete.
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const featured = portfolioProjects.filter((p) => p.story && p.image);
+const more = portfolioProjects.filter((p) => !featured.includes(p));
+
+const Screenshot = ({ project, className }: { project: PortfolioProject; className?: string }) => (
+  <a
+    href={project.url}
+    target="_blank"
+    rel="noreferrer"
+    aria-label={`Visit ${project.title}`}
+    className={`group/shot relative block overflow-hidden border border-foreground/[0.08] bg-card/40 ${className ?? ""}`}
+  >
+    {project.image ? (
+      <img
+        src={project.image}
+        alt={`${project.title} website`}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover object-left-top transition-transform duration-700 group-hover/shot:scale-[1.03]"
+      />
+    ) : (
+      <div aria-hidden="true" className="story-standin absolute inset-0" />
+    )}
+    <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-background/95 to-transparent px-5 pb-4 pt-14 text-sm font-medium text-foreground">
+      {project.displayDomain}
+      <ArrowUpRight className="h-4 w-4 transition-transform group-hover/shot:-translate-y-0.5 group-hover/shot:translate-x-0.5" />
+    </span>
+  </a>
+);
 
 const OurWork = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const filtered =
-    activeCategory === "All"
-      ? portfolioProjects
-      : portfolioProjects.filter((p) => p.category === activeCategory);
+  const reduce = useReducedMotion();
+  const reveal = (i = 0) => ({
+    initial: reduce ? false : { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: { duration: 0.7, delay: i * 0.08, ease: EASE },
+  });
 
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <SEO
         title="Our Work"
-        description="Explore the portfolio of projects delivered by Digital Creatives Hub — brand identities, digital products, and growth systems across industries."
+        description="Brands and platforms built by Digital Creatives Hub: the problem each one had, what we built, and what exists now."
         path="/our-work"
       />
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 relative overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--neon-cyan)/0.08)_0%,transparent_60%)]" />
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-[radial-gradient(circle,hsl(var(--neon-cyan)/0.06)_0%,transparent_70%)] blur-3xl" />
-        <div className="absolute top-40 right-1/4 w-80 h-80 bg-[radial-gradient(circle,hsl(var(--neon-cyan)/0.04)_0%,transparent_70%)] blur-3xl" />
-
-        <div className="container-narrow relative z-10 text-center">
-          <ScrollReveal animation="fade-up">
-            <Badge variant="outline" className="mb-6 border-primary/40 text-primary uppercase tracking-widest text-xs px-4 py-1.5">
-              Portfolio
-            </Badge>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={100}>
-            <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]">
-              Brands We've{" "}
-              <span className="text-primary">
-                Engineered
-              </span>
+      <main>
+        {/* Hero */}
+        <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+          <div className="blueprint-grid" />
+          <div className="container-narrow relative z-10">
+            <h1 className="font-display-refined hero-animate max-w-4xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+              Built to move. <span className="text-primary">Still moving.</span>
             </h1>
-          </ScrollReveal>
-          <ScrollReveal animation="fade-up" delay={200}>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-              From concept to conversion — we architect digital ecosystems that transform brands into market leaders.
+            <p
+              className="hero-animate mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground"
+              style={{ animationDelay: "120ms" }}
+            >
+              A hand-picked selection of the brands and platforms we&rsquo;ve shipped.
             </p>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="pb-12">
-        <div className="container-narrow">
-          <ScrollReveal animation="fade-up" delay={250}>
-            <div className="glass-card p-6 md:p-8">
-              <div className="grid grid-cols-3 divide-x divide-border/30">
-                {stats.map((stat) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div key={stat.label} className="flex flex-col items-center gap-2 px-4">
-                      <Icon className="w-5 h-5 text-primary/60 hidden md:block" />
-                      <span className="font-heading text-2xl md:text-4xl font-bold text-primary">
-                        {stat.value}
-                      </span>
-                      <span className="text-muted-foreground text-[10px] md:text-xs uppercase tracking-wider text-center">
-                        {stat.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Filter Bar */}
-      <section className="pb-10">
-        <div className="container-narrow">
-          <ScrollReveal animation="fade-up" delay={300}>
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              {portfolioCategories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    "px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition-all duration-300 border active:scale-95 active:duration-100",
-                    activeCategory === cat
-                      ? "bg-primary text-primary-foreground border-primary shadow-[0_0_20px_hsl(var(--neon-cyan)/0.3)]"
-                      : "bg-muted/30 text-muted-foreground border-border/50 hover:border-primary/40 hover:text-primary"
-                  )}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Project Grid */}
-      <section className="pb-24">
-        <div className="container-narrow">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((project, i) => {
-              const Icon = project.icon;
-              return (
-                <ScrollReveal key={project.id} animation="fade-up" delay={i * 80}>
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block h-full active:scale-[0.98] active:duration-100 transition-transform"
-                  >
-                    <div className="h-full rounded-2xl border border-border/30 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-[0_0_40px_hsl(var(--neon-cyan)/0.12)] hover:-translate-y-2 glass-card hover-glass-shine relative">
-                      {/* Gradient border on hover */}
-                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan) / 0.15) 0%, transparent 40%, transparent 60%, hsl(var(--neon-cyan) / 0.08) 100%)' }} />
-
-                      {/* Project Screenshot */}
-                      <div className="aspect-[16/10] relative overflow-hidden">
-                        {project.image ? (
-                          <LazyImage
-                            src={project.image}
-                            alt={project.title}
-                            containerClassName="h-full w-full"
-                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                          />
-                        ) : (
-                          <>
-                            <div className="absolute inset-0 bg-gradient-to-br from-muted/40 via-muted/20 to-card/60" />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <Icon className="w-14 h-14 text-primary/25 group-hover:text-primary/50 transition-all duration-700" />
-                            </div>
-                          </>
-                        )}
-                        
-                        {/* Overlay gradient on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        
-                        {/* External link badge */}
-                        <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-                          <div className="bg-primary/90 text-primary-foreground p-1.5 rounded-lg shadow-[0_0_15px_hsl(var(--neon-cyan)/0.4)]">
-                            <ArrowUpRight className="w-3.5 h-3.5" />
-                          </div>
-                        </div>
-
-                        {/* Category overlay */}
-                        <div className="absolute bottom-3 left-3">
-                          <Badge className="bg-card/80 backdrop-blur-sm text-primary border-primary/20 text-[10px] uppercase tracking-wider">
-                            {project.category}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-5 space-y-3 relative z-10">
-                        <h3 className="font-heading font-bold text-foreground text-base leading-tight group-hover:text-primary transition-colors duration-300">
-                          {project.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
-                          {project.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {project.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2.5 py-0.5 rounded-full bg-muted/40 text-muted-foreground text-[10px] font-medium border border-border/20"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        
-                        {/* View project link */}
-                        <div className="pt-2 flex items-center gap-1.5 text-primary/60 group-hover:text-primary transition-colors duration-300">
-                          <span className="text-xs font-semibold uppercase tracking-wider">View Project</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                </ScrollReveal>
-              );
-            })}
           </div>
+        </section>
 
-          {filtered.length === 0 && (
-            <div className="text-center py-20 text-muted-foreground">
-              No projects found in this category.
-            </div>
-          )}
-        </div>
-      </section>
+        {/* Featured: the problem, what we built, what exists now */}
+        <section aria-label="Featured work" className="border-t border-border/40">
+          <div className="container-narrow">
+            {featured.map((project, i) => (
+              <motion.article
+                key={project.id}
+                {...reveal()}
+                className="grid gap-10 border-b border-border/40 py-16 md:grid-cols-2 md:items-center md:gap-16 md:py-24"
+              >
+                <Screenshot
+                  project={project}
+                  className={`aspect-[16/10] ${i % 2 === 1 ? "md:order-2" : ""}`}
+                />
+                <div>
+                  <p className="text-sm font-medium text-primary">{project.category}</p>
+                  <h2 className="mt-3 font-display-refined text-4xl leading-[1.05] text-foreground sm:text-5xl">
+                    {project.title}
+                  </h2>
+                  <p className="mt-6 text-lg leading-snug text-foreground/90">{project.story!.problem}</p>
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {project.story!.built.map((item) => (
+                      <li
+                        key={item}
+                        className="border border-primary/30 bg-primary/5 px-3 py-1.5 text-sm text-foreground"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-6 border-l-2 border-secondary pl-4 text-base text-muted-foreground">
+                    {project.story!.outcome}
+                  </p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </section>
 
-      {/* Bottom CTA */}
-      <section className="pb-24">
-        <div className="container-narrow">
-          <ScrollReveal animation="fade-up">
-            <div className="glass-card-elevated p-10 md:p-14 text-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--neon-cyan)/0.06)_0%,transparent_60%)]" />
-              <div className="relative z-10">
-                <h2 className="font-heading text-2xl md:text-4xl font-bold mb-4">
-                  Ready to Be{" "}
-                  <span className="text-primary">
-                    Next?
-                  </span>
-                </h2>
-                <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto mb-8">
-                  Let's architect a digital presence that doesn't just exist — it dominates.
-                </p>
-                <a
-                  href="/#contact"
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-xl shadow-[0_0_25px_hsl(var(--neon-cyan)/0.4)] hover:shadow-[0_0_40px_hsl(var(--neon-cyan)/0.6)] transition-all duration-300 hover:scale-105"
-                >
-                  Start Your Project
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              </div>
+        {/* More work */}
+        {more.length > 0 && (
+          <section aria-labelledby="more-heading" className="py-24 md:py-32">
+            <div className="container-narrow">
+              <h2
+                id="more-heading"
+                className="font-display-refined text-4xl leading-[1.05] text-foreground sm:text-5xl"
+              >
+                More we&rsquo;ve shipped.
+              </h2>
+              <ul className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+                {more.map((project, i) => (
+                  <motion.li key={project.id} {...reveal(i)}>
+                    <Screenshot project={project} className="aspect-[4/3]" />
+                    <p className="mt-5 text-sm font-medium text-primary">{project.category}</p>
+                    <h3 className="mt-1 font-heading text-xl font-medium tracking-tight text-foreground">
+                      {project.title}
+                    </h3>
+                    <p className="mt-2 text-base leading-relaxed text-muted-foreground">{project.description}</p>
+                  </motion.li>
+                ))}
+              </ul>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
+          </section>
+        )}
+
+        <ContactCTASection />
+      </main>
 
       <Footer />
-    </main>
+    </div>
   );
 };
 

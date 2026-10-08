@@ -27,7 +27,9 @@ import { portfolioProjects } from "@/data/portfolio";
  * body of work legible without a single number.
  */
 
-const ACTS = portfolioProjects;
+const ACTS = portfolioProjects.filter(
+  (p): p is typeof p & { story: NonNullable<typeof p.story> } => Boolean(p.story),
+);
 
 const BuildStorySection = () => {
   const sectionRef = useRef<HTMLElement>(null);

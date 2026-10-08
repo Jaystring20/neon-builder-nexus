@@ -5,6 +5,8 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesCTA from "@/components/ServicesCTA";
+import StoryImage from "@/components/StoryImage";
+import { storyImage } from "@/lib/storyImages";
 import { serviceCategories, steamLinks, trainingPartner, type ServiceCategory, type SubService } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
 
@@ -42,10 +44,13 @@ const ServiceRow = ({ sub }: { sub: SubService }) => (
   </li>
 );
 
-const TrackHeading = ({ title, line }: { title: string; line: string }) => (
-  <div className="max-w-2xl pt-16 md:pt-20">
-    <h2 className="font-display-refined text-3xl leading-[1.05] text-foreground sm:text-4xl">{title}</h2>
-    <p className="mt-3 text-lg text-muted-foreground">{line}</p>
+const TrackHeading = ({ title, line, imageId }: { title: string; line: string; imageId: string }) => (
+  <div className="pt-16 md:pt-20">
+    <StoryImage id={imageId} alt="" aspect="aspect-[16/9] md:aspect-[21/9]" hideIfMissing className="mb-10" />
+    <div className="max-w-2xl">
+      <h2 className="font-display-refined text-3xl leading-[1.05] text-foreground sm:text-4xl">{title}</h2>
+      <p className="mt-3 text-lg text-muted-foreground">{line}</p>
+    </div>
   </div>
 );
 
@@ -66,7 +71,11 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
         </p>
       </div>
 
-      <TrackHeading title="AI Training" line="From first steps to building, in three stages." />
+      <TrackHeading
+        title="AI Training"
+        line="From first steps to building, in three stages."
+        imageId="track-ai-training"
+      />
       {stages.map((stage) => (
         <div key={stage} className="mt-10">
           <h3 className="text-sm font-medium text-primary">{stage}</h3>
@@ -81,6 +90,7 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
       <TrackHeading
         title="Workforce Development"
         line="AI capability for the people who teach, lead and do the work."
+        imageId="track-workforce"
       />
       <ul className="mt-8">
         {workforce.map((sub) => (
@@ -88,7 +98,11 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
         ))}
       </ul>
 
-      <TrackHeading title="STEAM Training" line="AI and robotics for young innovators aged 6 to 20, and for youths." />
+      <TrackHeading
+        title="STEAM Training"
+        line="AI and robotics for young innovators aged 6 to 20, and for youths."
+        imageId="track-steam"
+      />
       <ul className="mt-8">
         {steam.map((sub) => (
           <ServiceRow key={sub.title} sub={sub} />
@@ -134,6 +148,8 @@ const ServiceCategoryPage = () => {
   }
 
   const others = serviceCategories.filter((c) => c.slug !== category.slug);
+  const heroImageId = `practice-${category.slug}`;
+  const heroImage = storyImage(heroImageId);
 
   return (
     <div className="min-h-screen bg-background">
@@ -143,32 +159,47 @@ const ServiceCategoryPage = () => {
       <main>
         <section className="relative overflow-hidden pt-32 pb-12 md:pt-40 md:pb-16">
           <div className="blueprint-grid" />
-          <div className="container-narrow relative z-10">
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              All services
-            </Link>
-            <p className="mt-10 text-sm font-medium text-primary">{category.pillar}</p>
-            <h1 className="font-display-refined hero-animate mt-3 max-w-4xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
-              {category.title}
-            </h1>
-            <p className="hero-animate mt-6 max-w-2xl text-2xl leading-snug text-foreground/90" style={{ animationDelay: "100ms" }}>
-              {category.tagline}
-            </p>
-            <p className="hero-animate mt-3 max-w-xl text-lg leading-relaxed text-muted-foreground" style={{ animationDelay: "160ms" }}>
-              {category.description}
-            </p>
-            <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
-              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-                <a href={BOOK_A_CALL}>
-                  Book a call
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
+          <div
+            className={`container-narrow relative z-10 ${
+              heroImage ? "grid items-end gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-14" : ""
+            }`}
+          >
+            <div>
+              <Link
+                to="/services"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                All services
+              </Link>
+              <p className="mt-10 text-sm font-medium text-primary">{category.pillar}</p>
+              <h1 className="font-display-refined hero-animate mt-3 max-w-4xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+                {category.title}
+              </h1>
+              <p className="hero-animate mt-6 max-w-2xl text-2xl leading-snug text-foreground/90" style={{ animationDelay: "100ms" }}>
+                {category.tagline}
+              </p>
+              <p className="hero-animate mt-3 max-w-xl text-lg leading-relaxed text-muted-foreground" style={{ animationDelay: "160ms" }}>
+                {category.description}
+              </p>
+              <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
+                <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
+                  <a href={BOOK_A_CALL}>
+                    Book a call
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </a>
+                </Button>
+              </div>
             </div>
+            {heroImage && (
+              <StoryImage
+                id={heroImageId}
+                alt=""
+                aspect="aspect-[4/3]"
+                priority
+                className="hero-animate"
+              />
+            )}
           </div>
         </section>
 

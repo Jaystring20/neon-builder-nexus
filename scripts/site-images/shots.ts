@@ -49,7 +49,7 @@ export const SHOTS: Shot[] = [
     section: "What we build: Brand",
     aspect_ratio: "3:4",
     prompt:
-      "A tall upright slab of matte graphite with one bold abstract geometric mark cut deep into it, cyan light glowing from inside the cut. Smaller slabs float beside and behind it, each carrying the same mark at a smaller scale, so the mark reads as a system that holds everywhere it appears. Identity that earns attention and keeps it.",
+      "A tall upright slab of matte graphite with one simple abstract mark cut deep into it: an open ring broken by a single short diagonal notch, never a letter or a character, cyan light glowing from inside the cut. Smaller slabs float beside and behind it, each carrying the same ring at a smaller scale, so the mark reads as a system that holds everywhere it appears. Identity that earns attention and keeps it.",
   },
   {
     id: "capability-platforms",
@@ -77,7 +77,7 @@ export const SHOTS: Shot[] = [
     section: "Real work: M & H Eyewear",
     aspect_ratio: "4:3",
     prompt:
-      "A thick dark glass slab with one perfectly round optical lens set into its surface. Seen through the lens, the blank interface pills and bars on the slab are pin sharp; everywhere outside the lens they melt into soft blur. A fine cyan ring of light traces the lens edge, with a thin warm amber highlight catching one side. Seeing clearly before you buy.",
+      "A thick dark glass slab with one perfectly round optical lens set into its surface. The slab carries only blank rounded pills and plain bars, no writing of any kind. Seen through the lens, those pills and bars are pin sharp; everywhere outside the lens they melt into soft blur. A fine cyan ring of light traces the lens edge, with a thin warm amber highlight catching one side. Clean colour only, no prism or rainbow dispersion. Seeing clearly before you buy.",
   },
   {
     id: "proof-five-modules",
@@ -112,7 +112,7 @@ export const SHOTS: Shot[] = [
     section: "How we work: Diagnose. Architect. Build. Compound.",
     aspect_ratio: "16:9",
     prompt:
-      "Four slabs float in a straight row from left to right, each one a later stage of the same object. First, a slab under a fine scanning plane of cyan light, being examined. Second, the same slab drawn only as a precise outline with a faint grid, the plan. Third, the slab solid and filling with blank modules being set into place. Fourth, the finished slab with two smaller copies of itself already growing out of it, softly lit from within. Even spacing, one continuous story read left to right.",
+      "Exactly four slabs, no more and no fewer, float in a straight row from left to right, each one a later stage of the same object. First, a slab under a fine scanning plane of cyan light, being examined. Second, the same slab drawn only as a precise outline with a faint grid, the plan. Third, the slab solid and filling with blank modules being set into place. Fourth, the finished slab with two smaller copies of itself already growing out of it, softly lit from within. Even spacing, one continuous story read left to right.",
   },
   {
     id: "cta-first-connection",
@@ -120,5 +120,88 @@ export const SHOTS: Shot[] = [
     aspect_ratio: "16:9",
     prompt:
       "Two slabs float facing each other across a gap, one larger and one smaller. A single thread of cyan light has just formed between them, warmest amber at the point where it touches the smaller slab. The beginning of the right conversation. Both slabs sit in the right half of the frame; the left half is calm empty darkness.",
+  },
+
+  // Services (docs/services-copy.md). One image per practice, used on the
+  // overview's practice blocks and as the hero of each practice's own page,
+  // plus the overview hero and one image per training track.
+  {
+    id: "services-engine",
+    section: "Services hero: Five practices. One engine.",
+    aspect_ratio: "16:9",
+    prompt:
+      "Five distinct slabs of smoked glass and matte graphite are arranged in a wide, slow ring like the parts of one machine, each slab a different proportion. Fine cyan light lines join each slab to the next so energy visibly passes around the ring, and at the ring's centre a small warm amber core glows where all five lines meet. Five parts, one engine, already turning. Wide composition, the ring sitting slightly right of centre.",
+  },
+  {
+    id: "practice-brand-architecture",
+    section: "Practice: Brand Architecture",
+    aspect_ratio: "4:3",
+    prompt:
+      "A heavy matte graphite foundation block, perfectly level, with a precise grid of fine cyan lines engraved across its top face. Three slimmer glass slabs stand upright on it in a deliberate arrangement, their edges aligned exactly to the engraved grid, so everything above clearly rests on the one foundation. The foundation everything else stands on.",
+  },
+  {
+    id: "practice-growth-operations",
+    section: "Practice: Growth Operations",
+    aspect_ratio: "4:3",
+    prompt:
+      "A row of glass discs of steadily increasing size, each one turning a little faster than the last, linked edge to edge like gears without teeth. A pulse of cyan light passes from the smallest disc to the largest and grows brighter as it goes, ending as a warm amber glow on the largest disc. Campaigns, content and community running as one system that compounds.",
+  },
+  {
+    id: "practice-digital-infrastructure",
+    section: "Practice: Digital Infrastructure",
+    aspect_ratio: "4:3",
+    prompt:
+      "A wide, low platform of interlocking matte graphite modules, like a precise floor plan raised in 3D. Thin cyan channels run between the modules, carrying small pulses of light from one module to the next. A few modules are lifted slightly, showing clean connectors underneath. Solid, engineered, built to carry weight now and extend later.",
+  },
+  {
+    id: "practice-ai-automation",
+    section: "Practice: Agentic AI & Automation",
+    aspect_ratio: "4:3",
+    prompt:
+      "A sequence of small glass blocks travels along a curved track of light through three dark glass gates. At each gate a fine cyan scan passes over the block and it comes out a little more complete, with no hand or tool in sight. A single warm amber light marks the one gate where the track pauses for a decision. Work that moves itself along, step after step.",
+  },
+  {
+    id: "practice-training",
+    section: "Practice: Training & Workforce Development",
+    aspect_ratio: "4:3",
+    prompt:
+      "A large lit glass slab passes a small bright cube of cyan light across a short gap to a group of smaller slabs standing together. The smaller slabs already glow faintly from within where earlier light has been passed to them, and one of them is beginning to pass its own light onward to the next. Capability that stays after we leave.",
+  },
+  {
+    id: "track-ai-training",
+    section: "Training track: AI Training",
+    aspect_ratio: "16:9",
+    prompt:
+      "Three floating platforms of glass rise in three clear stages from left to right. The first holds one simple slab, the second holds slabs linked by fine cyan lines into a working chain, the third holds a small finished structure assembled from many pieces with a warm amber light at its top. From first steps, to automating, to building.",
+  },
+  {
+    id: "track-workforce",
+    section: "Training track: Workforce Development",
+    aspect_ratio: "16:9",
+    prompt:
+      "A wide row of identical upright glass slabs stands like a team in a quiet line. A soft band of cyan light sweeps along the row and each slab it passes stays lit from within, so the left half of the row already glows while the right half is about to. The whole team rising together, not one at a time.",
+  },
+  {
+    id: "track-steam",
+    section: "Training track: STEAM Training",
+    aspect_ratio: "16:9",
+    prompt:
+      "A small, friendly robotic arm built from rounded glass and matte graphite segments, with soft cyan light glowing at each joint, lifts a single bright cube onto a short stack of cubes on a clean workbench slab. Beside it lie a few simple building pieces: a wheel, a small gear, a circuit-like tile with plain cyan traces. Hands-on making for young innovators, playful and precise.",
+  },
+
+  // About (docs/about-copy.md).
+  {
+    id: "about-beyond-borders",
+    section: "About hero: We go where growth needs to happen.",
+    aspect_ratio: "16:9",
+    prompt:
+      "A thick glass slab glides straight through a thin vertical plane of cyan light that stands across the floor like a border, without slowing. The part of the slab that has already passed through glows a little brighter, and a soft cyan trail stretches behind it back through the plane. Ahead of it, open dark space with one small warm amber light far in the distance. No walls, no borders, only forward motion.",
+  },
+  {
+    id: "about-partnership",
+    section: "About: Built with partners.",
+    aspect_ratio: "16:9",
+    prompt:
+      "Two different structures, one of matte graphite blocks and one of smoked glass blocks, each build a span toward the other from opposite sides of the frame. They meet exactly in the middle, where a single seam of cyan light joins them into one continuous bridge, with a small warm amber glow at the joint. Two makers, one structure.",
   },
 ];

@@ -7,8 +7,8 @@ const Footer = () => {
   const links = {
     company: [
       { label: "About Us", href: "/about", isRoute: true },
-      { label: "Our Mission", href: "/about#mission", isRoute: true },
-      { label: "Lead Architect", href: "/about#founder", isRoute: true },
+      { label: "Our Strategist", href: "/about#founder", isRoute: true },
+      { label: "Partners", href: "/about#partners", isRoute: true },
       { label: "Careers", href: "/careers", isRoute: true },
     ],
     services: [

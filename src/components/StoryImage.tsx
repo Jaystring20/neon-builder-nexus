@@ -10,6 +10,8 @@ interface StoryImageProps {
   aspect: string;
   className?: string;
   priority?: boolean;
+  /** Render nothing until the image exists, instead of the stand-in. */
+  hideIfMissing?: boolean;
 }
 
 /**
@@ -17,8 +19,9 @@ interface StoryImageProps {
  * the page's own drafting grid under a faint cyan light, so a missing image
  * reads as a quiet panel rather than a hole and the layout never shifts.
  */
-const StoryImage = ({ id, alt, aspect, className, priority }: StoryImageProps) => {
+const StoryImage = ({ id, alt, aspect, className, priority, hideIfMissing }: StoryImageProps) => {
   const src = storyImage(id);
+  if (!src && hideIfMissing) return null;
 
   return (
     <div className={cn("relative overflow-hidden bg-card/40", aspect, className)}>

@@ -7,3 +7,6 @@ node_modules
 .env
 .env.local
 .env.*.local
+
+# Claude Code skills: design tooling for development, not part of the site
+.claude

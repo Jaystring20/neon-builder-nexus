@@ -1,63 +1,57 @@
-import { ArrowRight, Mail, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { storyImage } from "@/lib/storyImages";
+
+// Copy: docs/landing-copy.md, section 8. Selective by design: the invitation
+// is to bring a problem, not to "get in touch". Booking goes to the studio's
+// real inbox (the scheduling link is not in use); discovery is the softer exit.
+const BOOK_A_CALL = "mailto:hello@digitalcreativeshub.com?subject=Book%20a%20call";
 
 const ContactCTASection = () => {
+  const image = storyImage("cta-first-connection");
+
   return (
-    <section id="contact" className="relative py-16 overflow-hidden">
+    <section id="contact" aria-labelledby="contact-heading" className="relative overflow-hidden py-28 md:py-40">
+      {/* The two slabs sit in the right of the image; the left is empty dark
+          space, which is where the copy goes. Faded into the page at the edges. */}
+      {image && (
+        <img
+          src={image}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right opacity-90 [mask-image:linear-gradient(to_right,transparent,black_45%),linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] [mask-composite:intersect]"
+        />
+      )}
+
       <div className="container-narrow relative z-10">
-        {/* Header */}
-        <div className="max-w-3xl mb-12">
-          <h2 className="font-display-refined text-3xl md:text-4xl leading-tight text-foreground mb-6">
-            Ready to Build?
-          </h2>
-          <p className="text-base leading-relaxed text-muted-foreground">
-            Start with a conversation. We'll talk about the question hiding inside your brief. No pitch. Just listening.
-          </p>
-        </div>
-
-        {/* One route in, not two. A booking card used to sit beside this
-            pointing at a scheduling link the studio doesn't use — a single
-            real path beats a real one next to a dead one. */}
-        <div className="mb-12 max-w-xl">
-          {/* Send Your Brief */}
-          <a
-            href="mailto:hello@digitalcreativeshub.com?subject=Project%20Brief"
-            className="group relative rounded-none border border-border/40 bg-card/30 backdrop-blur-sm p-8 hover:border-secondary/40 hover:bg-card/50 transition-all motion-snap"
+        <div className="max-w-2xl">
+          <h2
+            id="contact-heading"
+            className="font-display-refined text-[2.5rem] leading-[1.02] text-foreground sm:text-6xl"
           >
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                {/* The one orange moment on the page. Cyan is the structural
-                    accent and appears everywhere; orange appears exactly here,
-                    on the single action the page is asking for. An accent used
-                    twice is a colour scheme — used once, it is a signal. */}
-                <Mail className="w-5 h-5 text-secondary" />
-                <h3 className="text-lg font-semibold text-foreground group-hover:text-secondary transition-colors">
-                  Send Your Brief
-                </h3>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Write down what you're building and what you're trying to prove.
-              </p>
-              <div className="flex items-center gap-2 text-sm font-semibold text-secondary group-hover:gap-3 transition-all">
-                hello@digitalcreativeshub.com
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </div>
-          </a>
-        </div>
+            We don&rsquo;t take every brief.
+          </h2>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            We take the right problems and solve them completely.{" "}
+            <span className="text-foreground">Bring us yours.</span>
+          </p>
 
-        {/* Location info */}
-        <div className="border-t border-border/30 pt-12 space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary" />
-              Where We're Built
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Headquartered in Lagos, Nigeria. Operating globally.
-            </p>
-            <p className="text-xs text-muted-foreground mt-2">
-              We work in distributed teams. Time zones aren't a constraint—they're a feature.
-            </p>
+          <div className="mt-10 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center">
+            <Button asChild variant="pill" size="xl" className="group w-full sm:w-auto">
+              <a href={BOOK_A_CALL}>
+                Book a call
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+            </Button>
+            <Link
+              to="/discovery"
+              className="group inline-flex items-center justify-center gap-2 text-base text-foreground/75 transition-colors hover:text-foreground sm:justify-start"
+            >
+              Not ready to talk? <span className="font-semibold text-foreground">Take the discovery.</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </div>

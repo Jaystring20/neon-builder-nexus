@@ -39,6 +39,14 @@ const Footer = () => {
   return (
     <footer className="border-t border-border/50 bg-card/30 backdrop-blur-sm">
       <div className="container-narrow py-16">
+        {/* Sign-off. Reach is stated through what DCH does, not where it sits. */}
+        <div className="mb-14 border-b border-border/50 pb-14">
+          <p className="font-display-refined text-balance text-3xl leading-tight text-foreground sm:text-4xl md:text-5xl">
+            Strategy. Creativity. Growth. <span className="text-primary">Without limits.</span>
+          </p>
+          <p className="mt-4 text-base text-muted-foreground">Working wherever growth needs to happen.</p>
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
@@ -50,7 +58,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
-              Business Development Creative Agency. We build the systems that grow brands.
+              Business development creative agency. Brand, platforms and people, built to compound.
             </p>
             <div className="flex items-center gap-2 sm:gap-3">
               {socials.map((social) => (

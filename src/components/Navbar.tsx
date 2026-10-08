@@ -33,7 +33,7 @@ const Navbar = () => {
 
   const whoWeAreItems = [
     { title: "About Us", description: "Our mission, vision, and the story behind Digital Creatives Hub", href: "/about" },
-    { title: "Our Strategist", description: "Meet Jerry — the mind driving our digital transformation strategy", href: isHomePage ? "#strategist" : "/#strategist" },
+    { title: "Our Strategist", description: "Meet Jerry — the mind driving our digital transformation strategy", href: "/about#founder" },
     { title: "Digital Creatives Network", description: "A global community of builders, creators, and innovators", href: "/dcn" },
   ];
 

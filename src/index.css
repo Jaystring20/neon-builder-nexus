@@ -340,6 +340,73 @@
 
    The curve is a quint-out: it leaves immediately and lands soft, which is
    what makes a fast duration feel deliberate rather than abrupt. */
+/* Momentum flywheel (hero). Slabs are dark smoked glass with a lit top edge
+   and a cyan underside, matching the generated imagery; corners stay square
+   like the rest of the site. The core is the one round thing on the wheel
+   because it is light, not a container. */
+.flywheel-slab {
+  background:
+    linear-gradient(165deg, hsl(220 18% 20% / 0.92), hsl(220 26% 9% / 0.94));
+  border: 1px solid hsl(var(--foreground) / 0.1);
+  box-shadow:
+    inset 0 1px 0 hsl(var(--foreground) / 0.14),
+    inset 0 -1px 0 hsl(var(--primary) / 0.45),
+    0 18px 36px -14px hsl(220 40% 2% / 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.flywheel-core {
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, hsl(178 70% 78%), hsl(var(--primary)) 45%, hsl(178 62% 30%) 100%);
+  box-shadow:
+    inset 0 -6px 14px hsl(178 70% 18% / 0.55),
+    inset 0 3px 6px hsl(0 0% 100% / 0.35),
+    0 14px 30px -8px hsl(var(--primary) / 0.45);
+}
+
+.flywheel-core-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid hsl(var(--primary) / 0.6);
+  animation: flywheel-core-pulse 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+/* Stand-in for a generated story image that has not been made yet: the
+   page's drafting grid under a faint cyan light. Same shape as the image, so
+   nothing shifts when it arrives. */
+.story-standin {
+  background-image:
+    radial-gradient(ellipse at 65% 40%, hsl(var(--primary) / 0.1), transparent 60%),
+    repeating-linear-gradient(to right, hsl(var(--foreground) / 0.035) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(to bottom, hsl(var(--foreground) / 0.035) 0 1px, transparent 1px 32px);
+}
+
+/* 3D hero engine. The canvas background matches the page, and a radial
+   mask feathers its edges so the engine sits on the page, not in a box. */
+.momentum-engine canvas {
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+}
+
+.momentum-engine > div {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+@keyframes flywheel-core-pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flywheel-core-pulse { animation: none; opacity: 0; }
+}
+
 @layer utilities {
   .motion-snap.motion-snap {
     transition-duration: 120ms;

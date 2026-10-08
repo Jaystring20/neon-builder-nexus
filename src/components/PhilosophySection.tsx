@@ -33,7 +33,7 @@ const PhilosophySection = () => {
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true, amount: 0.8 }}
               transition={{ duration: 0.9, delay: i * 0.18, ease: EASE }}
-              className="border-t border-primary/40 pt-6"
+              className={`border-t pt-6 ${i === BEATS.length - 1 ? "border-secondary" : "border-primary/40"}`}
             >
               <p className="font-heading text-2xl font-medium tracking-tight text-foreground sm:text-3xl">
                 {beat.title}

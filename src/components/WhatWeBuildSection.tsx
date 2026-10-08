@@ -68,7 +68,7 @@ const WhatWeBuildSection = () => {
         </div>
 
         <p className="mt-20 max-w-xl text-xl leading-snug text-foreground md:mt-24 md:text-2xl">
-          AI runs through all three. <span className="text-primary">That&rsquo;s why it compounds.</span>
+          AI runs through all three. <span className="text-secondary">That&rsquo;s why it compounds.</span>
         </p>
       </div>
     </section>

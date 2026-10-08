@@ -29,6 +29,10 @@ const buttonVariants = cva(
         // like everything else. A lone pill among sharp edges reads as a
         // leftover, not an accent.
         pill: "bg-primary text-primary-foreground font-bold hover:bg-primary/90 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_hsl(var(--primary)/0.6)]",
+        // The page's one action (Book a call). Cyan is the structure of the
+        // site; orange is reserved for action and momentum, so this is where
+        // the eye lands. Dark text on the orange measures about 6.5:1.
+        action: "bg-secondary text-secondary-foreground font-bold hover:bg-secondary/90 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_hsl(var(--secondary)/0.65)]",
       },
       size: {
         default: "h-11 px-6 py-2",

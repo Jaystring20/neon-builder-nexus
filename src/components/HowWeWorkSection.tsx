@@ -23,7 +23,7 @@ const HowWeWorkSection = () => {
             id="process-heading"
             className="font-display-refined text-balance text-[2.25rem] leading-[1.05] text-foreground sm:text-5xl lg:text-6xl"
           >
-            Diagnose. Architect. Build. <span className="text-primary">Compound.</span>
+            Diagnose. Architect. Build. <span className="text-secondary">Compound.</span>
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
             Never one-size-fits-all. Every engagement starts with the real problem.
@@ -56,8 +56,16 @@ const HowWeWorkSection = () => {
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.6, delay: 0.2 + i * 0.15, ease: EASE }}
             >
-              <span aria-hidden="true" className="absolute -top-[3px] left-0 hidden h-[7px] w-[7px] bg-primary lg:block" />
-              <p className="font-heading text-xl font-medium tracking-tight text-foreground">{stage.name}</p>
+              {/* The last stage is where momentum starts, so it alone is orange. */}
+              <span
+                aria-hidden="true"
+                className={`absolute -top-[3px] left-0 hidden h-[7px] w-[7px] lg:block ${i === STAGES.length - 1 ? "bg-secondary" : "bg-primary"}`}
+              />
+              <p
+                className={`font-heading text-xl font-medium tracking-tight ${i === STAGES.length - 1 ? "text-secondary" : "text-foreground"}`}
+              >
+                {stage.name}
+              </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">{stage.line}</p>
             </motion.li>
           ))}

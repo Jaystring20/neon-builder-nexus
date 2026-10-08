@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
 import { trainingPartner } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
-import jerryImage from "@/assets/jerry-strategist.png";
+import jerryImage from "@/assets/team/jeremiah-adeyemi.webp";
 import gideonImage from "@/assets/team/gideon-olawuyi.webp";
 
 // Copy: docs/about-copy.md, built from the brand brief in PRODUCT.md. The home

@@ -8,90 +8,114 @@ web
 
 ## Users
 
-Founders and brand owners anywhere in the world who need their brand, the
-digital infrastructure behind it, and the AI systems that run it built as one
-working whole. Lagos is where the studio comes from; it is the origin story,
-not the market. The visitor is usually deciding whether DCH can be trusted to
-build something real for them, after experiences with vendors that sold
-pieces that never connected.
+Three kinds of visitor, all deciding whether DCH can move them from where
+they are to where their potential points:
 
-Secondary audience: founders not yet ready to talk, who want to understand
-what kind of business they are building before committing (served by the
-discovery form at `/discovery`).
+1. **Startups finding their footing:** need a brand, a platform and a way of
+   working built at once, without hiring five vendors.
+2. **Established brands ready to evolve:** have traction and legacy systems,
+   need to re-form without losing what already works.
+3. **Ambitious individuals:** know they are capable of more and need someone
+   to architect the path (training, coaching, personal capability).
+
+The market is international. DCH goes wherever growth needs to happen; no
+copy or imagery should place it as a local or regional studio.
+
+Secondary audience: visitors not yet ready to talk, served by the discovery
+form at `/discovery`, which segments them and starts a follow-up sequence.
 
 ## Product Purpose
 
-Digital Creatives Hub Ltd (DCH) designs the brand, builds the infrastructure,
-and wires in the AI systems that run it, delivered as one connected build
-rather than a stack of separate vendors. The website exists to make a visitor
-believe that, and then act.
+Digital Creatives Hub Ltd (DCH) is a business development creative agency
+working where strategy, technology and human potential meet. Its work spans
+the full architecture of growth: brand identities, SaaS platforms that scale
+operations, and training systems that turn individuals into high performers.
+AI is embedded in all of it as a force multiplier, never sold as a buzzword.
+
+The website exists to make a visitor feel that DCH builds momentum, not just
+deliverables, and then act.
 
 Success on the marketing site:
 1. **Primary:** the visitor books a call (`https://calendly.com/dch/consultation`,
    reached through the `#contact` section and the navbar "Book a Call").
 2. **Secondary:** a visitor not ready to talk takes the discovery
-   (`/discovery`), which segments them and starts a three-email follow-up.
+   (`/discovery`).
 
 ## Positioning
 
-"The Future is Built. Not Bought." DCH's claim is integration: brand,
-infrastructure, and AI designed and built together by one team, so the
-system holds when the business scales. A design agency that only does
-brand, or a dev shop that only ships code, cannot truthfully make that claim.
+"Some agencies build things. We build momentum." (working headline, still
+being refined.) Most agencies hand over a deliverable and leave. DCH builds
+growth that compounds: brand, platforms and people designed to keep moving
+after the engagement ends.
+
+Philosophy: **Build agency. Create value. Drive growth.**
+
+Selective by design: DCH does not chase every brief. It pursues the right
+problems and solves them completely.
+
+Retired: "The Future is Built. Not Bought." Do not use it anywhere.
 
 ## Operating Context
 
-The working process the site describes, in four stages: listen for the real
-question inside the client's stated problem; blueprint (brand system,
-infrastructure diagram, AI spec, success metrics) for sign-off; build design,
-infrastructure, and AI in parallel with weekly checkpoints and real users;
-then stress-test, monitor, and iterate weekly after launch.
+Led by DigiTech Strategists who work across organisations, brands and
+individuals. The approach is never one-size-fits-all: diagnostic, deliberate
+and relentlessly outcome-focused. Working stages the site can describe:
+diagnose the real problem, architect the path, build (brand, platform,
+people) with AI embedded, then compound (measure and iterate after launch).
 
 ## Capabilities and Constraints
 
 - React + Vite + Tailwind + shadcn/ui, deployed on Vercel; Supabase backend.
 - Image and video generation through the Higgsfield API is integrated
-  server-side (`src/lib/higgsfield.server.ts`, `/api/studio`). Generated media
-  costs real credits per request.
+  server-side (`src/lib/higgsfield.server.ts`, `/api/studio`) and through
+  `npm run images:generate` (`scripts/site-images/`). Generated media costs
+  real credits per request.
 - A private `/studio` generation page is planned. It must never appear in
   any navigation menu and should not be indexed.
 
 ## Brand Commitments
 
 - Name: Digital Creatives Hub Ltd (DCH). Logo: `src/assets/dch-logo-primary.png`.
-- Tagline: "The Future is Built. Not Bought."
-- Voice: direct, specific, anti-hype. Proof through action, not adjectives.
-  The project's own docs reject generic "AI slop" copy.
-- The current landing page (dark, grid-backed, cyan accent with warm
-  secondary) is the visual reference the owner pointed to for new work.
+- Philosophy line: "Build agency. Create value. Drive growth."
+- Sign-off: "Strategy. Creativity. Growth. Without limits."
+- Voice: direct, specific, human, anti-hype. Proof through action, not
+  adjectives. Short sentences. No "elevate", "seamless", "cutting-edge",
+  "unleash". No em-dashes in visible copy.
+- Beyond borders: imply international reach through what DCH does and who it
+  serves. Do not lead with a city or country (no "Born in Lagos",
+  "Headquartered in Lagos" as positioning).
+- Visual language: dark graphite field, brand cyan as the main light, one
+  warm amber accent; glossy studio-rendered 3D objects for generated imagery;
+  motion that expresses momentum (things starting, engaging, compounding).
 
 ## Evidence on Hand
 
-- Real case studies with real details, written in
-  `src/components/ProofStorySection.tsx`:
-  - Fitness Religion: multi-city event platform (5+ Nigerian cities;
-    registration, leaderboards, event management, sponsor integration).
-  - M & H Eyewear: AI visual try-on, style-matching quiz, and eye exams
-    built into the purchase flow for luxury frames.
-  - Viera Amber: five businesses (design, impact, fashion, learning, creator
-    commerce) connected into one system.
-- Real project screenshots in `src/assets/portfolio/` (11 projects) and
-  data in `src/data/portfolio.ts`.
-- Existing generated hero imagery in `public/images/hero/`.
-- **Absent, must not be fabricated:** testimonials not already on the site,
-  client logos, revenue or growth figures, team headcount, awards, press.
+- Platform and brand work in `src/data/portfolio.ts` with real screenshots in
+  `src/assets/portfolio/` (Viera Amber, Innerspace, The Discovery,
+  M & H Eyewear, The Fitness Religion Company). More shipped projects exist
+  and are still to be added; the site must not imply this list is complete.
+- Case stories with real details in `src/components/ProofStorySection.tsx`
+  (Fitness Religion: multi-city event platform; M & H Eyewear: AI try-on,
+  style quiz and eye exams in the purchase flow; Viera Amber: five businesses
+  in one system).
+- Training of individuals: real past work exists; the owner will supply the
+  material. Until it arrives, the People capability is described without
+  invented outcomes.
+- **Absent, must not be fabricated:** testimonials not supplied by the owner,
+  client logos, revenue or growth figures, team headcount, awards, press,
+  training results.
 
 ## Product Principles
 
-1. **Show, don't claim.** Every promise on the page should be carried by an
-   image, a real case, or a working detail; copy only says what pictures
-   cannot.
-2. **Generated imagery is mood and story, never evidence.** AI images set
-   scenes and carry the narrative. Real client work appears only through
-   real screenshots. No fake client photos, products, or people presented as
-   real.
-3. **One connected story.** The page should read as a single narrative
-   (problem, how DCH thinks, proof, how to start), mirroring the
-   one-connected-build positioning.
-4. **Book a call first, discovery second.** Every section should leave the
-   visitor one step from booking; the discovery form is the softer exit.
+1. **Show, don't claim.** Every promise is carried by an image, motion, a real
+   case or a working detail. Copy only says what visuals cannot: one headline
+   and one short line per section, depth behind a click.
+2. **Generated imagery is mood and story, never evidence.** AI images and
+   motion set scenes and carry the narrative; real work appears only through
+   real screenshots and real material.
+3. **Momentum is the through-line.** The page should feel like something
+   starting, gathering speed and compounding, from hero to call to action.
+4. **Proof across all three: brand, platforms, people.** Work is not only
+   platforms; each capability gets its own real evidence as it is supplied.
+5. **Book a call first, discovery second.** Every section leaves the visitor
+   one step from booking; the discovery form is the softer exit.

@@ -15,8 +15,8 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-background">
       <SEO
-        title="Digital Creatives Hub — Systems Built, Not Bought"
-        description="We design the brand, build the infrastructure, and wire in the AI systems that run it. As one connected build, not a stack of vendors."
+        title="Digital Creatives Hub | Projects end. Momentum doesn't."
+        description="We build the brand, platforms and people behind your growth, with AI in every layer. For startups, established brands and people outgrowing where they are."
         path="/"
       />
       <Navbar />

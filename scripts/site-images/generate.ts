@@ -2,7 +2,7 @@
  * Generates homepage story images with Higgsfield. Each one is a billable
  * request, so nothing runs unless asked for by name.
  *
- *   npm run images:generate -- hero-built-stack
+ *   npm run images:generate -- capability-brand
  *   npm run images:generate -- --all
  *   npm run images:generate -- --list
  *   npm run images:generate -- --model <higgsfield-model-id> <shot-id>

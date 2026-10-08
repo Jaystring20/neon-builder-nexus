@@ -33,7 +33,7 @@ const Navbar = () => {
 
   const whoWeAreItems = [
     { title: "About Us", description: "Who we are and how we think", href: "/about" },
-    { title: "Our Strategist", description: "Meet Jeremiah Adeyemi, founder and lead architect", href: "/about#founder" },
+    { title: "Leadership", description: "Meet the founder and the team at the helm", href: "/about#founder" },
     { title: "Partners", description: "The partners we build and train with", href: "/about#partners" },
     { title: "Digital Creatives Network", description: "A global community of builders, creators, and innovators", href: "/dcn" },
   ];

@@ -33,8 +33,8 @@ Visuals: capability-brand, capability-platforms, capability-people.
 
 ## 4. At the helm. (`#founder`)
 
-DCH is led by DigiTech Strategists whose work cuts across organisations,
-brands and individuals.
+DCH is led by strategists whose work cuts across organisations, brands
+and individuals.
 
 **Jeremiah Adeyemi**, The DigiTech Strategist, Founder & Lead Architect.
 Founded DCH on one idea: real growth needs the vision of a creative and the
@@ -42,7 +42,11 @@ precision of an engineer.
 Quote: "He doesn't just draw the map. He builds the road, the car and the fuel."
 Link: Connect with Jeremiah (thedigitechstrategist.lovable.app).
 
-[Other DigiTech Strategists: names, roles and photos, when DCH wants them shown.]
+**Gideon Olawuyi**, Chief Operating Officer, development practitioner.
+Works where corporate business meets African development, building the
+systems, organisations and partnerships that create lasting social and
+economic impact across Africa and beyond.
+Quote: "Business is the most sustainable solution to global challenges."
 
 ## 5. Built with partners. (`#partners`)
 

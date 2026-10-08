@@ -24,8 +24,8 @@ what we built (chips), what exists now (orange rule).
 - Ecopath: circular-economy platform connecting universities with cartridge remanufacturing.
 - Everything Household: online store for premium household essentials.
 - The DigiTech Strategist: personal brand and consulting platform.
-- [Veridia, getveridia.app: screenshot and one line from DCH.]
-- [Soteria Eye Clinic: live URL and screenshot from DCH.]
+- VeriDIA (getveridia.app): AI app turning lab reports into plain English and Nigerian dietary plans.
+- Soteria Eye Clinic: services, branches and booking, linked to M & H. [Live URL from DCH; the tile has no link until then.]
 
 ## People proof
 

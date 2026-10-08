@@ -16,31 +16,45 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const featured = portfolioProjects.filter((p) => p.story && p.image);
 const more = portfolioProjects.filter((p) => !featured.includes(p));
 
-const Screenshot = ({ project, className }: { project: PortfolioProject; className?: string }) => (
-  <a
-    href={project.url}
-    target="_blank"
-    rel="noreferrer"
-    aria-label={`Visit ${project.title}`}
-    className={`group/shot relative block overflow-hidden border border-foreground/[0.08] bg-card/40 ${className ?? ""}`}
-  >
-    {project.image ? (
-      <img
-        src={project.image}
-        alt={`${project.title} website`}
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover object-left-top transition-transform duration-700 group-hover/shot:scale-[1.03]"
-      />
-    ) : (
-      <div aria-hidden="true" className="story-standin absolute inset-0" />
-    )}
-    <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-background/95 to-transparent px-5 pb-4 pt-14 text-sm font-medium text-foreground">
-      {project.displayDomain}
-      <ArrowUpRight className="h-4 w-4 transition-transform group-hover/shot:-translate-y-0.5 group-hover/shot:translate-x-0.5" />
-    </span>
-  </a>
-);
+// A link to the live site when there is one, otherwise a plain frame.
+const Screenshot = ({
+  project,
+  className,
+  position = "object-left-top",
+}: {
+  project: PortfolioProject;
+  className?: string;
+  /** Which part of the screenshot survives the crop. */
+  position?: string;
+}) => {
+  const Frame = project.url ? "a" : "div";
+  return (
+    <Frame
+      {...(project.url
+        ? { href: project.url, target: "_blank", rel: "noreferrer", "aria-label": `Visit ${project.title}` }
+        : {})}
+      className={`group/shot relative block overflow-hidden border border-foreground/[0.08] bg-card/40 ${className ?? ""}`}
+    >
+      {project.image ? (
+        <img
+          src={project.image}
+          alt={`${project.title} website`}
+          loading="lazy"
+          decoding="async"
+          className={`absolute inset-0 h-full w-full object-cover ${project.imagePosition ?? position} transition-transform duration-700 group-hover/shot:scale-[1.03]`}
+        />
+      ) : (
+        <div aria-hidden="true" className="story-standin absolute inset-0" />
+      )}
+      <span className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-background/95 to-transparent px-5 pb-4 pt-14 text-sm font-medium text-foreground">
+        {project.displayDomain}
+        {project.url && (
+          <ArrowUpRight className="h-4 w-4 transition-transform group-hover/shot:-translate-y-0.5 group-hover/shot:translate-x-0.5" />
+        )}
+      </span>
+    </Frame>
+  );
+};
 
 const OurWork = () => {
   const reduce = useReducedMotion();
@@ -128,7 +142,7 @@ const OurWork = () => {
               <ul className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
                 {more.map((project, i) => (
                   <motion.li key={project.id} {...reveal(i)}>
-                    <Screenshot project={project} className="aspect-[4/3]" />
+                    <Screenshot project={project} className="aspect-[16/10]" />
                     <p className="mt-5 text-sm font-medium text-primary">{project.category}</p>
                     <h3 className="mt-1 font-heading text-xl font-medium tracking-tight text-foreground">
                       {project.title}

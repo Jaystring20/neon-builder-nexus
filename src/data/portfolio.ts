@@ -1,4 +1,4 @@
-import { Globe, Sparkles, Stethoscope, Church, Dumbbell, Leaf, ShoppingBag, Briefcase } from "lucide-react";
+import { Globe, Sparkles, Stethoscope, Church, Dumbbell, Leaf, ShoppingBag, Briefcase, HeartPulse, Eye } from "lucide-react";
 
 import vieraAmberImg from "@/assets/portfolio/viera-amber.webp";
 import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.webp";
@@ -28,7 +28,8 @@ export interface PortfolioProject {
   category: string;
   description: string;
   tags: string[];
-  url: string;
+  /** Live address. Left out until DCH confirms it; the tile then shows no link. */
+  url?: string;
   /**
    * What the reader is shown in place of the raw URL.
    *
@@ -41,6 +42,8 @@ export interface PortfolioProject {
   displayDomain: string;
   icon: typeof Globe;
   image?: string;
+  /** Tailwind object-position for the screenshot crop, when top-left cuts the point off. */
+  imagePosition?: string;
 
   /**
    * The narrative, as structured facts rather than paragraphs. Projects with a
@@ -182,6 +185,30 @@ export const portfolioProjects: PortfolioProject[] = [
     displayDomain: "The DigiTech Strategist",
     icon: Briefcase,
     image: digitechImg,
+  },
+  {
+    id: "veridia",
+    title: "VeriDIA",
+    category: "Health Tech",
+    description:
+      "An AI-powered app that turns confusing lab reports into plain English and dietary plans grounded in Nigerian food.",
+    tags: ["Health Tech", "AI", "Web App"],
+    url: "https://getveridia.app/",
+    displayDomain: "getveridia.app",
+    icon: HeartPulse,
+    image: screenshot("veridia"),
+    imagePosition: "object-top",
+  },
+  {
+    id: "soteria-eye-clinic",
+    title: "Soteria Eye Clinic",
+    category: "Healthcare",
+    description:
+      "An eye clinic's home online: services, branches and appointment booking, with a direct line to its eyewear brand, M & H.",
+    tags: ["Healthcare", "Eye Care", "Appointments"],
+    displayDomain: "Soteria Eye Clinic",
+    icon: Eye,
+    image: screenshot("soteria"),
   },
 ];
 

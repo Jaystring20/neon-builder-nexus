@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import StoryImage from "@/components/StoryImage";
 import ServicesCTA from "@/components/ServicesCTA";
 import { serviceCategories, pillarOrder, type Pillar } from "@/data/services";
+import { storyImage } from "@/lib/storyImages";
 import { BOOK_A_CALL } from "@/lib/contact";
 
 // Copy: docs/services-copy.md. The page reads in the same order as the home
@@ -35,6 +36,7 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const Services = () => {
   const reduce = useReducedMotion();
+  const hasEngine = Boolean(storyImage("services-engine"));
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,25 +51,40 @@ const Services = () => {
         {/* Hero */}
         <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
           <div className="blueprint-grid" />
-          <div className="container-narrow relative z-10">
-            <h1 className="font-display-refined hero-animate max-w-3xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
-              Five practices. <span className="text-primary">One engine.</span>
-            </h1>
-            <p
-              className="hero-animate mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground"
-              style={{ animationDelay: "120ms" }}
-            >
-              Brand, platforms and people, built together and powered by AI. Start where you need to; we
-              connect the rest.
-            </p>
-            <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
-              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-                <a href={BOOK_A_CALL}>
-                  Book a call
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
+          <div
+            className={`container-narrow relative z-10 ${
+              hasEngine ? "grid items-center gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-10" : ""
+            }`}
+          >
+            <div>
+              <h1 className="font-display-refined hero-animate max-w-3xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+                Five practices. <span className="text-primary">One engine.</span>
+              </h1>
+              <p
+                className="hero-animate mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground"
+                style={{ animationDelay: "120ms" }}
+              >
+                Brand, platforms and people, built together and powered by AI. Start where you need to; we
+                connect the rest.
+              </p>
+              <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
+                <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
+                  <a href={BOOK_A_CALL}>
+                    Book a call
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </a>
+                </Button>
+              </div>
             </div>
+            {hasEngine && (
+              <StoryImage
+                id="services-engine"
+                alt="Five glass and graphite slabs joined in a ring around a warm core, like the parts of one machine"
+                aspect="aspect-[16/9]"
+                priority
+                className="hero-animate [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_100%)]"
+              />
+            )}
           </div>
         </section>
 
@@ -115,6 +132,13 @@ const Services = () => {
                 className="grid scroll-mt-28 gap-10 border-b border-border/40 py-16 md:grid-cols-[1fr_1.2fr] md:gap-16 md:py-20"
               >
                 <div>
+                  <StoryImage
+                    id={`practice-${category.slug}`}
+                    alt=""
+                    aspect="aspect-[4/3]"
+                    hideIfMissing
+                    className="mb-8"
+                  />
                   <p className="text-sm font-medium text-primary">{category.pillar}</p>
                   <h2 className="mt-3 font-display-refined text-4xl leading-[1.05] text-foreground sm:text-5xl">
                     {category.title}

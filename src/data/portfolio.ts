@@ -5,6 +5,19 @@ import innerspaceImg from "@/assets/portfolio/innerspace-interior-design.webp";
 import discoveryImg from "@/assets/portfolio/the-discovery-church.png";
 import fitnessReligionImg from "@/assets/portfolio/fitness-religion.webp";
 
+/**
+ * Screenshots not imported above are picked up by file name, so adding one
+ * is just dropping `src/assets/portfolio/<project id>.webp` (or .png/.jpg)
+ * into the folder: e.g. `mh-eyewear.webp` for M & H Eyewear.
+ */
+const screenshots = import.meta.glob("/src/assets/portfolio/*.{png,jpg,jpeg,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+const screenshot = (id: string): string | undefined =>
+  Object.entries(screenshots).find(([path]) => path.split("/").pop()!.replace(/\.[a-z]+$/, "") === id)?.[1];
+
 export interface PortfolioProject {
   id: string;
   /** Brand name only. Never a URL — see `displayDomain`. */
@@ -102,6 +115,7 @@ export const portfolioProjects: PortfolioProject[] = [
     url: "https://mandheyewear.com/",
     displayDomain: "mandheyewear.com",
     icon: Stethoscope,
+    image: screenshot("mh-eyewear"),
     story: {
       problem:
         "Frames at ₦1.9M sell on fit, and fit is the one thing that cannot be shipped ahead of the sale.",

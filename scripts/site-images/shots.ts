@@ -144,7 +144,7 @@ export const SHOTS: Shot[] = [
     section: "Practice: Growth Operations",
     aspect_ratio: "4:3",
     prompt:
-      "A row of glass discs of steadily increasing size, each one turning a little faster than the last, linked edge to edge like gears without teeth. A pulse of cyan light passes from the smallest disc to the largest and grows brighter as it goes, ending as a warm amber glow on the largest disc. Campaigns, content and community running as one system that compounds.",
+      "A row of five discs of smoked glass and matte graphite, all the same dark neutral colour, of steadily increasing size, linked edge to edge like gears without teeth. A single pulse of cyan light passes from the smallest disc to the largest and grows brighter as it goes, ending as a warm amber glow on the largest disc. Only cyan and amber light, no blue, purple, green or rainbow tints on the glass. Campaigns, content and community running as one system that compounds.",
   },
   {
     id: "practice-digital-infrastructure",
@@ -172,7 +172,7 @@ export const SHOTS: Shot[] = [
     section: "Training track: AI Training",
     aspect_ratio: "16:9",
     prompt:
-      "Three floating platforms of glass rise in three clear stages from left to right. The first holds one simple slab, the second holds slabs linked by fine cyan lines into a working chain, the third holds a small finished structure assembled from many pieces with a warm amber light at its top. From first steps, to automating, to building.",
+      "Three floating platforms of glass rise in three clear stages from left to right. The first holds one simple slab, the second holds slabs linked by fine cyan lines into a working chain, the third holds a small finished structure assembled from many dark graphite and smoked-glass pieces with a warm amber light at its top. All pieces are dark and neutral; no pastel, purple or coloured blocks. From first steps, to automating, to building.",
   },
   {
     id: "track-workforce",

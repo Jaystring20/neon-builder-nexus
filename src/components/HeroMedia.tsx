@@ -12,13 +12,11 @@ import { hasHeroVideo, heroVideo } from "@/lib/heroMedia";
 const MomentumEngine3D = lazy(() => import("@/components/MomentumEngine3D"));
 const { webm, mp4, poster } = heroVideo;
 
-// The sculpture sits in the right of the frame and the left is empty dark
-// space, so on wide screens the video fills the section and the copy sits on
-// that space. The mask dissolves its edges into the page instead of a box.
-const BACKDROP_MASK =
-  "linear-gradient(to right, transparent 0%, black 38%), linear-gradient(to bottom, black 78%, transparent 100%)";
-const INLINE_MASK =
-  "linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%)";
+// The film's blacks are pure black and the page is a deep navy, so every edge
+// is dissolved with a radial mask: no edge of the frame is ever visible.
+// Ellipse centred where the sculpture sits in the frame (right of centre).
+const BACKDROP_MASK = "radial-gradient(ellipse 50% 46% at 62% 50%, black 50%, transparent 100%)";
+const INLINE_MASK = "radial-gradient(ellipse 58% 46% at 60% 50%, black 50%, transparent 100%)";
 
 const LoopingVideo = ({ className, style }: { className: string; style: React.CSSProperties }) => {
   const ref = useRef<HTMLVideoElement>(null);
@@ -61,10 +59,12 @@ const LoopingVideo = ({ className, style }: { className: string; style: React.CS
 export const HeroBackdrop = () => {
   if (!hasHeroVideo) return null;
   return (
-    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[68%] lg:block">
+    // At its natural 16:9 shape, right-aligned and vertically centred: the
+    // sculpture lands right of the copy at a size that reads whole, not cropped.
+    <div className="pointer-events-none absolute right-0 top-1/2 hidden w-[78%] -translate-y-1/2 lg:block">
       <LoopingVideo
-        className="h-full w-full object-cover object-[65%_50%]"
-        style={{ maskImage: BACKDROP_MASK, WebkitMaskImage: BACKDROP_MASK, maskComposite: "intersect", WebkitMaskComposite: "source-in" }}
+        className="aspect-video w-full object-cover"
+        style={{ maskImage: BACKDROP_MASK, WebkitMaskImage: BACKDROP_MASK }}
       />
     </div>
   );
@@ -86,7 +86,7 @@ export const HeroInline = () => {
   return (
     <div className="-mx-4 sm:-mx-6 lg:hidden">
       <LoopingVideo
-        className="aspect-[4/3] w-full object-cover object-[72%_50%] sm:aspect-[16/9]"
+        className="aspect-[4/3] w-full object-cover object-[62%_50%] sm:aspect-[16/9]"
         style={{ maskImage: INLINE_MASK, WebkitMaskImage: INLINE_MASK }}
       />
     </div>

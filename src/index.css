@@ -374,6 +374,16 @@
   pointer-events: none;
 }
 
+/* Stand-in for a generated story image that has not been made yet: the
+   page's drafting grid under a faint cyan light. Same shape as the image, so
+   nothing shifts when it arrives. */
+.story-standin {
+  background-image:
+    radial-gradient(ellipse at 65% 40%, hsl(var(--primary) / 0.1), transparent 60%),
+    repeating-linear-gradient(to right, hsl(var(--foreground) / 0.035) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(to bottom, hsl(var(--foreground) / 0.035) 0 1px, transparent 1px 32px);
+}
+
 /* 3D hero engine. The canvas background matches the page, and a radial
    mask feathers its edges so the engine sits on the page, not in a box. */
 .momentum-engine canvas {

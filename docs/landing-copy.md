@@ -13,9 +13,9 @@ layer. For startups, established brands and people outgrowing where they are.
 
 CTA: Book a call
 
-Visual: a looping Seedance 2.5 film of a kinetic sculpture (three rings, one
-core of light) gathering momentum, from `npm run hero:video`. Until it is
-generated, the code flywheel stands in. Reduced motion shows the still.
+Visual: the real-time 3D engine (three rings, one core of light) spinning up.
+If the Seedance film (`npm run hero:video`) is encoded into src/assets/hero/,
+the hero plays that instead. Reduced motion shows a still.
 
 ## 2. AI stand
 

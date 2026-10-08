@@ -42,7 +42,7 @@ const Footer = () => {
         {/* Sign-off. Reach is stated through what DCH does, not where it sits. */}
         <div className="mb-14 border-b border-border/50 pb-14">
           <p className="font-display-refined text-balance text-3xl leading-tight text-foreground sm:text-4xl md:text-5xl">
-            Strategy. Creativity. Growth. <span className="text-primary">Without limits.</span>
+            Strategy. Creativity. Growth. <span className="text-secondary">Without limits.</span>
           </p>
           <p className="mt-4 text-base text-muted-foreground">Working wherever growth needs to happen.</p>
         </div>

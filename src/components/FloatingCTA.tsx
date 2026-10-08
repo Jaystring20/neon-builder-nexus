@@ -28,7 +28,7 @@ const FloatingCTA = () => {
       onClick={handleClick}
       aria-label="Book a call"
       className={cn(
-        "fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-primary/80 px-5 py-3 text-sm font-bold text-primary-foreground shadow-[0_0_30px_hsl(var(--primary)/0.5)] transition-all duration-500 hover:scale-105 hover:shadow-[0_0_50px_hsl(var(--primary)/0.7)] sm:bottom-6 sm:right-6 sm:px-6 sm:py-3.5 sm:text-base",
+        "fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-secondary px-5 py-3 text-sm font-bold text-secondary-foreground shadow-[0_14px_34px_-12px_hsl(var(--secondary)/0.7)] transition-all duration-500 hover:-translate-y-0.5 hover:bg-secondary/90 sm:bottom-6 sm:right-6 sm:px-6 sm:py-3.5 sm:text-base",
         visible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0",

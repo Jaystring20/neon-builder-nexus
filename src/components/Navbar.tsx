@@ -182,7 +182,7 @@ const Navbar = () => {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="hero" size="sm" asChild>
+            <Button variant="action" size="sm" asChild>
               <a href={isHomePage ? "#contact" : "/#contact"}>Book a Call</a>
             </Button>
           </div>
@@ -302,7 +302,7 @@ const Navbar = () => {
               </a>
 
               <div className="pt-4">
-                <Button variant="hero" className="w-full" asChild>
+                <Button variant="action" className="w-full" asChild>
                   <a href={isHomePage ? "#contact" : "/#contact"} onClick={() => setIsMobileMenuOpen(false)}>Book a Call</a>
                 </Button>
               </div>

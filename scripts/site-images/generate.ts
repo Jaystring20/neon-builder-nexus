@@ -14,8 +14,9 @@
  *
  * Credentials and proxy handling live in ./api.ts.
  *
- * Files land in src/assets/story/<id>.<ext> (the page picks each one up
- * automatically once it exists). An image that already exists
+ * Full-size files land in media-src/story/<id>.<ext>. They are too heavy
+ * for the page (3-4 MB each), so scripts/site-images/optimize-story.sh turns
+ * them into the WebP files in src/assets/story/ that the page loads. An image that already exists
  * is skipped unless --force is passed, so a rerun never pays twice.
  */
 
@@ -26,7 +27,7 @@ import { SHOTS, STYLE } from "./shots.js";
 
 const DEFAULT_MODEL = "higgsfield-ai/soul/v2/standard";
 const MAX_WAIT_MS = 10 * 60 * 1000;
-const OUT_DIR = new URL("../../src/assets/story/", import.meta.url);
+const OUT_DIR = new URL("../../media-src/story/", import.meta.url);
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
@@ -88,7 +89,7 @@ for (const shot of wanted) {
     if (!url) throw new Error("completed but no image returned");
     const { bytes, ext } = await download(url);
     await writeFile(new URL(`${shot.id}.${ext}`, OUT_DIR), bytes);
-    console.log(`done  ${shot.id} -> src/assets/story/${shot.id}.${ext}`);
+    console.log(`done  ${shot.id} -> media-src/story/${shot.id}.${ext}`);
   } catch (error) {
     console.error(`fail  ${shot.id}: ${describe(error)}`);
     failures++;

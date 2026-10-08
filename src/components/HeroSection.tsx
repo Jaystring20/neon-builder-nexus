@@ -88,7 +88,7 @@ const HeroSection = () => {
             >
               <Button
                 ref={ctaRef}
-                variant="pill"
+                variant="action"
                 size="xl"
                 isLoading={isLoading}
                 onClick={() => handleCtaClick(() => scrollToId("contact"))}

@@ -95,7 +95,7 @@ const RealWorkSection = () => {
                       aria-hidden="true"
                       className={cn(
                         "mt-8 h-6 w-6 shrink-0 text-muted-foreground transition-transform duration-500",
-                        isOpen && "rotate-45 text-primary"
+                        isOpen && "rotate-45 text-secondary"
                       )}
                     />
                   </button>

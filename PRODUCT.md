@@ -84,9 +84,13 @@ people) with AI embedded, then compound (measure and iterate after launch).
 - Beyond borders: imply international reach through what DCH does and who it
   serves. Do not lead with a city or country (no "Born in Lagos",
   "Headquartered in Lagos" as positioning).
-- Visual language: dark graphite field, brand cyan as the main light, one
-  warm amber accent; glossy studio-rendered 3D objects for generated imagery;
-  motion that expresses momentum (things starting, engaging, compounding).
+- Visual language: dark graphite field; glossy studio-rendered 3D objects for
+  generated imagery; motion that expresses momentum (things starting,
+  engaging, compounding).
+- Colour roles: cyan is structure (headings' second lines, rules, links,
+  imagery's main light). Orange is action and momentum, used sparingly: every
+  Book a call button, and the words where the story reaches growth
+  ("compounds", "Compound.", "Drive growth.", "Without limits.").
 
 ## Evidence on Hand
 

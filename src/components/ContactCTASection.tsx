@@ -13,16 +13,22 @@ const ContactCTASection = () => {
 
   return (
     <section id="contact" aria-labelledby="contact-heading" className="relative overflow-hidden py-28 md:py-40">
-      {/* The two slabs sit in the right of the image; the left is empty dark
-          space, which is where the copy goes. Faded into the page at the edges. */}
+      {/* The image sits to the right and fades into the page; a scrim keeps
+          the copy on solid dark ground whatever the image does behind it. */}
       {image && (
-        <img
-          src={image}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right opacity-90 [mask-image:linear-gradient(to_right,transparent,black_45%),linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] [mask-composite:intersect]"
-        />
+        <>
+          <img
+            src={image}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="pointer-events-none absolute inset-y-0 right-0 h-full w-full object-cover object-right opacity-80 md:w-[72%] [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/10 md:via-background/70 md:to-transparent"
+          />
+        </>
       )}
 
       <div className="container-narrow relative z-10">
@@ -39,7 +45,7 @@ const ContactCTASection = () => {
           </p>
 
           <div className="mt-10 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center">
-            <Button asChild variant="pill" size="xl" className="group w-full sm:w-auto">
+            <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
               <a href={BOOK_A_CALL}>
                 Book a call
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

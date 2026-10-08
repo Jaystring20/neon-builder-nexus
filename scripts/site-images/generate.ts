@@ -17,13 +17,26 @@
  * straight to the REST API rather than through the SDK because the SDK
  * refuses to run without a local credential.
  *
+ * Node's built-in fetch ignores HTTPS_PROXY unless NODE_USE_ENV_PROXY is set
+ * at startup, and the network secret is only added by that proxy. So when a
+ * proxy is configured the script re-runs itself once with the flag on.
+ *
  * Files land in public/images/story/<id>.<ext>. An image that already exists
  * is skipped unless --force is passed, so a rerun never pays twice.
  */
 
 import { mkdir, writeFile, access } from "node:fs/promises";
 import { parseArgs } from "node:util";
+import { spawnSync } from "node:child_process";
 import { SHOTS, STYLE } from "./shots.js";
+
+if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_USE_ENV_PROXY) {
+  const child = spawnSync(process.execPath, [...process.execArgv, ...process.argv.slice(1)], {
+    stdio: "inherit",
+    env: { ...process.env, NODE_USE_ENV_PROXY: "1" },
+  });
+  process.exit(child.status ?? 1);
+}
 
 const API = "https://api.higgsfield.ai";
 const DEFAULT_MODEL = "higgsfield-ai/soul/v2/standard";

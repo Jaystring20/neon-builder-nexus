@@ -32,8 +32,9 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const whoWeAreItems = [
-    { title: "About Us", description: "Our mission, vision, and the story behind Digital Creatives Hub", href: "/about" },
-    { title: "Our Strategist", description: "Meet Jerry — the mind driving our digital transformation strategy", href: "/about#founder" },
+    { title: "About Us", description: "Who we are and how we think", href: "/about" },
+    { title: "Our Strategist", description: "Meet Jeremiah Adeyemi, founder and lead architect", href: "/about#founder" },
+    { title: "Partners", description: "The partners we build and train with", href: "/about#partners" },
     { title: "Digital Creatives Network", description: "A global community of builders, creators, and innovators", href: "/dcn" },
   ];
 

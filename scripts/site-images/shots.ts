@@ -188,4 +188,20 @@ export const SHOTS: Shot[] = [
     prompt:
       "A small, friendly robotic arm built from rounded glass and matte graphite segments, with soft cyan light glowing at each joint, lifts a single bright cube onto a short stack of cubes on a clean workbench slab. Beside it lie a few simple building pieces: a wheel, a small gear, a circuit-like tile with plain cyan traces. Hands-on making for young innovators, playful and precise.",
   },
+
+  // About (docs/about-copy.md).
+  {
+    id: "about-beyond-borders",
+    section: "About hero: We go where growth needs to happen.",
+    aspect_ratio: "16:9",
+    prompt:
+      "A thick glass slab glides straight through a thin vertical plane of cyan light that stands across the floor like a border, without slowing. The part of the slab that has already passed through glows a little brighter, and a soft cyan trail stretches behind it back through the plane. Ahead of it, open dark space with one small warm amber light far in the distance. No walls, no borders, only forward motion.",
+  },
+  {
+    id: "about-partnership",
+    section: "About: Built with partners.",
+    aspect_ratio: "16:9",
+    prompt:
+      "Two different structures, one of matte graphite blocks and one of smoked glass blocks, each build a span toward the other from opposite sides of the frame. They meet exactly in the middle, where a single seam of cyan light joins them into one continuous bridge, with a small warm amber glow at the joint. Two makers, one structure.",
+  },
 ];

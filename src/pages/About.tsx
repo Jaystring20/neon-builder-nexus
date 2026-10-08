@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
 import { trainingPartner } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
-import jerryImage from "@/assets/jerry-strategist.png";
+import jerryImage from "@/assets/team/jeremiah-adeyemi.webp";
+import gideonImage from "@/assets/team/gideon-olawuyi.webp";
 
 // Copy: docs/about-copy.md, built from the brand brief in PRODUCT.md. The home
 // page already makes the case; this page answers "who are you, and how do you
@@ -35,6 +36,35 @@ const BUILT_FOR_GROWTH = [
     line: "Training that turns individuals into high performers.",
     imageId: "capability-people",
     href: "/services/training",
+  },
+];
+
+// Bios supplied by DCH, cut to one line and one quote each.
+const LEADERS: {
+  name: string;
+  role: string;
+  title: string;
+  line: string;
+  quote: string;
+  image: string;
+  link?: { label: string; href: string };
+}[] = [
+  {
+    name: "Jeremiah Adeyemi",
+    role: "Founder & Lead Architect",
+    title: "The DigiTech Strategist",
+    line: "Founded DCH on one idea: real growth needs the vision of a creative and the precision of an engineer.",
+    quote: "He doesn\u2019t just draw the map. He builds the road, the car and the fuel.",
+    image: jerryImage,
+    link: { label: "Connect with Jeremiah", href: "https://thedigitechstrategist.lovable.app" },
+  },
+  {
+    name: "Gideon Olawuyi",
+    role: "Chief Operating Officer",
+    title: "Development practitioner",
+    line: "Works where corporate business meets African development, building the systems, organisations and partnerships that create lasting social and economic impact across Africa and beyond.",
+    quote: "\u201cBusiness is the most sustainable solution to global challenges.\u201d",
+    image: gideonImage,
   },
 ];
 
@@ -164,43 +194,43 @@ const About = () => {
               At the helm.
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              DCH is led by DigiTech Strategists whose work cuts across organisations, brands and individuals.
+              DCH is led by strategists whose work cuts across organisations, brands and individuals.
             </p>
 
-            <div className="mt-14 grid items-center gap-10 md:mt-20 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
-              <motion.div {...reveal()} className="relative aspect-[4/5] overflow-hidden bg-card/40">
-                <img
-                  src={jerryImage}
-                  alt="Jeremiah Adeyemi, founder of Digital Creatives Hub"
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0 border border-foreground/[0.06]" />
-              </motion.div>
-
-              <motion.div {...reveal(1)}>
-                <p className="text-sm font-medium text-primary">Founder &amp; Lead Architect</p>
-                <h3 className="mt-3 font-display-refined text-4xl leading-[1.05] text-foreground sm:text-5xl">
-                  Jeremiah Adeyemi
-                </h3>
-                <p className="mt-2 text-lg text-muted-foreground">The DigiTech Strategist</p>
-                <p className="mt-8 max-w-lg text-xl leading-snug text-foreground/90">
-                  Founded DCH on one idea: real growth needs the vision of a creative and the precision of an
-                  engineer.
-                </p>
-                <blockquote className="mt-8 max-w-lg border-l-2 border-primary/50 pl-5 text-lg italic text-muted-foreground">
-                  He doesn&rsquo;t just draw the map. He builds the road, the car and the fuel.
-                </blockquote>
-                <a
-                  href="https://thedigitechstrategist.lovable.app"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group mt-10 inline-flex items-center gap-2 text-base font-semibold text-foreground hover:text-primary"
-                >
-                  Connect with Jeremiah
-                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </a>
-              </motion.div>
+            <div className="mt-14 grid gap-16 md:mt-20 md:grid-cols-2 md:gap-12">
+              {LEADERS.map((leader, i) => (
+                <motion.article key={leader.name} {...reveal(i)}>
+                  <div className="relative aspect-[4/5] overflow-hidden bg-card/40">
+                    <img
+                      src={leader.image}
+                      alt={`${leader.name}, ${leader.role} of Digital Creatives Hub`}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover object-top"
+                    />
+                    <div aria-hidden="true" className="pointer-events-none absolute inset-0 border border-foreground/[0.06]" />
+                  </div>
+                  <p className="mt-8 text-sm font-medium text-primary">{leader.role}</p>
+                  <h3 className="mt-2 font-display-refined text-3xl leading-[1.05] text-foreground sm:text-4xl">
+                    {leader.name}
+                  </h3>
+                  <p className="mt-2 text-base text-muted-foreground">{leader.title}</p>
+                  <p className="mt-6 max-w-lg text-lg leading-snug text-foreground/90">{leader.line}</p>
+                  <blockquote className="mt-6 max-w-lg border-l-2 border-primary/50 pl-5 text-base italic text-muted-foreground">
+                    {leader.quote}
+                  </blockquote>
+                  {leader.link && (
+                    <a
+                      href={leader.link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-foreground hover:text-primary"
+                    >
+                      {leader.link.label}
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </a>
+                  )}
+                </motion.article>
+              ))}
             </div>
           </div>
         </section>

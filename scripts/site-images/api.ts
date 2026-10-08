@@ -142,17 +142,17 @@ export async function download(url: string): Promise<{ bytes: Buffer; ext: strin
  * a public URL a model can read (for image_url and similar inputs).
  */
 export async function upload(path: URL, contentType: string): Promise<string> {
-  const slot = await call<{ public_url: string; upload_url: string; upload_headers: Record<string, string> }>(
-    "/files/generate-upload-url",
-    { method: "POST", body: JSON.stringify({ content_type: contentType }) }
-  );
-  // The presigned URL is storage, not the API: it gets only the headers
-  // Higgsfield returned, never our credential.
-  const res = await fetch(slot.upload_url, {
-    method: "PUT",
-    headers: slot.upload_headers,
-    body: await readFile(path),
+  // Uploading is not billed, so the whole step is safe to retry.
+  const body = await readFile(path);
+  return retrying("uploading the keyframe", async () => {
+    const slot = await call<{ public_url: string; upload_url: string; upload_headers: Record<string, string> }>(
+      "/files/generate-upload-url",
+      { method: "POST", body: JSON.stringify({ content_type: contentType }) }
+    );
+    // The presigned URL is storage, not the API: it gets only the headers
+    // Higgsfield returned, never our credential.
+    const res = await fetch(slot.upload_url, { method: "PUT", headers: slot.upload_headers, body });
+    if (!res.ok) throw new Error(`upload failed with HTTP ${res.status}`);
+    return slot.public_url;
   });
-  if (!res.ok) throw new Error(`upload failed with HTTP ${res.status}`);
-  return slot.public_url;
 }

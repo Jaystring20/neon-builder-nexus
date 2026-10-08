@@ -121,7 +121,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Premium eye care and designer eyewear: AI try-on, a styling quiz and clinic booking wired into one purchase flow.",
     tags: ["E-commerce", "AI Try-On", "Healthcare"],
-    url: "https://mandheyewear.com/",
+    url: "https://www.mandheyewear.com/",
     displayDomain: "mandheyewear.com",
     icon: Stethoscope,
     image: screenshot("mh-eyewear"),

@@ -2,13 +2,14 @@
  * Generates homepage story images with Higgsfield. Each one is a billable
  * request, so nothing runs unless asked for by name.
  *
- *   npm run images:generate -- hero-blueprint-city
+ *   npm run images:generate -- hero-built-stack
  *   npm run images:generate -- --all
  *   npm run images:generate -- --list
  *   npm run images:generate -- --model <higgsfield-model-id> <shot-id>
  *
  * Default model is Soul 2 (higgsfield-ai/soul/v2/standard), Higgsfield's own
- * realistic/editorial model. Its documented options: resolution 720p|1080p;
+ * realistic/editorial model (pass --model to try another). Its documented
+ * options: resolution 720p|1080p;
  * aspect_ratio 9:16, 16:9, 4:3, 3:4, 1:1, 2:3, 3:2.
  *
  * Credentials: if HF_CREDENTIALS is set (e.g. in .env.local) it is sent as

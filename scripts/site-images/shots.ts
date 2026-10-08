@@ -1,19 +1,29 @@
 /**
  * The homepage's visual story, one entry per image.
  *
+ * Art direction: studio-rendered 3D objects, not photography. Thick slabs of
+ * smoked glass and matte graphite float over a near-black field, seen from a
+ * three-quarter isometric angle and lit like hardware product shots. The
+ * reference is the "floating interface hardware" look of AI-infrastructure
+ * sites; the brand's own cyan carries the light and amber is the one warm
+ * accent, so the images belong to this site rather than to the reference.
+ *
  * Every image is mood and story, never evidence (PRODUCT.md, principle 2):
- * no client products, logos, people presented as real, or readable UI.
+ * interface shapes stay abstract (blank pills, bars, dots) because readable
+ * UI would read as a fake screenshot of client work. No people, no client
+ * products, no logos.
  *
  * STYLE is shared so the set reads as one shoot. Once the hero is approved
- * it also becomes the reference image for the rest.
+ * it becomes the reference for the rest.
  */
 
 export const STYLE = [
-  "cinematic editorial photograph, shot on large-format camera, 35mm lens",
-  "deep blue-black night palette with a single cool teal-cyan light source and small warm amber accents",
-  "restrained, quiet, lots of negative space, subject placed off-centre leaving calm space for a headline",
-  "natural film grain, soft volumetric haze, physically plausible light",
-  "no text, no letters, no logos, no user interface, no holograms, no neon signs, no glowing arrows or charts",
+  "premium 3D product render, studio quality, three-quarter isometric view from slightly above, long lens with almost no perspective distortion",
+  "objects are thick floating slabs of dark smoked glass and matte graphite with softly rounded bevelled edges, gently tilted, casting soft shadows onto a dark floor plane far below",
+  "near-black graphite-blue background with a soft vignette, deep and calm",
+  "key light is a cool cyan-teal glow along edges, seams and thin light lines; one small warm amber accent light only; glossy reflections, faint frosted texture, subtle depth of field",
+  "interface details are abstract only: blank rounded pills, soft bars, small dots and hairlines, never letters, numbers, words, logos or icons",
+  "minimal composition with generous empty space, refined and quiet, no people, no hands, no neon signs, no holograms, no sci-fi city, no purple, no rainbow colours",
 ].join("; ");
 
 export interface Shot {
@@ -26,73 +36,73 @@ export interface Shot {
 
 export const SHOTS: Shot[] = [
   {
-    id: "hero-blueprint-city",
+    id: "hero-built-stack",
     section: "Hero",
     aspect_ratio: "16:9",
     prompt:
-      "An architect's drafting table on a rooftop at dusk. A large paper blueprint lies flat on the table, and its fine ink lines rise off the paper as thin threads of teal light that become the real towers and bridges of a city skyline in the distance. The left half of the frame is dark, quiet sky.",
+      "Three large glass-and-graphite slabs float stacked one above another with clear air between them, like an exploded view of one machine. The top slab has a single bold abstract geometric mark inlaid in its surface (the brand layer). The middle slab carries a neat grid of small rounded modules (the infrastructure layer). The bottom slab holds one soft glowing cyan core (the AI layer). Thin vertical threads of cyan light run through all three, binding them into one system. The stack sits in the right half of the frame; the left half is empty dark space for a headline.",
   },
   {
     id: "proof-five-cities",
     section: "Proof: Fitness Religion",
-    aspect_ratio: "16:9",
+    aspect_ratio: "4:3",
     prompt:
-      "Aerial view at first light of a vast landscape with five distant cities, each a small cluster of warm lights, connected by a single continuous thread of teal light running across the land like one heartbeat. Mist in the valleys.",
+      "One large central glass slab with five smaller identical slabs floating around it in a wide shallow arc. A single continuous line of cyan light leaves the central slab and runs through each of the five in turn, each small slab glowing with the same soft pulse at the same moment. One platform running five events at once. Calm, precise, symmetrical rhythm.",
   },
   {
     id: "proof-clarity-lens",
     section: "Proof: M & H Eyewear",
-    aspect_ratio: "3:4",
+    aspect_ratio: "4:3",
     prompt:
-      "Macro photograph of a single optical lens held in a beam of teal light; behind the lens the world is soft and blurred, through the lens it is perfectly sharp. A thin warm amber rim light on the lens edge. Dark background.",
+      "A thick dark glass slab with one perfectly round optical lens set into its surface. Seen through the lens, the blank interface pills and bars on the slab are pin sharp; everywhere outside the lens they melt into soft blur. A fine cyan ring of light traces the lens edge, with a thin warm amber highlight catching one side. Seeing clearly before you buy.",
   },
   {
-    id: "proof-five-threads",
+    id: "proof-five-modules",
     section: "Proof: Viera Amber",
-    aspect_ratio: "3:4",
+    aspect_ratio: "4:3",
     prompt:
-      "Five strands of different materials (silk, copper wire, cotton, linen, paper cord) twisting together into one strong cord, lit from one side with teal light, warm amber highlights where they meet. Dark studio background, extreme detail.",
+      "Five distinct modules, each a different shape and material (a smoked-glass cube, a matte graphite cylinder, a brushed-metal pill, a frosted rounded tile, a dark polished sphere), docking into five matching sockets along one long base slab. Where each module meets the base, its seam lights up cyan. Five businesses becoming one system.",
   },
   {
     id: "capability-brand",
     section: "Capability: Brand",
     aspect_ratio: "3:4",
     prompt:
-      "A single bold geometric mark carved into a slab of dark stone, raking teal light catching the edges of the cut, dust in the air. Sense of permanence.",
+      "A tall upright slab of matte graphite with one bold abstract geometric mark cut deep into it, cyan light glowing from inside the cut. Smaller slabs float beside and behind it, each carrying the same mark at a smaller scale, so the mark reads as a system rather than a logo. Sense of permanence and meaning.",
   },
   {
     id: "capability-infrastructure",
     section: "Capability: Infrastructure",
     aspect_ratio: "3:4",
     prompt:
-      "Looking up inside a steel and concrete structure under construction at night, clean repeating beams and cables forming a precise grid, one teal work light, a few warm amber lamps far away.",
+      "An exploded vertical stack of seven thin glass layers, evenly spaced and perfectly aligned on four slender pins of cyan light, resting on a heavy matte graphite base. Each layer carries a different arrangement of blank rounded modules. Engineered to hold under load.",
   },
   {
     id: "capability-ai",
     section: "Capability: AI",
     aspect_ratio: "3:4",
     prompt:
-      "A dark room where thousands of fine teal light filaments hang from the ceiling and bend gently toward a single warm amber point, like a field of attention. Calm, precise, not science fiction.",
+      "A field of many small blank glass tiles floats in loose rows. From each tile a hair-thin cyan filament rises and bends toward one soft sphere of light hovering above a single dark slab, so the whole field visibly attends to one point. One small warm amber spark sits at the sphere's centre. Calm and precise, not science fiction.",
   },
   {
-    id: "origin-lagos-night",
+    id: "origin-lagos-model",
     section: "Why Lagos",
     aspect_ratio: "16:9",
     prompt:
-      "Long-exposure photograph of the Third Mainland Bridge in Lagos at night, light trails of traffic running across the lagoon, the city skyline beyond, water reflecting teal and amber light. Real, documentary feel.",
+      "An architect's scale model of a coastal city at night, built from matte graphite blocks on a dark glass base: dense districts on two shores, a lagoon of polished black glass between them, and one long low bridge crossing the water drawn as a line of cyan light. Tiny warm amber lights in some windows. Seen from high above at an isometric angle, the model floating in darkness. Real, grounded, built under constraint.",
   },
   {
-    id: "process-sketch-to-building",
+    id: "process-four-stages",
     section: "How it works",
     aspect_ratio: "16:9",
     prompt:
-      "One continuous panoramic scene read left to right: a pencil sketch on paper, which becomes a precise technical drawing, which becomes a steel frame under construction, which becomes a finished glass building lit from inside at night. Seamless transitions, teal light throughout.",
+      "Four slabs float in a straight row from left to right, each one a later stage of the same object. First, only an outline drawn in fine cyan light. Second, a translucent glass slab marked with a faint grid, the blueprint. Third, the slab now filled with blank modules being set into place. Fourth, the finished object, solid, glossy and softly lit from within. Even spacing, one continuous story read left to right.",
   },
   {
-    id: "cta-open-door",
+    id: "cta-first-connection",
     section: "Closing call to action",
     aspect_ratio: "16:9",
     prompt:
-      "A tall open doorway in a dark concrete wall with warm amber light spilling out onto the floor and a faint teal glow inside, a quiet workspace just visible beyond. Inviting, calm, the right side of the frame dark and empty.",
+      "Two slabs float facing each other across a gap, one larger and one smaller. A single thread of cyan light has just formed between them, warmest amber at the point where it touches the smaller slab. The beginning of a conversation. Both slabs sit in the right half of the frame; the left half is calm empty darkness.",
   },
 ];

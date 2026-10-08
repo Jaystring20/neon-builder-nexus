@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "higgsfield:example": "node --env-file=.env.local higgsfield/index.ts",
     "studio:create-access": "tsx --env-file=.env.local scripts/create-studio-access.ts",
-    "images:generate": "tsx --env-file-if-exists=.env.local scripts/site-images/generate.ts"
+    "images:generate": "tsx --env-file-if-exists=.env.local scripts/site-images/generate.ts",
+    "hero:video": "tsx --env-file-if-exists=.env.local scripts/site-images/hero-video.ts"
   },
   "dependencies": {
     "@higgsfield/client": "^0.2.6",

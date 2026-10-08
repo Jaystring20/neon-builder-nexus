@@ -12,36 +12,18 @@
  * options: resolution 720p|1080p;
  * aspect_ratio 9:16, 16:9, 4:3, 3:4, 1:1, 2:3, 3:2.
  *
- * Credentials: if HF_CREDENTIALS is set (e.g. in .env.local) it is sent as
- * `Authorization: Key ...`. If it is not, no Authorization header is sent and
- * the environment's network secret for api.higgsfield.ai supplies it. Calls go
- * straight to the REST API rather than through the SDK because the SDK
- * refuses to run without a local credential.
- *
- * Node's built-in fetch ignores HTTPS_PROXY unless NODE_USE_ENV_PROXY is set
- * at startup, and the network secret is only added by that proxy. So when a
- * proxy is configured the script re-runs itself once with the flag on.
+ * Credentials and proxy handling live in ./api.ts.
  *
  * Files land in public/images/story/<id>.<ext>. An image that already exists
  * is skipped unless --force is passed, so a rerun never pays twice.
  */
 
+import { generate, download } from "./api.js";
 import { mkdir, writeFile, access } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { spawnSync } from "node:child_process";
 import { SHOTS, STYLE } from "./shots.js";
 
-if ((process.env.HTTPS_PROXY || process.env.https_proxy) && !process.env.NODE_USE_ENV_PROXY) {
-  const child = spawnSync(process.execPath, [...process.execArgv, ...process.argv.slice(1)], {
-    stdio: "inherit",
-    env: { ...process.env, NODE_USE_ENV_PROXY: "1" },
-  });
-  process.exit(child.status ?? 1);
-}
-
-const API = "https://api.higgsfield.ai";
 const DEFAULT_MODEL = "higgsfield-ai/soul/v2/standard";
-const POLL_MS = 4000;
 const MAX_WAIT_MS = 10 * 60 * 1000;
 const OUT_DIR = new URL("../../public/images/story/", import.meta.url);
 
@@ -71,26 +53,6 @@ if (wanted.length === 0) {
   process.exit(1);
 }
 
-const headers: Record<string, string> = { "Content-Type": "application/json", Accept: "application/json" };
-if (process.env.HF_CREDENTIALS) headers.Authorization = `Key ${process.env.HF_CREDENTIALS}`;
-
-interface StatusResponse {
-  status: string;
-  request_id: string;
-  images?: { url?: string }[];
-}
-
-async function call(path: string, init?: RequestInit): Promise<StatusResponse> {
-  const res = await fetch(`${API}${path}`, { ...init, headers });
-  const text = await res.text();
-  if (!res.ok) {
-    // The body is Higgsfield's error message; it never contains our credential.
-    throw new Error(`HTTP ${res.status} from ${path.split("?")[0]}: ${text.slice(0, 300)}`);
-  }
-  return JSON.parse(text) as StatusResponse;
-}
-
-const TERMINAL = new Set(["completed", "failed", "nsfw", "canceled"]);
 const exists = (url: URL) => access(url).then(() => true, () => false);
 
 await mkdir(OUT_DIR, { recursive: true });
@@ -107,9 +69,9 @@ for (const shot of wanted) {
 
   console.log(`make  ${shot.id} (${shot.aspect_ratio}, ${values.model}) ...`);
   try {
-    let result = await call(`/${values.model}`, {
-      method: "POST",
-      body: JSON.stringify({
+    const result = await generate(
+      values.model,
+      {
         prompt: `${shot.prompt}\n\nStyle: ${STYLE}`,
         aspect_ratio: shot.aspect_ratio,
         resolution: "1080p",
@@ -117,30 +79,14 @@ for (const shot of wanted) {
         // Off so Higgsfield does not rewrite the art direction that keeps the
         // set consistent.
         enhance_prompt: false,
-      }),
-    });
-    console.log(`      request ${result.request_id}`);
-
-    const started = Date.now();
-    while (!TERMINAL.has(result.status)) {
-      if (Date.now() - started > MAX_WAIT_MS) throw new Error(`still ${result.status} after 10 minutes`);
-      await new Promise((r) => setTimeout(r, POLL_MS));
-      result = await call(`/requests/${result.request_id}/status`);
-    }
+      },
+      MAX_WAIT_MS
+    );
 
     const url = result.images?.[0]?.url;
-    if (result.status !== "completed" || !url) {
-      const why = result.status === "nsfw" ? "rejected by moderation (refunded)" : `status ${result.status}`;
-      console.error(`fail  ${shot.id}: ${why}${result.status === "completed" ? ", no image returned" : ""}`);
-      failures++;
-      continue;
-    }
-
-    const img = await fetch(url);
-    if (!img.ok) throw new Error(`download failed with HTTP ${img.status}`);
-    const type = img.headers.get("content-type") ?? "";
-    const ext = type.includes("webp") ? "webp" : type.includes("jpeg") ? "jpg" : "png";
-    await writeFile(new URL(`${shot.id}.${ext}`, OUT_DIR), Buffer.from(await img.arrayBuffer()));
+    if (!url) throw new Error("completed but no image returned");
+    const { bytes, ext } = await download(url);
+    await writeFile(new URL(`${shot.id}.${ext}`, OUT_DIR), bytes);
     console.log(`done  ${shot.id} -> public/images/story/${shot.id}.${ext}`);
   } catch (error) {
     console.error(`fail  ${shot.id}: ${error instanceof Error ? error.message : String(error)}`);
@@ -148,4 +94,4 @@ for (const shot of wanted) {
   }
 }
 
-process.exit(failures ? 1 : 0);
+process.exitCode = failures ? 1 : 0;

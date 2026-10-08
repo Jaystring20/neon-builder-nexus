@@ -13,8 +13,9 @@ layer. For startups, established brands and people outgrowing where they are.
 
 CTA: Book a call
 
-Visual: flywheel motion. Brand, Platform and People engage one by one, lock
-into one ring and gather speed. Reduced motion shows the assembled ring.
+Visual: a looping Seedance 2.5 film of a kinetic sculpture (three rings, one
+core of light) gathering momentum, from `npm run hero:video`. Until it is
+generated, the code flywheel stands in. Reduced motion shows the still.
 
 ## 2. AI stand
 

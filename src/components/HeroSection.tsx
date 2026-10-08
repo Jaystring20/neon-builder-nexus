@@ -2,7 +2,8 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import MomentumFlywheel from "@/components/MomentumFlywheel";
+import { HeroBackdrop, HeroInline } from "@/components/HeroMedia";
+import { hasHeroVideo } from "@/lib/heroMedia";
 
 const scrollToId = (id: string) => {
   const el = document.getElementById(id);
@@ -49,10 +50,17 @@ const HeroSection = () => {
       {/* Drafting substrate and grain, unchanged: the flywheel sits on the
           same ruled plane the rest of the site is drawn on. */}
       <div className="blueprint-grid" />
+      <HeroBackdrop />
       <div className="grain-overlay" />
 
       <div className="container-narrow relative z-10 w-full">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
+        <div
+          className={
+            hasHeroVideo
+              ? "grid items-center gap-10"
+              : "grid items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-8"
+          }
+        >
           <div className="max-w-[40rem]">
             {/* Two short lines in one family. The turn ("Momentum doesn't.")
                 carries the brand colour; weight and colour do the emphasis,
@@ -106,7 +114,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <MomentumFlywheel />
+          <HeroInline />
         </div>
       </div>
     </section>

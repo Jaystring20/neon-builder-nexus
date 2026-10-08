@@ -1,6 +1,7 @@
 import { Twitter, Linkedin, Instagram, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import dchLogo from "@/assets/dch-logo-primary.png";
+import { serviceCategories } from "@/data/services";
 
 const Footer = () => {
   const links = {
@@ -12,9 +13,7 @@ const Footer = () => {
     ],
     services: [
       { label: "All Services", href: "/services", isRoute: true },
-      { label: "Growth Architecture", href: "/services", isRoute: true },
-      { label: "Performance Engines", href: "/services", isRoute: true },
-      { label: "Innovation Lab", href: "/services", isRoute: true },
+      ...serviceCategories.map((c) => ({ label: c.title, href: `/services/${c.slug}`, isRoute: true })),
     ],
     resources: [
       { label: "Builder's Blueprint", href: "#blueprint" },

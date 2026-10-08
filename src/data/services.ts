@@ -16,6 +16,16 @@ import {
   CalendarDays,
   Users,
   UserPlus,
+  GraduationCap,
+  Briefcase,
+  LineChart,
+  Cpu,
+  Code2,
+  Workflow,
+  Brain,
+  ImagePlay,
+  Network,
+  BookOpenCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -24,7 +34,17 @@ export interface SubService {
   description: string;
   detail: string;
   icon: LucideIcon;
+  /** Training only: the track this course belongs to. */
+  track?: "AI Training" | "Workforce Development" | "STEAM Training";
+  /** Training only: the step within AI Training, first steps to building. */
+  stage?: "Foundations" | "Automate" | "Create & build";
+  /** Training only: who the course is for. */
+  audience?: string;
+  /** Training only: practices that build the same thing for clients. */
+  pairsWith?: string[];
 }
+
+export type Pillar = "Brand" | "Platforms" | "People";
 
 export interface ServiceCategory {
   title: string;
@@ -42,82 +62,140 @@ export interface ServiceCategory {
      index and the category pages all read it, and it is the hook for a
      future category that genuinely does need to stand apart. */
   color: "primary" | "secondary";
+  /** Which part of the engine this practice belongs to (PRODUCT.md). */
+  pillar: Pillar;
+  /** Short entries for the nav menu when the full list is too long. */
+  menu?: { title: string; icon: LucideIcon }[];
   subServices: SubService[];
 }
 
+// Copy: docs/services-copy.md. Order follows the pillars: Brand, Platforms,
+// People.
 export const serviceCategories: ServiceCategory[] = [
   {
     title: "Brand Architecture",
     slug: "brand-architecture",
-    tagline: "Engineering the Visual Soul",
+    pillar: "Brand",
+    tagline: "The foundation everything else stands on.",
     description:
-      "We don't just 'design' brands; we architect the strategic and visual foundations that hold your growth together.",
+      "Strategy, identity and story, designed as one system so every touchpoint says the same thing.",
     color: "primary",
     subServices: [
       {
         title: "Brand Strategy & Identity",
-        description: "Defining the core signal in a world of digital noise.",
+        description: "Clear positioning, a voice and a look people remember.",
         detail:
-          "We extract the DNA of your brand and translate it into a strategic identity system — from positioning and messaging frameworks to visual language — that cuts through market noise and creates instant recognition. Every element is engineered for consistency across channels and longevity across market cycles.",
+          "We define what you stand for and who it's for, then turn it into an identity system: positioning, messaging and visual language that stays consistent across every channel.",
         icon: Compass,
       },
       {
         title: "Concept Extraction",
-        description: "Turning raw vision into market-ready narratives.",
+        description: "From raw idea to a story the market understands.",
         detail:
-          "Your ideas deserve more than a mood board. We run deep-dive extraction sessions to distill your raw vision into sharp, market-ready creative concepts — complete with narrative arcs, visual directions, and strategic frameworks that become the blueprint for everything your brand communicates.",
+          "Working sessions that pull the real idea out of your vision and shape it into concepts, narratives and visual directions your whole brand can build on.",
         icon: Sparkles,
       },
       {
         title: "Packaging & Merchandise Design",
-        description: "Tangible touchpoints for the brand engine.",
+        description: "The brand, in people's hands.",
         detail:
-          "Physical products are brand experiences in 3D. We design packaging and merchandise that extend your digital identity into the real world — creating tactile, collectible touchpoints that deepen loyalty and turn customers into walking brand ambassadors.",
+          "Packaging and merchandise that carry your identity into the physical world and give customers something worth keeping.",
         icon: Package,
       },
       {
         title: "Presentation Design",
-        description: "Captivating slides engineered to tell your story and close the gap.",
+        description: "Decks that move a room to a decision.",
         detail:
-          "Whether it's a pitch deck, investor presentation, or keynote — we engineer visual narratives that command attention and drive decisions. Every slide is strategically structured to move your audience from curiosity to conviction.",
+          "Pitch decks, investor presentations and keynotes structured to take an audience from interest to yes.",
         icon: Presentation,
+      },
+    ],
+  },
+  {
+    title: "Growth Operations",
+    slug: "growth-operations",
+    pillar: "Brand",
+    tagline: "Where the brand starts earning.",
+    description: "Campaigns, content and community, run as one system that compounds.",
+    color: "primary",
+    subServices: [
+      {
+        title: "Campaign Strategy",
+        description: "Launches and campaigns built to keep moving.",
+        detail:
+          "From research and audience mapping to multi-channel rollout, each campaign is planned against revenue and brand goals, not impressions.",
+        icon: Megaphone,
+      },
+      {
+        title: "Content Engines",
+        description: "A steady flow of on-brand content, not one-off posts.",
+        detail:
+          "Editorial calendars, AI-assisted production and performance feedback loops, set up so content keeps shipping and keeps improving.",
+        icon: Zap,
+      },
+      {
+        title: "Performance Copywriting",
+        description: "Words that sell and still sound like you.",
+        detail:
+          "Headlines, emails, landing pages and ads written with direct-response discipline in your brand's voice.",
+        icon: PenTool,
+      },
+      {
+        title: "Event Strategy & Production",
+        description: "Events designed to build community, not just attendance.",
+        detail:
+          "Physical and virtual events from first plan to live production, including commercial and music formats.",
+        icon: CalendarDays,
+      },
+      {
+        title: "Community & Funnel Architecture",
+        description: "What keeps people after the first yes.",
+        detail:
+          "Lead funnels, community frameworks and nurture sequences that turn first-time buyers and attendees into regulars.",
+        icon: Users,
+      },
+      {
+        title: "Influencer & Creator Partnerships",
+        description: "The right voices, matched to your growth plan.",
+        detail:
+          "Finding, recruiting and managing creators from micro to macro, with every partnership tied to measurable goals.",
+        icon: UserPlus,
       },
     ],
   },
   {
     title: "Digital Infrastructure",
     slug: "digital-infrastructure",
-    tagline: "Building the Road",
-    description:
-      "We build the high-performance environments where your brand lives, breathes, and converts.",
+    pillar: "Platforms",
+    tagline: "The platform your business runs on.",
+    description: "Websites, apps and systems built for speed now and scale later.",
     color: "primary",
     subServices: [
       {
         title: "Web & App Architecture",
-        description: "High-conversion digital ecosystems built for velocity.",
+        description: "Sites and apps built to convert and to grow.",
         detail:
-          "We don't build websites — we architect digital ecosystems. From SaaS platforms to e-commerce engines, every pixel and interaction is engineered for performance, conversion, and scale. Mobile-first, blazing-fast, and built to grow with your business.",
+          "SaaS platforms, e-commerce and web apps, designed mobile-first and engineered for performance and scale.",
         icon: Globe,
       },
       {
         title: "Design Systems",
-        description: "Scalable visual frameworks that empower your internal teams.",
+        description: "One kit, so every team ships on-brand.",
         detail:
-          "A design system is the operating manual for your brand's visual execution. We create comprehensive, component-based frameworks with tokens, guidelines, and reusable patterns that empower your internal teams to ship consistently beautiful work — without bottlenecks.",
+          "Component libraries, tokens and guidelines that let your team build consistent work without waiting on design.",
         icon: Layers,
       },
       {
         title: "Platform Development",
-        description: "The technical 'Road' your brand drives on.",
+        description: "The connections underneath it all.",
         detail:
-          "Custom platforms, APIs, and integrations that form the technical backbone of your digital operations. We engineer the infrastructure that connects your tools, automates your workflows, and handles scale — so your brand can accelerate without friction.",
+          "Custom platforms, APIs and integrations that link your tools and data so the business runs without manual hand-offs.",
         icon: Server,
       },
       {
         title: "Motion & Video Production",
-        description: "Dynamic assets engineered for engagement.",
-        detail:
-          "From scroll-stopping social reels to cinematic brand films, we produce motion content that captures attention and drives action. Every frame is intentional, every transition purposeful — motion design as a growth lever, not decoration.",
+        description: "Motion that earns attention.",
+        detail: "Social reels to brand films, produced with a clear job for every frame.",
         icon: Video,
       },
     ],
@@ -125,84 +203,151 @@ export const serviceCategories: ServiceCategory[] = [
   {
     title: "Agentic AI & Automation",
     slug: "ai-automation",
-    tagline: "The Execution Powerhouse",
-    description:
-      "We bridge the gap between human brilliance and AI speed to create systems that work while you sleep.",
+    pillar: "Platforms",
+    tagline: "Systems that work while you sleep.",
+    description: "AI agents and automation that take the repeat work off your team.",
     color: "primary",
     subServices: [
       {
         title: "Agentic Workflows",
-        description: "AI-powered systems that execute complex tasks autonomously.",
+        description: "AI agents that carry multi-step work end to end.",
         detail:
-          "We design and deploy autonomous AI agents that handle multi-step business processes — from lead qualification to content distribution to customer support. These aren't chatbots; they're intelligent systems that learn, adapt, and execute at a speed no human team can match.",
+          "Agents for lead qualification, content distribution, support and other multi-step processes, built to hand off to people where judgment matters.",
         icon: Bot,
       },
       {
         title: "AI-Powered Creative",
-        description: "Human-led imagination, engineered at AI velocity.",
+        description: "Human direction, produced at AI speed.",
         detail:
-          "We combine world-class creative direction with cutting-edge AI tools to produce brand assets at unprecedented speed without sacrificing quality. From AI-assisted design sprints to generative content pipelines — we multiply your creative output while keeping the human touch that makes it resonate.",
+          "Creative direction paired with generative tools, so assets ship faster without losing the human touch.",
         icon: Sparkles,
       },
       {
         title: "Automation Consulting",
-        description: "Transforming fragmented operations into integrated growth engines.",
+        description: "Find the busywork, then remove it.",
         detail:
-          "We audit your operations, identify friction points, and architect automation solutions that eliminate manual busywork — connecting your CRM, marketing tools, fulfillment, and analytics into a seamless, self-running growth engine.",
+          "An audit of how work actually moves through your business, followed by automation that connects CRM, marketing, fulfilment and reporting.",
         icon: Cog,
       },
     ],
   },
   {
-    title: "Growth Operations",
-    slug: "growth-operations",
-    tagline: "Architecting Momentum",
+    title: "Training & Workforce Development",
+    slug: "training",
+    pillar: "People",
+    tagline: "Capability that stays after we leave.",
     description:
-      "We deploy the strategic fuel that turns your infrastructure into a market-leading empire.",
+      "Training for teams and individuals, so the people behind the business grow with it. Cohorts, workshops or one-to-one, online or in person.",
     color: "primary",
+    menu: [
+      { title: "AI Training", icon: Brain },
+      { title: "Workforce Development", icon: Briefcase },
+      { title: "STEAM Training", icon: Cpu },
+    ],
     subServices: [
       {
-        title: "Campaign Strategy",
-        description: "Multi-market momentum builders from concept to launch.",
+        title: "Prompt Engineering & AI Literacy",
+        description: "Use AI well, safely and every day.",
         detail:
-          "We engineer launch campaigns and ongoing marketing strategies that create compounding momentum. From market research and audience mapping to multi-channel deployment — every campaign is a precision instrument designed to move the needle on revenue and brand authority.",
-        icon: Megaphone,
+          "How today's AI tools work, where they help and where they don't, and how to write prompts that get reliable results. The starting point for every other course.",
+        icon: BookOpenCheck,
+        track: "AI Training",
+        stage: "Foundations",
       },
       {
-        title: "Content Engines",
-        description: "High-velocity asset production for social and performance ads.",
+        title: "AI Agents & Agentic Workflows",
+        description: "Design and run agents that do real work.",
         detail:
-          "We build content production systems — not one-off posts. Our content engines combine editorial calendars, AI-assisted production, and performance feedback loops to deliver a steady stream of on-brand, high-converting assets across every channel that matters.",
-        icon: Zap,
+          "Plan, build and supervise AI agents that carry multi-step tasks, and decide where people stay in the loop.",
+        icon: Bot,
+        track: "AI Training",
+        stage: "Automate",
+        pairsWith: ["ai-automation"],
       },
       {
-        title: "Performance Copywriting",
-        description: "Words engineered for conversion and authority.",
+        title: "Intelligent Workflow Automation",
+        description: "Connect tools so work moves on its own.",
         detail:
-          "Every headline, email, landing page, and ad is written with one goal: conversion. We combine direct-response principles with brand voice to create copy that doesn't just sound good — it sells. From web copy to sales sequences, every word earns its place.",
-        icon: PenTool,
+          "Link the apps a team already uses so information and tasks flow between them without copy and paste.",
+        icon: Workflow,
+        track: "AI Training",
+        stage: "Automate",
+        pairsWith: ["ai-automation"],
       },
       {
-        title: "Event Strategy & Production",
-        description: "End-to-end event architecture from ideation to execution.",
+        title: "Business Process Automation (BPA)",
+        description: "Map a process, then automate it end to end.",
         detail:
-          "We architect physical and virtual events as conversion engines — from strategic roadmapping and activity planning to live content production across commercial and musical formats. Every event is designed with one outcome in mind: building community that converts. Because strategy is the map, and the event is the engine.",
-        icon: CalendarDays,
+          "Document how a process really runs, find the steps worth automating, and rebuild it so it runs reliably with less manual work.",
+        icon: Network,
+        track: "AI Training",
+        stage: "Automate",
+        pairsWith: ["ai-automation"],
       },
       {
-        title: "Community & Funnel Architecture",
-        description: "Building the engine that sustains momentum beyond the event.",
+        title: "Generative & Multimodal Content Creation",
+        description: "Text, image, video and audio, made with AI and on brand.",
         detail:
-          "We engineer lead pipeline funnels, community-building frameworks, and post-event nurture sequences that transform attendees into loyal advocates and one-time buyers into lifetime customers. Because community is the engine that sustains — and we build the infrastructure to keep it running.",
-        icon: Users,
+          "Produce content across formats with generative tools while keeping it consistent with your brand and your standards.",
+        icon: ImagePlay,
+        track: "AI Training",
+        stage: "Create & build",
+        pairsWith: ["growth-operations", "brand-architecture"],
       },
       {
-        title: "Influencer & Creator Partnerships",
-        description: "Micro to macro — activating voices that amplify your brand.",
+        title: "AI for Coding & Development",
+        description: "Ship software faster with AI in the workflow.",
         detail:
-          "We identify, recruit, and manage strategic creator partnerships across micro, mini, and macro tiers — integrating influencer campaigns into your broader growth strategy for maximum virality, memorability, and measurable ROI. Every partnership is engineered for momentum, not just impressions.",
-        icon: UserPlus,
+          "Use AI assistants across planning, writing, reviewing and testing code, with the habits that keep quality high.",
+        icon: Code2,
+        track: "AI Training",
+        stage: "Create & build",
+        pairsWith: ["digital-infrastructure"],
+      },
+      {
+        title: "AI for Educators",
+        description: "Bring AI into teaching, planning and assessment with confidence.",
+        detail:
+          "Practical AI for lesson planning, classroom use and assessment, with clear guidance on using it responsibly.",
+        icon: GraduationCap,
+        track: "Workforce Development",
+        audience: "Teachers, lecturers and school leaders",
+      },
+      {
+        title: "AI for Professionals",
+        description: "Integrate AI into everyday workflows and grow what each person can do.",
+        detail:
+          "Role-based training that puts AI into the work people already do, so teams take on more with the same hours.",
+        icon: Briefcase,
+        track: "Workforce Development",
+        audience: "Teams in the workplace",
+      },
+      {
+        title: "Learning & Development",
+        description: "AI-led programmes built around productivity and outcomes.",
+        detail:
+          "Programmes designed with L&D and HR teams, aimed at measurable gains in productivity and results.",
+        icon: LineChart,
+        track: "Workforce Development",
+        audience: "L&D and HR teams, organisations",
+      },
+      {
+        title: "AI & Robotics for Young Innovators",
+        description: "AI and robotics for innovators aged 6 to 20, and for youths.",
+        detail:
+          "Hands-on AI and robotics for schools, delivered through STEAM Foundry, DCH's own platform built for this, in partnership with the Artificial Intelligence & Robotics School (AIRS).",
+        icon: Cpu,
+        track: "STEAM Training",
+        audience: "Schools, young innovators aged 6 to 20, and youths",
       },
     ],
   },
 ];
+
+/** External links for the STEAM track. */
+export const steamLinks = {
+  foundry: "https://apen.digitalcreativeshubltd.com/",
+  airs: "https://airsafrica.com/aicafe.html",
+};
+
+export const pillarOrder: Pillar[] = ["Brand", "Platforms", "People"];

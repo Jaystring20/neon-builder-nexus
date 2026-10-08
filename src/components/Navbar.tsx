@@ -86,7 +86,7 @@ const Navbar = () => {
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-[calc(100vw-2rem)] max-w-[1400px] p-6">
-                      <div className="grid grid-cols-4 gap-4">
+                      <div className="grid grid-cols-5 gap-4">
                         {serviceCategories.map((cat) => {
                           const colorClass = cat.color === "primary" ? "text-primary" : "text-secondary";
                           const borderColor = cat.color === "primary" ? "border-primary/30" : "border-secondary/30";
@@ -102,7 +102,7 @@ const Navbar = () => {
                                 <ArrowRight className="w-2.5 h-2.5" />
                               </Link>
                               <ul className="space-y-0.5 pl-0.5">
-                                {cat.subServices.map((sub) => (
+                                {(cat.menu ?? cat.subServices).map((sub) => (
                                   <li key={sub.title}>
                                     <Link
                                       to={`/services/${cat.slug}`}
@@ -223,7 +223,7 @@ const Navbar = () => {
                           >
                             {cat.title} →
                           </Link>
-                          {cat.subServices.map((sub) => (
+                          {(cat.menu ?? cat.subServices).map((sub) => (
                             <Link
                               key={sub.title}
                               to={`/services/${cat.slug}`}

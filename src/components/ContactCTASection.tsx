@@ -2,11 +2,10 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
+import { BOOK_A_CALL } from "@/lib/contact";
 
 // Copy: docs/landing-copy.md, section 8. Selective by design: the invitation
-// is to bring a problem, not to "get in touch". Booking goes to the studio's
-// real inbox (the scheduling link is not in use); discovery is the softer exit.
-const BOOK_A_CALL = "mailto:hello@digitalcreativeshub.com?subject=Book%20a%20call";
+// is to bring a problem, not to "get in touch". Discovery is the softer exit.
 
 const ContactCTASection = () => {
   const image = storyImage("cta-first-connection");

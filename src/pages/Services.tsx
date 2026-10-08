@@ -1,128 +1,161 @@
-import { ArrowRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
-import { serviceCategories } from "@/data/services";
+import StoryImage from "@/components/StoryImage";
+import ServicesCTA from "@/components/ServicesCTA";
+import { serviceCategories, pillarOrder, type Pillar } from "@/data/services";
+import { BOOK_A_CALL } from "@/lib/contact";
+
+// Copy: docs/services-copy.md. The page reads in the same order as the home
+// page's "Brand. Platforms. People.": the pillar map first, then one block per
+// practice, each a door to its own page.
+const PILLARS: Record<Pillar, { line: string; imageId: string; alt: string }> = {
+  Brand: {
+    line: "Be understood, then be chosen.",
+    imageId: "capability-brand",
+    alt: "A mark cut into dark stone, repeated across smaller slabs",
+  },
+  Platforms: {
+    line: "Software that carries the business.",
+    imageId: "capability-platforms",
+    alt: "An exploded stack of glass layers aligned on pins of light",
+  },
+  People: {
+    line: "Teams that can run what we build.",
+    imageId: "capability-people",
+    alt: "A staircase of glass slabs rising toward a warm light",
+  },
+};
+
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const Services = () => {
+  const reduce = useReducedMotion();
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Our Services"
-        description="Brand strategy, digital products, and growth systems — explore the full range of services Digital Creatives Hub offers to help you build and scale."
+        title="Services"
+        description="Brand, platforms and people, built together and powered by AI: Brand Architecture, Growth Operations, Digital Infrastructure, Agentic AI & Automation, and Training."
         path="/services"
       />
       <Navbar />
 
-      {/* Hero */}
-      <section className="section-padding pt-32 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse-slow animation-delay-500" />
-        </div>
-
-        <div className="container-narrow relative z-10">
-          <ScrollReveal>
-            <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                We Build the <span className="text-primary">Systems</span> That{" "}
-                <span className="text-foreground font-semibold">Grow</span> the Brand
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-                Four pillars of execution. One unified engine. From brand architecture to AI-powered automation — we engineer the infrastructure that turns vision into velocity.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="hero" size="lg">
-                  Start the Build
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                <Button variant="outline" size="lg" className="border-primary/50 hover:bg-primary/10">
-                  Book a Strategy Call
-                </Button>
-              </div>
+      <main>
+        {/* Hero */}
+        <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+          <div className="blueprint-grid" />
+          <div className="container-narrow relative z-10">
+            <h1 className="font-display-refined hero-animate max-w-3xl text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
+              Five practices. <span className="text-primary">One engine.</span>
+            </h1>
+            <p
+              className="hero-animate mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground"
+              style={{ animationDelay: "120ms" }}
+            >
+              Brand, platforms and people, built together and powered by AI. Start where you need to; we
+              connect the rest.
+            </p>
+            <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
+              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
+                <a href={BOOK_A_CALL}>
+                  Book a call
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </a>
+              </Button>
             </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Service Categories */}
-      <section className="section-padding">
-        <div className="container-narrow">
-          <div className="space-y-16">
-            {serviceCategories.map((category, index) => {
-              const colorClass = category.color === "primary" ? "text-primary" : "text-primary";
-
-              return (
-                <ScrollReveal key={category.slug}>
-                  <div className="glass-card p-8 md:p-12 hover:border-primary/20 transition-all duration-500">
-                    <div className="grid md:grid-cols-2 gap-8 items-start">
-                      {/* Left: Info */}
-                      <div>
-                        <h2 className="text-3xl md:text-4xl font-heading font-bold mb-1 text-foreground">
-                          {category.title}
-                        </h2>
-                        <p className={`font-serif-display text-lg mb-4 ${colorClass}`}>
-                          {category.tagline}
-                        </p>
-                        <p className="text-muted-foreground mb-6 leading-relaxed">
-                          {category.description}
-                        </p>
-                        <Link to={`/services/${category.slug}`}>
-                          <Button variant="ghost" className="group/btn p-0 h-auto hover:bg-transparent">
-                            <span className={colorClass}>Explore {category.title}</span>
-                            <ArrowRight className={`w-4 h-4 ml-2 ${colorClass} group-hover/btn:translate-x-1 transition-transform`} />
-                          </Button>
-                        </Link>
-                      </div>
-
-                      {/* Right: Sub-services */}
-                      <div className="space-y-4">
-                        {category.subServices.map((sub) => (
-                          <div key={sub.title} className="flex items-start gap-3">
-                            <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${colorClass}`} />
-                            <div>
-                              <h3 className="text-sm font-semibold text-foreground">{sub.title}</h3>
-                              <p className="text-xs text-muted-foreground">{sub.description}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA */}
-      <section className="section-padding">
-        <div className="container-narrow">
-          <ScrollReveal>
-            <div className="glass-card p-12 md:p-16 text-center relative overflow-hidden">
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-              </div>
-              <div className="relative z-10">
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Ready to <span className="text-foreground font-semibold">Architect</span> Your Growth?
-                </h2>
-                <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-                  Every empire starts with a blueprint. Let's build yours.
-                </p>
-                <Button variant="hero" size="lg">
-                  Book a Strategy Call
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+        {/* Pillar map: which practice belongs to which part of the engine */}
+        <section aria-label="Brand, Platforms and People" className="pb-24 md:pb-32">
+          <div className="container-narrow grid gap-10 md:grid-cols-3 md:gap-8">
+            {pillarOrder.map((pillar, i) => (
+              <motion.div
+                key={pillar}
+                initial={reduce ? false : { opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
+              >
+                <StoryImage id={PILLARS[pillar].imageId} alt={PILLARS[pillar].alt} aspect="aspect-[4/5]" />
+                <h2 className="mt-6 font-heading text-2xl font-medium tracking-tight text-foreground">{pillar}</h2>
+                <p className="mt-2 text-base text-muted-foreground">{PILLARS[pillar].line}</p>
+                <ul className="mt-4 space-y-2">
+                  {serviceCategories
+                    .filter((c) => c.pillar === pillar)
+                    .map((c) => (
+                      <li key={c.slug}>
+                        <a
+                          href={`#${c.slug}`}
+                          className="group inline-flex items-center gap-2 text-base font-medium text-primary hover:text-foreground"
+                        >
+                          {c.title}
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </a>
+                      </li>
+                    ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* One block per practice */}
+        <section aria-label="Practices" className="border-t border-border/40">
+          <div className="container-narrow">
+            {serviceCategories.map((category) => (
+              <article
+                key={category.slug}
+                id={category.slug}
+                className="grid scroll-mt-28 gap-10 border-b border-border/40 py-16 md:grid-cols-[1fr_1.2fr] md:gap-16 md:py-20"
+              >
+                <div>
+                  <p className="text-sm font-medium text-primary">{category.pillar}</p>
+                  <h2 className="mt-3 font-display-refined text-4xl leading-[1.05] text-foreground sm:text-5xl">
+                    {category.title}
+                  </h2>
+                  <p className="mt-5 text-xl leading-snug text-foreground/90">{category.tagline}</p>
+                  <p className="mt-3 max-w-md text-base leading-relaxed text-muted-foreground">
+                    {category.description}
+                  </p>
+                  <Link
+                    to={`/services/${category.slug}`}
+                    className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-foreground hover:text-primary"
+                  >
+                    Explore {category.title}
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
+
+                <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                  {(category.menu ?? category.subServices).map((item) => {
+                    const sub = category.subServices.find((s) => s.title === item.title);
+                    const count = category.subServices.filter((s) => s.track === item.title).length;
+                    return (
+                      <li key={item.title} className="border-t border-border/40 pt-4">
+                        <item.icon aria-hidden="true" className="h-5 w-5 text-primary" />
+                        <h3 className="mt-3 font-heading text-lg font-medium tracking-tight text-foreground">
+                          {item.title}
+                        </h3>
+                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                          {sub ? sub.description : `${count} ${count === 1 ? "programme" : "courses"}`}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <ServicesCTA />
+      </main>
 
       <Footer />
     </div>

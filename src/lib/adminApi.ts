@@ -5,6 +5,7 @@
 
 import type { Role, LeadStatus } from "@/data/adminRoles";
 import type { ContentKey } from "@/data/siteContent";
+import type { EventKind, EventRecord, EventStatus, RegistrationStatus } from "@/data/events";
 
 export class AdminApiError extends Error {
   constructor(public status: number, message: string) {
@@ -103,11 +104,52 @@ export interface TeamMember {
   last_seen_at?: string | null;
 }
 
+export interface EventListItem {
+  id: string;
+  slug: string;
+  title: string;
+  kind: EventKind;
+  starts_at: string;
+  ends_at: string | null;
+  status: EventStatus;
+  price_ngn: number;
+  capacity: number | null;
+  location_type: string;
+  counts: Partial<Record<RegistrationStatus, number>>;
+}
+
+export interface Registration {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  organisation: string | null;
+  note: string | null;
+  status: RegistrationStatus;
+  reference: string;
+  paid_amount: number | null;
+  lead_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** What the event form edits. */
+export type EventInput = Omit<EventRecord, "id" | "reminder_sent_at" | "created_at" | "updated_at">;
+
+export interface LeadEventRow {
+  id: string;
+  status: RegistrationStatus;
+  reference: string;
+  created_at: string;
+  event: { id: string; title: string; starts_at: string } | null;
+}
+
 export interface Overview {
   leads: { total: number; thisWeek: number; openHigh: number; byStatus: Record<LeadStatus, number> };
   diagnostics: { total: number; thisWeek: number };
   upcoming: { id: string; name: string; company: string | null; call_at: string }[];
   activity: Activity[];
+  events?: { id: string; title: string; starts_at: string; capacity: number | null; registered: number; awaitingPayment: number }[];
 }
 
 export interface ContentState<T> {
@@ -121,7 +163,7 @@ export interface ContentState<T> {
  * Shrink an image in the browser (longest side 1600px, WebP) and upload it
  * through a one-time link. Returns the public address to store.
  */
-async function uploadImage(folder: "portfolio" | "leaders", file: File): Promise<string> {
+async function uploadImage(folder: "portfolio" | "leaders" | "events", file: File): Promise<string> {
   if (!file.type.startsWith("image/")) throw new AdminApiError(400, "Choose an image file.");
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
@@ -150,7 +192,7 @@ export const adminApi = {
   me: () => call<{ user: Me }>("me"),
   overview: () => call<Overview>("overview"),
   leads: (q: { status?: string; priority?: string; q?: string }) => call<{ leads: LeadRow[] }>("leads", { query: q }),
-  lead: (id: string) => call<{ lead: Lead; notes: Note[]; activity: Activity[] }>("lead", { query: { id } }),
+  lead: (id: string) => call<{ lead: Lead; notes: Note[]; activity: Activity[]; events: LeadEventRow[] }>("lead", { query: { id } }),
   updateLead: (id: string, patch: Partial<Pick<Lead, "status" | "call_at" | "assigned_to">>) =>
     call<{ ok: true }>("lead-update", { body: { id, ...patch } }),
   addNote: (entity_type: "lead" | "diagnostic", entity_id: string, body: string) =>
@@ -169,4 +211,11 @@ export const adminApi = {
   resetContent: (key: ContentKey) => call<{ ok: true }>("content-reset", { body: { key } }),
   restoreContent: (id: string) => call<{ ok: true }>("content-restore", { body: { id } }),
   uploadImage,
+  events: () => call<{ events: EventListItem[] }>("events"),
+  event: (id: string) => call<{ event: EventRecord; registrations: Registration[] }>("event", { query: { id } }),
+  saveEvent: (id: string | undefined, event: EventInput) => call<{ id: string }>("event-save", { body: { id, event } }),
+  cancelEvent: (id: string, message: string) => call<{ ok: true; emailed: number }>("event-cancel", { body: { id, message } }),
+  updateRegistration: (id: string, status: RegistrationStatus, paid_amount?: number) =>
+    call<{ ok: true; emailed?: boolean }>("registration-update", { body: { id, status, paid_amount } }),
+  resendRegistration: (id: string) => call<{ ok: true }>("registration-resend", { body: { id } }),
 };

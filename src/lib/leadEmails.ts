@@ -12,24 +12,24 @@ import type { EmailPayload } from "./resend.v3.js";
 import { describe, type LeadIntake, type LeadRouting } from "../data/leadIntake.js";
 import { calendlyUrl } from "./booking.js";
 
-const SITE = "https://www.digitalcreativeshubltd.com";
+export const SITE = "https://www.digitalcreativeshubltd.com";
 
 /** Where lead alerts go: DCH's Gmail, the same inbox Calendly notifies. LEAD_ALERT_EMAIL overrides it. */
 export const alertInbox = () => process.env.LEAD_ALERT_EMAIL || "digitalcreativeshubltd@gmail.com";
 
-const esc = (s: string) =>
+export const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-const shell = (body: string) => `<!doctype html><html><body style="margin:0;background:#f4f5f7;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#111827">
+export const shell = (body: string) => `<!doctype html><html><body style="margin:0;background:#f4f5f7;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#111827">
 <div style="max-width:560px;margin:0 auto;padding:32px 24px">
 <div style="background:#ffffff;border:1px solid #e5e7eb;padding:32px">${body}</div>
 <p style="margin-top:16px;font-size:12px;color:#6b7280">Digital Creatives Hub Ltd · Strategy. Creativity. Growth. Without limits.</p>
 </div></body></html>`;
 
-const button = (href: string, label: string) =>
+export const button = (href: string, label: string) =>
   `<a href="${esc(href)}" style="display:inline-block;background:#e07a3f;color:#111827;font-weight:700;text-decoration:none;padding:14px 22px">${esc(label)}</a>`;
 
-const rows = (pairs: [string, string | undefined][]) =>
+export const rows = (pairs: [string, string | undefined][]) =>
   `<table style="width:100%;border-collapse:collapse;font-size:14px">${pairs
     .filter(([, v]) => v)
     .map(

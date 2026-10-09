@@ -26,6 +26,7 @@ export default function Overview() {
   const me = useMe();
   const q = useQuery({ queryKey: ["admin", "overview"], queryFn: adminApi.overview });
   const linked = can(me.role, "leads.read");
+  const canEvents = can(me.role, "events.manage");
 
   return (
     <>
@@ -94,6 +95,30 @@ export default function Overview() {
                 </p>
               )}
             </Panel>
+            {q.data!.events && q.data!.events.length > 0 && (
+              <Panel title="Upcoming events">
+                <ul className="space-y-3">
+                  {q.data!.events.map((e) => (
+                    <li key={e.id} className="flex justify-between gap-4 text-sm">
+                      {canEvents ? (
+                        <Link to={`/admin/events/${e.id}`} className="text-foreground hover:text-primary">
+                          {e.title}
+                        </Link>
+                      ) : (
+                        <span>{e.title}</span>
+                      )}
+                      <span className="shrink-0 text-right text-muted-foreground">
+                        {fmtDate(e.starts_at, true)}
+                        <br />
+                        {e.registered}
+                        {e.capacity ? ` / ${e.capacity}` : ""} registered
+                        {e.awaitingPayment ? <span className="text-secondary"> · {e.awaitingPayment} to pay</span> : null}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            )}
             <Panel title="Recent activity">
               <ActivityList items={q.data!.activity} />
             </Panel>

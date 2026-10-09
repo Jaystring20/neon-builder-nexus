@@ -91,3 +91,46 @@ uploaded images. Nothing to change in Vercel.
   Storage through a one-time link.
 - Projects or people added to the code later still appear after older edits,
   at the end of the list.
+
+# Phase 3: events
+
+**Events** in the dashboard (Owners, Managers, Editors). Webinars, workshops,
+masterclasses and meetups, online, in person or both.
+
+1. **New event** → title, type, summary, description, start and end (Lagos
+   time), format, join link and/or venue, places (optional), price (0 = free),
+   image. **Save draft** keeps it private; **Publish** puts it on `/events`.
+2. People register on the event page. Everyone who registers also appears in
+   **Leads** (one lead per email; source "Event").
+3. **Free events**: confirmed at once, emailed the join link and a calendar
+   link.
+4. **Paid events** (bank transfer for now): registrants get the payment
+   details from **How to pay** and a reference like `DCH-7K4QX2` to quote.
+   DCH gets an alert email. When the money arrives, open the event →
+   **Registrations** → **Mark paid**. They're emailed their confirmation and
+   join link automatically.
+5. **Reminders** go out by themselves at 10:00 Lagos time the day before (or
+   the morning of, for late events). Anyone still unpaid gets the payment
+   details again instead.
+6. After the event, mark people **Attended** or **Didn't attend**. **Export**
+   downloads the list as a spreadsheet; **Copy emails** copies addresses for a
+   follow-up.
+7. **Cancel event** takes it off the website and emails everyone registered.
+
+The join link is never shown on the website; it only goes by email to
+confirmed people. Paystack can replace step 4 later without changing the rest.
+
+## Turning it on (once)
+
+Run `supabase/migrations/20261012090000_events.sql` in the Supabase SQL
+Editor. Nothing to change in Vercel.
+
+## How it works
+
+- `api/events.ts`: public list, event page data and registration.
+- `api/admin.ts`: create, edit, publish, cancel; registration status and
+  payment confirmation.
+- `api/cron/send-scheduled-emails.ts`: reminders, sent in batches through
+  Resend.
+- `src/data/events.ts`: shared labels, Lagos-time formatting, registration
+  checks; `src/data/eventSchemas.ts`: server-side validation.

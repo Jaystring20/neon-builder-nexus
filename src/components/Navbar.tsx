@@ -35,6 +35,7 @@ const Navbar = () => {
     { title: "About Us", description: "Who we are and how we think", href: "/about" },
     { title: "Leadership", description: "Meet the founder and the team at the helm", href: "/about#founder" },
     { title: "Partners", description: "The partners we build and train with", href: "/about#partners" },
+    { title: "Events", description: "Webinars, workshops and masterclasses", href: "/events" },
     { title: "Digital Creatives Network", description: "A global community of builders, creators, and innovators", href: "/dcn" },
   ];
 

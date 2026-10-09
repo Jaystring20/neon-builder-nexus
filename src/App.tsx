@@ -24,6 +24,9 @@ import NotFound from "./pages/NotFound";
 
 // The team dashboard loads on its own, so none of it ships with the public site.
 const AdminApp = lazy(() => import("./pages/admin/AdminApp"));
+const EventsPage = lazy(() => import("./pages/Events").then((m) => ({ default: m.EventsPage })));
+const EventPage = lazy(() => import("./pages/Events").then((m) => ({ default: m.EventPage })));
+const blank = <div className="min-h-screen bg-background" />;
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -50,10 +53,12 @@ const App = () => (
           <Route path="/diagnostic" element={<DiscoveryPage />} />
           <Route path="/discovery" element={<DiscoveryPage />} />
           <Route path="/book" element={<BookCall />} />
+          <Route path="/events" element={<Suspense fallback={blank}><EventsPage /></Suspense>} />
+          <Route path="/events/:slug" element={<Suspense fallback={blank}><EventPage /></Suspense>} />
           <Route
             path="/admin/*"
             element={
-              <Suspense fallback={<div className="min-h-screen bg-background" />}>
+              <Suspense fallback={blank}>
                 <AdminApp />
               </Suspense>
             }

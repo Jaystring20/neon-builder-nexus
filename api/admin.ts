@@ -31,6 +31,10 @@ import {
 import { LEAD_STATUSES, ROLES, can, type Permission, type Role } from "../src/data/adminRoles.js";
 import { CONTENT_KEYS, TIER_KEYS, defaultProgrammes, type ContentKey, type ProgrammesContent } from "../src/data/siteContent.js";
 import { CONTENT_SCHEMAS } from "../src/data/siteContentSchemas.js";
+import { eventSchema } from "../src/data/eventSchemas.js";
+import { HOLDS_SEAT, REGISTRATION_STATUSES, type EventRecord, type RegistrationStatus } from "../src/data/events.js";
+import { sendEmailBatchViaResend } from "../src/lib/resend.v3.js";
+import { eventCancelledEmail, registrationConfirmedEmail, registrationPendingEmail } from "../src/lib/eventEmails.js";
 
 interface AdminUser {
   id: string;
@@ -150,13 +154,23 @@ async function overview(ctx: Ctx) {
   const weekAgo = new Date(Date.now() - WEEK_MS).toISOString();
   const now = new Date().toISOString();
 
-  const [leads, diagnosticsWeek, diagnosticsTotal, upcoming, activity] = await Promise.all([
+  const [leads, diagnosticsWeek, diagnosticsTotal, upcoming, activity, events] = await Promise.all([
     db.from("leads").select("status,priority,created_at"),
     db.from("discovery_results").select("id", { count: "exact", head: true }).gte("updated_at", weekAgo),
     db.from("discovery_results").select("id", { count: "exact", head: true }),
     db.from("leads").select("id,name,company,call_at").gte("call_at", now).order("call_at").limit(5),
     db.from("admin_activity").select("action,entity_type,entity_id,detail,created_at,actor:admin_users(name,email)").order("created_at", { ascending: false }).limit(10),
+    db.from("events").select("id,title,starts_at,capacity").eq("status", "published").gte("starts_at", now).order("starts_at").limit(3),
   ]);
+  // Seats taken per upcoming event; a missing events table (before the
+  // Phase 3 migration) just means no events.
+  const upcomingEvents = (events.data ?? []) as { id: string; title: string; starts_at: string; capacity: number | null }[];
+  const seats = upcomingEvents.length
+    ? (((await db.from("event_registrations").select("event_id,status").in("event_id", upcomingEvents.map((e) => e.id)).in("status", HOLDS_SEAT)).data ?? []) as {
+        event_id: string;
+        status: string;
+      }[])
+    : [];
 
   const rows = must(leads) as { status: string; priority: string; created_at: string }[];
   const byStatus = Object.fromEntries(LEAD_STATUSES.map((s) => [s, rows.filter((r) => r.status === s).length]));
@@ -170,6 +184,11 @@ async function overview(ctx: Ctx) {
     diagnostics: { total: diagnosticsTotal.count ?? 0, thisWeek: diagnosticsWeek.count ?? 0 },
     upcoming: must(upcoming),
     activity: must(activity),
+    events: upcomingEvents.map((e) => ({
+      ...e,
+      registered: seats.filter((r) => r.event_id === e.id).length,
+      awaitingPayment: seats.filter((r) => r.event_id === e.id && r.status === "pending_payment").length,
+    })),
   };
 }
 
@@ -207,7 +226,14 @@ async function leadDetail(ctx: Ctx) {
   if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown lead.");
   const lead = must(await ctx.db.from("leads").select("*").eq("id", id).maybeSingle());
   if (!lead) throw new HttpError(404, "Lead not found.");
-  return { lead, ...(await notesAndActivity(ctx.db, "lead", id)) };
+  const events = must(
+    await ctx.db
+      .from("event_registrations")
+      .select("id,status,reference,created_at,event:events(id,title,starts_at)")
+      .eq("email", (lead as { email: string }).email)
+      .order("created_at", { ascending: false }),
+  );
+  return { lead, events, ...(await notesAndActivity(ctx.db, "lead", id)) };
 }
 
 async function leadUpdate(ctx: Ctx) {
@@ -474,8 +500,9 @@ const UPLOAD_TYPES: Record<string, string> = { "image/webp": "webp", "image/jpeg
 
 /** A one-time link the browser uploads an image to, straight into Storage. */
 async function uploadUrl(ctx: Ctx) {
-  allow(await currentUser(ctx), "content.edit");
-  const folder = ctx.body.folder === "leaders" ? "leaders" : ctx.body.folder === "portfolio" ? "portfolio" : null;
+  const user = await currentUser(ctx);
+  const folder = ["leaders", "portfolio", "events"].includes(ctx.body.folder as string) ? (ctx.body.folder as string) : null;
+  allow(user, folder === "events" ? "events.manage" : "content.edit");
   const ext = UPLOAD_TYPES[str(ctx.body.contentType, 40)];
   if (!folder || !ext) throw new HttpError(400, "Upload a WebP, JPEG or PNG image.");
   const path = `${folder}/${Date.now()}-${newLoginToken().slice(0, 10)}.${ext}`;
@@ -483,6 +510,142 @@ async function uploadUrl(ctx: Ctx) {
   const { data, error } = await bucket.createSignedUploadUrl(path);
   if (error || !data) throw new Error(error?.message ?? "No upload link");
   return { uploadUrl: data.signedUrl, publicUrl: bucket.getPublicUrl(path).data.publicUrl };
+}
+
+// ---------------------------------------------------------------- events
+
+async function eventsList(ctx: Ctx) {
+  allow(await currentUser(ctx), "events.manage");
+  const events = must(
+    await ctx.db.from("events").select("id,slug,title,kind,starts_at,ends_at,status,price_ngn,capacity,location_type").order("starts_at", { ascending: false }).limit(200),
+  ) as { id: string }[];
+  const ids = events.map((e) => e.id);
+  const regs = ids.length
+    ? (must(await ctx.db.from("event_registrations").select("event_id,status").in("event_id", ids)) as { event_id: string; status: RegistrationStatus }[])
+    : [];
+  const counts = new Map<string, Record<string, number>>();
+  for (const r of regs) {
+    const c = counts.get(r.event_id) ?? {};
+    c[r.status] = (c[r.status] ?? 0) + 1;
+    counts.set(r.event_id, c);
+  }
+  return { events: events.map((e) => ({ ...e, counts: counts.get(e.id) ?? {} })) };
+}
+
+async function eventDetail(ctx: Ctx) {
+  allow(await currentUser(ctx), "events.manage");
+  const id = str(ctx.req.query.id, 40);
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown event.");
+  const event = must(await ctx.db.from("events").select("*").eq("id", id).maybeSingle());
+  if (!event) throw new HttpError(404, "Event not found.");
+  const registrations = must(
+    await ctx.db
+      .from("event_registrations")
+      .select("id,name,email,phone,organisation,note,status,reference,paid_amount,lead_id,created_at,updated_at")
+      .eq("event_id", id)
+      .order("created_at"),
+  );
+  return { event, registrations };
+}
+
+async function eventSave(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "events.manage");
+  const { db, body } = ctx;
+  const id = str(body.id, 40);
+  const parsed = eventSchema.safeParse(body.event);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    throw new HttpError(400, issue?.message ?? "That event isn't valid.");
+  }
+  const e = parsed.data;
+  if (e.status === "cancelled") throw new HttpError(400, "Use Cancel event, so registrants are told.");
+  const fields = { ...e, starts_at: new Date(e.starts_at).toISOString(), ends_at: e.ends_at ? new Date(e.ends_at).toISOString() : null, updated_at: new Date().toISOString() };
+
+  if (!id) {
+    const { data, error } = await db.from("events").insert([{ ...fields, created_by: user.id }]).select("id").single();
+    if (error) throw new HttpError(400, error.code === "23505" ? "Another event already uses that web address." : error.message);
+    await log(db, user, "event.create", null, null, { title: e.title });
+    return { id: data.id };
+  }
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown event.");
+  const before = must(await db.from("events").select("starts_at,status").eq("id", id).maybeSingle()) as { starts_at: string; status: string } | null;
+  if (!before) throw new HttpError(404, "Event not found.");
+  if (before.status === "cancelled") throw new HttpError(400, "This event is cancelled.");
+  // Moving the date means the reminder hasn't gone out for the new date yet.
+  const moved = new Date(before.starts_at).getTime() !== new Date(fields.starts_at).getTime();
+  const { error } = await db.from("events").update(moved ? { ...fields, reminder_sent_at: null } : fields).eq("id", id);
+  if (error) throw new HttpError(400, error.code === "23505" ? "Another event already uses that web address." : error.message);
+  await log(db, user, before.status !== e.status && e.status === "published" ? "event.publish" : "event.update", null, null, { title: e.title });
+  return { id };
+}
+
+async function eventCancel(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "events.manage");
+  const { db, body } = ctx;
+  const id = str(body.id, 40);
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown event.");
+  const e = must(await db.from("events").select("*").eq("id", id).maybeSingle()) as EventRecord | null;
+  if (!e) throw new HttpError(404, "Event not found.");
+  if (e.status === "cancelled") return { ok: true, emailed: 0 };
+  must(await db.from("events").update({ status: "cancelled", updated_at: new Date().toISOString() }).eq("id", id));
+  const regs = must(await db.from("event_registrations").select("name,email,reference").eq("event_id", id).in("status", ["confirmed", "pending_payment"])) as {
+    name: string;
+    email: string;
+    reference: string;
+  }[];
+  const { sent } = await sendEmailBatchViaResend(regs.map((r) => eventCancelledEmail(e, r, str(body.message, 1000))));
+  await log(db, user, "event.cancel", null, null, { title: e.title, emailed: sent });
+  return { ok: true, emailed: sent };
+}
+
+async function registrationUpdate(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "events.manage");
+  const { db, body } = ctx;
+  const id = str(body.id, 40);
+  const status = body.status as RegistrationStatus;
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown registration.");
+  if (!(REGISTRATION_STATUSES as readonly string[]).includes(status)) throw new HttpError(400, "Unknown status.");
+  const reg = must(await db.from("event_registrations").select("id,event_id,name,email,reference,status").eq("id", id).maybeSingle()) as
+    | { id: string; event_id: string; name: string; email: string; reference: string; status: RegistrationStatus }
+    | null;
+  if (!reg) throw new HttpError(404, "Unknown registration.");
+  if (reg.status === status) return { ok: true };
+  const e = must(await db.from("events").select("*").eq("id", reg.event_id).maybeSingle()) as EventRecord;
+
+  // Bringing a cancelled registration back needs a free seat.
+  if (reg.status === "cancelled" && HOLDS_SEAT.includes(status) && e.capacity != null) {
+    const { count } = await db.from("event_registrations").select("id", { count: "exact", head: true }).eq("event_id", e.id).in("status", HOLDS_SEAT);
+    if ((count ?? 0) >= e.capacity) throw new HttpError(409, "The event is full.");
+  }
+
+  const patch: Record<string, unknown> = { status, updated_at: new Date().toISOString() };
+  const paying = reg.status === "pending_payment" && status === "confirmed";
+  if (paying) patch.paid_amount = typeof body.paid_amount === "number" && body.paid_amount >= 0 ? Math.round(body.paid_amount) : e.price_ngn;
+  must(await db.from("event_registrations").update(patch).eq("id", id));
+
+  let emailed = false;
+  if (paying) {
+    const sent = await sendEmailViaResendDetailed(registrationConfirmedEmail(e, reg, true));
+    emailed = sent.ok;
+    if (!sent.ok) console.error("payment confirmation not sent:", sent.error);
+  }
+  await log(db, user, paying ? "registration.paid" : "registration.status", null, null, { title: e.title, name: reg.name, to: status });
+  return { ok: true, emailed };
+}
+
+/** Resend someone their confirmation or payment details. */
+async function registrationResend(ctx: Ctx) {
+  allow(await currentUser(ctx), "events.manage");
+  const id = str(ctx.body.id, 40);
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown registration.");
+  const reg = must(await ctx.db.from("event_registrations").select("event_id,name,email,reference,status").eq("id", id).maybeSingle()) as
+    | { event_id: string; name: string; email: string; reference: string; status: RegistrationStatus }
+    | null;
+  if (!reg) throw new HttpError(404, "Unknown registration.");
+  const e = must(await ctx.db.from("events").select("*").eq("id", reg.event_id).maybeSingle()) as EventRecord;
+  const sent = await sendEmailViaResendDetailed(reg.status === "pending_payment" ? registrationPendingEmail(e, reg) : registrationConfirmedEmail(e, reg));
+  if (!sent.ok) throw new HttpError(502, "The email didn't send. Please try again.");
+  return { ok: true };
 }
 
 // ---------------------------------------------------------------- router
@@ -514,6 +677,12 @@ const OPS: Record<string, { method: "GET" | "POST"; run: (ctx: Ctx) => unknown }
   "content-reset": { method: "POST", run: contentReset },
   "content-restore": { method: "POST", run: contentRestore },
   "upload-url": { method: "POST", run: uploadUrl },
+  events: { method: "GET", run: eventsList },
+  event: { method: "GET", run: eventDetail },
+  "event-save": { method: "POST", run: eventSave },
+  "event-cancel": { method: "POST", run: eventCancel },
+  "registration-update": { method: "POST", run: registrationUpdate },
+  "registration-resend": { method: "POST", run: registrationResend },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

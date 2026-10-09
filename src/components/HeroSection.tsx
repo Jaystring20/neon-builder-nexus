@@ -1,20 +1,16 @@
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroBackdrop, HeroInline } from "@/components/HeroMedia";
 import { hasHeroVideo } from "@/lib/heroMedia";
-
-const scrollToId = (id: string) => {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-};
 
 // Copy lives in docs/landing-copy.md (section 1). The headline opens the
 // story; the sub-line answers "momentum of what, for whom"; the flywheel
 // shows the rest.
 const HeroSection = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const ctaRef = useRef<HTMLButtonElement>(null);
 
   const handleCtaClick = (callback: () => void) => {
@@ -91,7 +87,7 @@ const HeroSection = () => {
                 variant="action"
                 size="xl"
                 isLoading={isLoading}
-                onClick={() => handleCtaClick(() => scrollToId("contact"))}
+                onClick={() => handleCtaClick(() => navigate("/book"))}
                 onMouseMove={handleCtaMouseMove}
                 onMouseLeave={handleCtaMouseLeave}
                 className="group w-full sm:w-auto"

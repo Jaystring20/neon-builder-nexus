@@ -13,6 +13,7 @@
  */
 
 import type { SegmentResult } from "../data/segmentLogic.js";
+import { CALENDLY } from "./booking.js";
 import type { Program } from "../data/programDefinitions.js";
 
 // ============================================================
@@ -277,7 +278,7 @@ export function generateEmail1(
         <p><strong>${program?.name || "Business Strategy Program"}</strong></p>
         <p>${programExplanation}</p>
         <p style="margin-top: 16px;">
-          <a href="${process.env.VITE_CALENDLY_CONSULTATION || '#'}" class="cta-button">
+          <a href="${CALENDLY.discovery}" class="cta-button">
             Book Your Consultation
           </a>
         </p>
@@ -454,7 +455,7 @@ export function generateEmail2(
 
       <div class="section">
         <p style="margin-top: 24px;">
-          <a href="${process.env.VITE_CALENDLY_CONSULTATION || '#'}" class="cta-button">
+          <a href="${CALENDLY.discovery}" class="cta-button">
             Ready? Book a Consultation →
           </a>
         </p>
@@ -656,10 +657,10 @@ export function generateEmail3(
       <div class="section">
         <h2>Two Options</h2>
         <div class="cta-buttons">
-          <a href="${process.env.VITE_CALENDLY_CONSULTATION || '#'}" class="cta-button">
+          <a href="${CALENDLY.discovery}" class="cta-button">
             Book Consultation
           </a>
-          <a href="${process.env.VITE_PROGRAM_APPLICATION_URL || '#'}" class="secondary-button">
+          <a href="${process.env.VITE_PROGRAM_APPLICATION_URL || "https://www.digitalcreativeshubltd.com/book"}" class="secondary-button">
             Apply Directly
           </a>
         </div>

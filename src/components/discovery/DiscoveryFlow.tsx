@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { questions, labelFor, type DiscoveryQuestion } from "@/data/discoveryQuestions";
 import { calculateSegment, SEGMENT_PROFILES, type DiscoveryAnswers, type SegmentResult } from "@/data/segmentLogic";
 import { serviceCategories } from "@/data/services";
+import { calendlyUrl } from "@/lib/booking";
+import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
 
 /**
  * The discovery: twelve questions, then a result the visitor sees straight
@@ -441,18 +443,18 @@ const Result = ({
   ];
   const recap = rows.filter((r): r is RecapRow & { value: string } => Boolean(r.value));
 
-  // The call request carries the result, so DCH starts the conversation informed.
-  const callHref = useMemo(() => {
-    const lines = [
-      `Hi DCH, I just took the discovery and would like to book a call.`,
-      ``,
-      `Result: ${profile?.archetype ?? ""} (${segment.program})`,
-      ...recap.map((r) => `${r.label}: ${r.value}`),
-    ];
-    return `mailto:hello@digitalcreativeshub.com?subject=${encodeURIComponent(
-      `Book a call: ${profile?.archetype ?? "Discovery result"}`,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-  }, [profile, segment.program, recap]);
+  // The booking carries the result into Calendly, so DCH starts the call informed.
+  const [showCalendar, setShowCalendar] = useState(false);
+  const bookingUrl = useMemo(
+    () =>
+      calendlyUrl("discovery", {
+        notes: [
+          `Discovery result: ${profile?.archetype ?? ""} (${segment.program})`,
+          ...recap.map((r) => `${r.label}: ${r.value}`),
+        ].join("\n"),
+      }),
+    [profile, segment.program, recap],
+  );
 
   const fade = (i: number) => ({
     initial: reduce ? false : { opacity: 0, y: 16 },
@@ -531,12 +533,20 @@ const Result = ({
           A short call to test this against your real numbers and agree the first move.
         </p>
         <div className="mt-8">
-          <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-            <a href={callHref}>
-              Book a call
+          {showCalendar ? (
+            <CalendlyEmbed url={bookingUrl} title="Book your discovery call" />
+          ) : (
+            <Button
+              type="button"
+              variant="action"
+              size="xl"
+              className="group w-full sm:w-auto"
+              onClick={() => setShowCalendar(true)}
+            >
+              Book my discovery call
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </a>
-          </Button>
+            </Button>
+          )}
         </div>
 
         <EmailBreakdown answers={answers} />

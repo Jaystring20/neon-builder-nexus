@@ -114,6 +114,12 @@ const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "team.update": (d) => `updated ${d.email}${d.active === false ? " (access removed)" : ""}`,
   "content.save": (d) => `updated ${CONTENT_LABEL[d.key as string] ?? d.key} on the website`,
   "content.restore": (d) => `restored an earlier version of ${CONTENT_LABEL[d.key as string] ?? d.key}`,
+  "event.create": (d) => `created the event ${d.title}`,
+  "event.update": (d) => `updated the event ${d.title}`,
+  "event.publish": (d) => `published the event ${d.title}`,
+  "event.cancel": (d) => `cancelled the event ${d.title}`,
+  "registration.paid": (d) => `confirmed ${d.name}'s payment for ${d.title}`,
+  "registration.status": (d) => `marked ${d.name} as ${String(d.to).replace("_", " ")} for ${d.title}`,
   "content.reset": (d) => `put ${CONTENT_LABEL[d.key as string] ?? d.key} back to the original`,
 };
 

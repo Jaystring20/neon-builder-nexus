@@ -915,3 +915,42 @@ export async function sendEmailViaResendDetailed(
     };
   }
 }
+
+/**
+ * Many emails in as few requests as possible: Resend's batch endpoint takes
+ * up to 100 per call, which keeps an event's reminders well inside both the
+ * API rate limit and the function's time limit. Returns how many were sent.
+ */
+export async function sendEmailBatchViaResend(payloads: EmailPayload[]): Promise<{ sent: number; error?: string }> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return { sent: 0, error: "RESEND_API_KEY is not set" };
+  let sent = 0;
+  let lastError: string | undefined;
+  for (let i = 0; i < payloads.length; i += 100) {
+    const chunk = payloads.slice(i, i + 100).map((p) => ({
+      from: p.from || process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+      to: p.to,
+      subject: p.subject,
+      html: p.html,
+      reply_to: p.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    }));
+    try {
+      const response = await fetch("https://api.resend.com/emails/batch", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify(chunk),
+      });
+      if (response.ok) sent += chunk.length;
+      else {
+        lastError = `${response.status}: ${(await response.text()).slice(0, 300)}`;
+        console.error("Resend batch error:", lastError);
+      }
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : String(error);
+      console.error("Resend batch failed:", error);
+    }
+    // Stay under the per-second request limit between chunks.
+    if (i + 100 < payloads.length) await new Promise((r) => setTimeout(r, 600));
+  }
+  return { sent, error: lastError };
+}

@@ -17,8 +17,10 @@
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { getSupabase } from "../../src/lib/supabase.server.js";
-import { sendEmailViaResend } from "../../src/lib/resend.v3.js";
+import { sendEmailBatchViaResend, sendEmailViaResend } from "../../src/lib/resend.v3.js";
 import { weeklyDigestEmail, type DigestLead, type DigestDiscovery } from "../../src/lib/leadEmails.js";
+import { paymentReminderEmail, reminderEmail, type RegistrationRow } from "../../src/lib/eventEmails.js";
+import { lagosDay, type EventRecord } from "../../src/data/events.js";
 
 interface ScheduledEmail {
   id: string;
@@ -75,6 +77,39 @@ export default async function handler(
     } catch (err) {
       console.error("Weekly digest failed:", err);
     }
+  }
+
+  // Event reminders. This job runs once a day (10:00 Lagos), so anything
+  // starting in the next 36 hours gets its reminder now: "tomorrow" for most,
+  // "today" for events late the next evening that the previous run missed.
+  // Confirmed registrants get the join details; anyone still awaiting payment
+  // gets the payment details again instead.
+  try {
+    const now = new Date();
+    const { data: events, error } = await getSupabase()
+      .from("events")
+      .select("*")
+      .eq("status", "published")
+      .is("reminder_sent_at", null)
+      .gt("starts_at", now.toISOString())
+      .lte("starts_at", new Date(now.getTime() + 36 * 60 * 60 * 1000).toISOString());
+    if (error) console.error("Event reminders: query failed:", error.message);
+    for (const e of (events ?? []) as EventRecord[]) {
+      const when = lagosDay(new Date(e.starts_at)) === lagosDay(now) ? "today" : "tomorrow";
+      const { data: regs } = await getSupabase()
+        .from("event_registrations")
+        .select("name,email,reference,status")
+        .eq("event_id", e.id)
+        .in("status", ["confirmed", "pending_payment"]);
+      const mails = ((regs ?? []) as (RegistrationRow & { status: string })[]).map((r) =>
+        r.status === "confirmed" ? reminderEmail(e, r, when) : paymentReminderEmail(e, r, when),
+      );
+      const { sent } = await sendEmailBatchViaResend(mails);
+      await getSupabase().from("events").update({ reminder_sent_at: new Date().toISOString() }).eq("id", e.id);
+      console.log(`Event reminders: ${e.title}, ${sent}/${mails.length} sent`);
+    }
+  } catch (err) {
+    console.error("Event reminders failed:", err);
   }
 
   try {

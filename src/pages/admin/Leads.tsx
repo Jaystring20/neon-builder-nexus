@@ -5,11 +5,12 @@ import { ArrowLeft, Mail, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LEAD_STATUSES, STATUS_LABEL, can, type LeadStatus } from "@/data/adminRoles";
 import { PRACTICE_TITLES, describe } from "@/data/leadIntake";
+import { REGISTRATION_LABEL } from "@/data/events";
 import { adminApi, type Lead } from "@/lib/adminApi";
 import { useMe } from "./AdminApp";
 import { ActivityList, ErrorNote, Field, Loading, NotesPanel, PageHeader, Panel, PriorityMark, StatusBadge, ago, fmtDate, selectClass } from "./ui";
 
-const SOURCE_LABEL: Record<string, string> = { book_a_call: "Book a call", diagnostic: "Growth diagnostic" };
+const SOURCE_LABEL: Record<string, string> = { book_a_call: "Book a call", diagnostic: "Growth diagnostic", event: "Event" };
 
 export function LeadsList() {
   const [params, setParams] = useSearchParams();
@@ -140,7 +141,7 @@ export function LeadDetail() {
 
   if (q.isLoading) return <Loading />;
   if (q.error) return <ErrorNote error={q.error} />;
-  const { lead, notes, activity } = q.data!;
+  const { lead, notes, activity, events } = q.data!;
 
   return (
     <>
@@ -269,6 +270,28 @@ export function LeadDetail() {
           )}
 
           {update.error && <p className="text-sm text-destructive">{(update.error as Error).message}</p>}
+
+          {events?.length > 0 && (
+            <Panel title="Events">
+              <ul className="space-y-3 text-sm">
+                {events.map((r) => (
+                  <li key={r.id}>
+                    {r.event ? (
+                      <Link to={`/admin/events/${r.event.id}`} className="text-foreground hover:text-primary">
+                        {r.event.title}
+                      </Link>
+                    ) : (
+                      <span>An event</span>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      {REGISTRATION_LABEL[r.status]} · {r.reference}
+                      {r.event ? ` · ${fmtDate(r.event.starts_at)}` : ""}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </Panel>
+          )}
 
           <Panel title="History">
             <ActivityList items={activity} />

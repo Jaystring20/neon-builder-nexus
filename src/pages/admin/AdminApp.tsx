@@ -10,7 +10,7 @@ import { createContext, useContext, useEffect, useRef, useState, type FormEvent 
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BarChart3, BookOpen, Briefcase, ClipboardList, Inbox, Loader2, LogOut, UserRound, Users } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, CalendarDays, ClipboardList, Inbox, Loader2, LogOut, UserRound, Users } from "lucide-react";
 import dchLogo from "@/assets/dch-logo-primary.png";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ import Team from "./Team";
 import Programmes from "./Programmes";
 import Portfolio from "./Portfolio";
 import Leadership from "./Leadership";
+import { EventEditor, EventsList } from "./Events";
 
 const MeContext = createContext<Me | null>(null);
 export const useMe = () => useContext(MeContext)!;
@@ -31,6 +32,7 @@ const NAV: { to: string; label: string; icon: typeof Inbox; perm: Permission; en
   { to: "/admin", label: "Overview", icon: BarChart3, perm: "overview", end: true },
   { to: "/admin/leads", label: "Leads", icon: Inbox, perm: "leads.read" },
   { to: "/admin/diagnostics", label: "Diagnostics", icon: ClipboardList, perm: "leads.read" },
+  { to: "/admin/events", label: "Events", icon: CalendarDays, perm: "events.manage" },
   { to: "/admin/programmes", label: "Programmes", icon: BookOpen, perm: "content.edit", group: "Website" },
   { to: "/admin/portfolio", label: "Portfolio", icon: Briefcase, perm: "content.edit", group: "Website" },
   { to: "/admin/leadership", label: "Leadership", icon: UserRound, perm: "content.edit", group: "Website" },
@@ -114,6 +116,12 @@ function Shell() {
                 <Route path="programmes" element={<Programmes />} />
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="leadership" element={<Leadership />} />
+              </>
+            )}
+            {can(me.role, "events.manage") && (
+              <>
+                <Route path="events" element={<EventsList />} />
+                <Route path="events/:id" element={<EventEditor />} />
               </>
             )}
             {can(me.role, "team.manage") && <Route path="team" element={<Team />} />}

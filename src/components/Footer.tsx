@@ -16,6 +16,7 @@ const Footer = () => {
       ...serviceCategories.map((c) => ({ label: c.title, href: `/services/${c.slug}`, isRoute: true })),
     ],
     resources: [
+      { label: "Events", href: "/events", isRoute: true },
       { label: "Builder's Blueprint", href: "#blueprint" },
       { label: "Blog", href: "/blog", isRoute: true },
       { label: "Case Studies", href: "/case-studies", isRoute: true },

@@ -207,7 +207,7 @@ export function ImageInput({
   onChange,
   aspect = "aspect-[16/10]",
 }: {
-  folder: "portfolio" | "leaders";
+  folder: "portfolio" | "leaders" | "events";
   url: string | undefined;
   fallback: string | undefined;
   onChange: (url: string | undefined) => void;

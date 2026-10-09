@@ -10,6 +10,7 @@ import { serviceCategories } from "@/data/services";
 import { calendlyUrl } from "@/lib/booking";
 import { matchOffer, offerLine, priceRange, SHOW_PRICES, TIER_LABEL } from "@/data/offerMatch";
 import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
+import discoveryCallQr from "@/assets/qr/discovery-call.svg";
 
 /**
  * The discovery: twelve questions, then a result the visitor sees straight
@@ -218,16 +219,16 @@ const Intro = ({
   onRestart: () => void;
 }) => (
   <div className="mx-auto w-full max-w-2xl">
-    <p className="text-sm font-medium text-primary">Discovery</p>
+    <p className="text-sm font-medium text-primary">Growth diagnostic</p>
     <h1 className="font-display-refined mt-4 text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl">
-      Find your <span className="text-primary">first move.</span>
+      See where you <span className="text-primary">really stand.</span>
     </h1>
     <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-      Twelve questions, about four minutes. You&rsquo;ll see what kind of business you&rsquo;re building, what&rsquo;s
-      holding it back, and where to start.
+      Twelve questions, about four minutes, before you talk to anyone. You&rsquo;ll see what kind of business
+      you&rsquo;re building, what&rsquo;s holding it back, and the right first move.
     </p>
     <ul className="mt-8 space-y-2 text-base text-foreground/90">
-      {["Your result on screen, no sign-up needed", "A plain read on your biggest gap", "The DCH practices that fit"].map(
+      {["Your result on screen, free, no sign-up", "A plain read on your biggest gap", "The programme and way of working that fit"].map(
         (item) => (
           <li key={item} className="flex items-center gap-3">
             <Check className="h-4 w-4 shrink-0 text-primary" />
@@ -546,16 +547,29 @@ const Result = ({
           {showCalendar ? (
             <CalendlyEmbed url={bookingUrl} title="Book your discovery call" />
           ) : (
-            <Button
-              type="button"
-              variant="action"
-              size="xl"
-              className="group w-full sm:w-auto"
-              onClick={() => setShowCalendar(true)}
-            >
-              Book my discovery call
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <div className="flex items-center gap-8">
+              <Button
+                type="button"
+                variant="action"
+                size="xl"
+                className="group w-full sm:w-auto"
+                onClick={() => setShowCalendar(true)}
+              >
+                Book my discovery call
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+              {/* For desktop visitors who'd rather book on their phone. */}
+              <div className="hidden items-center gap-4 md:flex">
+                <img
+                  src={discoveryCallQr}
+                  alt="QR code to book the discovery call"
+                  width={88}
+                  height={88}
+                  className="h-[88px] w-[88px] bg-white p-1"
+                />
+                <p className="max-w-[10rem] text-sm leading-snug text-muted-foreground">Or scan to book on your phone.</p>
+              </div>
+            </div>
           )}
         </div>
 

@@ -183,6 +183,9 @@ const Navbar = () => {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
+            <Link to="/diagnostic" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Free diagnostic
+            </Link>
             <Button variant="action" size="sm" asChild>
               <Link to="/book">Book a Call</Link>
             </Button>
@@ -301,6 +304,14 @@ const Navbar = () => {
               >
                 Contact
               </a>
+
+              <Link
+                to="/diagnostic"
+                className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Free diagnostic
+              </Link>
 
               <div className="pt-4">
                 <Button variant="action" className="w-full" asChild>

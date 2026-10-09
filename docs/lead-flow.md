@@ -86,3 +86,30 @@ The result screen shows all three tiers with the best fit marked and a one-line
 reason. The same line goes into the Calendly notes and DCH's alert email.
 Prices exist in `programDefinitions.ts` but are hidden until DCH confirms them
 (`SHOW_PRICES` in `offerMatch.ts`).
+
+## Names and where the calls to action sit
+
+- **Growth Diagnostic** (`/diagnostic`, old `/discovery` still works): the
+  free four-minute self-assessment. Visitors see where they stand before they
+  talk to anyone.
+- **Discovery call**: the one-on-one Calendly meeting that follows it.
+
+| Place | Primary | Secondary |
+|---|---|---|
+| Hero | Book a call | Take the diagnostic (+ "Free · 4 minutes") |
+| Navbar | Book a Call | Free diagnostic |
+| Closing sections (home, Services, practice pages, About, Our Work) | Book a call | Take the free diagnostic |
+| /book step 1 | Next | Take the free diagnostic first |
+| Diagnostic result | Book my discovery call | QR code (desktop) to book on a phone |
+
+## QR codes (`docs/qr/`)
+
+For flyers, slides and banners (1200px, high error correction):
+
+- `diagnostic.png` → /diagnostic: best for cold audiences (events, social).
+- `book-a-call.png` → /book: the intake, then the calendar.
+- `discovery-call.png` → the Calendly discovery call directly. It skips the
+  intake, so keep it for people who have already qualified.
+
+The result screen uses `src/assets/qr/discovery-call.svg`, tagged
+`utm_campaign=diagnostic-qr` so those bookings stand out in Calendly.

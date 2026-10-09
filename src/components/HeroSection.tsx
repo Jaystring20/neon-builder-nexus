@@ -100,14 +100,16 @@ const HeroSection = () => {
                 )}
               </Button>
 
-              <Link
-                to="/our-work"
-                className="group -m-2 inline-flex items-center justify-center gap-2 p-2 text-base font-semibold text-foreground/75 transition-all duration-300 hover:text-foreground active:scale-95 active:duration-100 sm:justify-start sm:text-lg"
-              >
-                See the work
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+              <Button asChild variant="subtle" size="xl" className="group w-full sm:w-auto">
+                <Link to="/diagnostic">
+                  Take the diagnostic
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
             </div>
+            <p className="hero-animate mt-4 text-sm text-muted-foreground" style={{ animationDelay: "320ms" }}>
+              Free · 4 minutes · see where you stand before you talk to anyone
+            </p>
           </div>
 
           <HeroInline />

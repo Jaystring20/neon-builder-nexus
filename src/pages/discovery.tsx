@@ -7,9 +7,9 @@ export default function DiscoveryPage() {
   return (
     <FocusedShell>
       <SEO
-        title="Discovery"
-        description="Twelve questions, about four minutes: see what kind of business you're building, what's holding it back, and where to start."
-        path="/discovery"
+        title="Growth Diagnostic"
+        description="A free four-minute diagnostic: see where your business really stands, what's holding it back, and the right first move, before you talk to anyone."
+        path="/diagnostic"
       />
       <DiscoveryFlow />
     </FocusedShell>

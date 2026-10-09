@@ -289,8 +289,8 @@ const BookCall = () => {
                   Back
                 </Button>
               ) : (
-                <Link to="/discovery" className="text-sm text-muted-foreground hover:text-foreground">
-                  Not ready to talk? <span className="font-medium text-foreground">Take the discovery.</span>
+                <Link to="/diagnostic" className="text-sm text-muted-foreground hover:text-foreground">
+                  Not ready to commit? <span className="font-medium text-foreground">Take the free diagnostic first.</span>
                 </Link>
               )}
               <Button

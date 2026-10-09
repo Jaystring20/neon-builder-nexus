@@ -18,6 +18,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { getSupabase } from "../../src/lib/supabase.server.js";
 import { sendEmailViaResend } from "../../src/lib/resend.v3.js";
+import { weeklyDigestEmail, type DigestLead, type DigestDiscovery } from "../../src/lib/leadEmails.js";
 
 interface ScheduledEmail {
   id: string;
@@ -33,16 +34,48 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  // Verify this is a cron request (optional but recommended)
-  // Vercel automatically includes this header
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({
-      error: "Unauthorized - cron job must be triggered by Vercel",
-    });
+  // Only Vercel's scheduler may run this. With CRON_SECRET set in Vercel, its
+  // requests carry "Bearer <secret>" and nothing else is accepted. Without it,
+  // Vercel sends no Authorization header at all, so fall back to its user agent;
+  // the earlier check demanded a header that never came, so every scheduled
+  // run was refused and the database saw no activity.
+  const secret = process.env.CRON_SECRET;
+  const authorized = secret
+    ? req.headers.authorization === `Bearer ${secret}`
+    : String(req.headers["user-agent"] ?? "").startsWith("vercel-cron/");
+  if (!authorized) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   console.log("🕐 Scheduled email cron job started");
+
+  // Mondays: the weekly lead summary to DCH. Best-effort, and it doubles as a
+  // weekly proof that the database and email both work.
+  if (new Date().getUTCDay() === 1) {
+    try {
+      const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const [leads, discoveries] = await Promise.all([
+        getSupabase()
+          .from("leads")
+          .select("created_at,name,email,company,priority,practice,problem")
+          .gte("created_at", since)
+          .order("created_at", { ascending: false }),
+        getSupabase()
+          .from("discovery_results")
+          .select("created_at,email,program")
+          .gte("updated_at", since)
+          .order("updated_at", { ascending: false }),
+      ]);
+      if (leads.error) console.error("Digest: leads query failed:", leads.error.message);
+      if (discoveries.error) console.error("Digest: discovery query failed:", discoveries.error.message);
+      const sentDigest = await sendEmailViaResend(
+        weeklyDigestEmail((leads.data ?? []) as DigestLead[], (discoveries.data ?? []) as DigestDiscovery[]),
+      );
+      if (!sentDigest) console.error("Weekly digest not sent");
+    } catch (err) {
+      console.error("Weekly digest failed:", err);
+    }
+  }
 
   try {
     // Get all unsent emails that are past their scheduled time

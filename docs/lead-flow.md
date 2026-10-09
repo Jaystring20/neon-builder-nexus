@@ -113,3 +113,22 @@ For flyers, slides and banners (1200px, high error correction):
 
 The result screen uses `src/assets/qr/discovery-call.svg`, tagged
 `utm_campaign=diagnostic-qr` so those bookings stand out in Calendly.
+
+## Keeping Supabase awake (free plan)
+
+Free Supabase projects pause after about a week without activity. Three
+things now keep `oxewatijudnaxyuddpop` busy and tell DCH if anything breaks:
+
+1. **Daily job** (`/api/cron/send-scheduled-emails`, 09:00 UTC, in
+   `vercel.json`): reads the email queue every day. Set `CRON_SECRET` in Vercel
+   (any long random string) so only Vercel's scheduler can run it.
+2. **Weekly summary**, Mondays: the week's leads and diagnostics, emailed to
+   digitalcreativeshubltd@gmail.com. If it stops arriving, something is wrong.
+3. **Health check** (`/api/health`): one tiny database read; answers
+   `{"ok":true,"db":"up"}` or 503. Add it to a free uptime monitor
+   (UptimeRobot: HTTP(s) monitor, every 5 to 60 minutes, alerts to Gmail).
+   That alone keeps the project awake and warns DCH within minutes of an outage.
+
+Vercel's `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` must point at
+`oxewatijudnaxyuddpop`. (The old Lovable project `eaysunmlapqgnnrvctme` still
+appears in `.env`, which nothing on the live site reads.)

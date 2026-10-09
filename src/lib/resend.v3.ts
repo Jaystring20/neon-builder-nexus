@@ -12,8 +12,8 @@
  * 6. Works equally for all 5 segments: MSME Value, MSME Volume, Startup, Professional Service, Development Org
  */
 
-import type { SegmentResult } from "../data/segmentLogic";
-import type { Program } from "../data/programDefinitions";
+import type { SegmentResult } from "../data/segmentLogic.js";
+import type { Program } from "../data/programDefinitions.js";
 
 // ============================================================
 // TYPES

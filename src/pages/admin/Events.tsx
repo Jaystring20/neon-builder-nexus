@@ -30,11 +30,14 @@ const toWatInput = (iso: string | null) => (iso ? new Date(new Date(iso).getTime
 const fromWatInput = (v: string) => (v ? new Date(`${v}:00+01:00`).toISOString() : "");
 
 const PAYMENT_KEY = "dch-admin-payment-instructions";
+/** DCH's account, prefilled on new paid events. Editable per event. */
+const DCH_ACCOUNT = "Bank: GTBank (Guaranty Trust Bank)\nAccount name: Digital Creatives Hub Ltd\nAccount number: 3003161610";
+/** The instructions used on the last event saved in this browser, else DCH's account. */
 const lastPaymentInstructions = () => {
   try {
-    return localStorage.getItem(PAYMENT_KEY) ?? "";
+    return localStorage.getItem(PAYMENT_KEY) || DCH_ACCOUNT;
   } catch {
-    return "";
+    return DCH_ACCOUNT;
   }
 };
 

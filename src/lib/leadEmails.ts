@@ -127,3 +127,60 @@ ${rows([
 <p style="margin:24px 0 0;font-size:13px;color:#6b7280">They received the emailed breakdown. If they book, it comes through the discovery-call event in Calendly.</p>`),
   };
 }
+
+export interface DigestLead {
+  created_at: string;
+  name: string;
+  email: string;
+  company: string | null;
+  priority: string;
+  practice: string | null;
+  problem: string;
+}
+export interface DigestDiscovery {
+  created_at: string;
+  email: string;
+  program: string;
+}
+
+/**
+ * Monday summary to DCH: the week's leads, highest priority first. Also proof,
+ * once a week, that the database and email are both alive.
+ */
+export function weeklyDigestEmail(leads: DigestLead[], discoveries: DigestDiscovery[]): EmailPayload {
+  const order = { high: 0, medium: 1, low: 2 } as Record<string, number>;
+  const sorted = [...leads].sort((a, b) => (order[a.priority] ?? 3) - (order[b.priority] ?? 3));
+  const high = leads.filter((l) => l.priority === "high").length;
+  const day = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+
+  const leadRows = sorted.length
+    ? sorted
+        .map(
+          (l) => `<tr>
+<td style="padding:10px 12px 10px 0;vertical-align:top;font-size:12px;font-weight:700;color:${l.priority === "high" ? "#b45309" : "#6b7280"}">${esc(l.priority.toUpperCase())}</td>
+<td style="padding:10px 0;vertical-align:top;font-size:14px"><strong>${esc(l.name)}</strong>${l.company ? `, ${esc(l.company)}` : ""} · <a href="mailto:${esc(l.email)}" style="color:#0f766e">${esc(l.email)}</a><br>
+<span style="color:#4b5563">${esc(l.problem.length > 160 ? `${l.problem.slice(0, 157)}...` : l.problem)}</span><br>
+<span style="font-size:12px;color:#6b7280">${esc(day(l.created_at))}${l.practice ? ` · ${esc(l.practice)}` : ""}</span></td></tr>`,
+        )
+        .join("")
+    : `<tr><td style="padding:10px 0;color:#6b7280">No Book a call requests this week.</td></tr>`;
+
+  const discoveryRows = discoveries.length
+    ? discoveries
+        .map((d) => `<li style="margin:0 0 6px">${esc(d.email)}: ${esc(d.program)} <span style="color:#6b7280">(${esc(day(d.created_at))})</span></li>`)
+        .join("")
+    : `<li style="color:#6b7280">None this week.</li>`;
+
+  return {
+    to: alertInbox(),
+    subject: `Weekly leads: ${leads.length} call request${leads.length === 1 ? "" : "s"}${high ? ` (${high} high)` : ""}, ${discoveries.length} diagnostic${discoveries.length === 1 ? "" : "s"}`,
+    html: shell(`
+<p style="margin:0;font-size:13px;color:#0f766e;font-weight:600">Weekly summary · last 7 days</p>
+<h1 style="margin:8px 0 20px;font-size:22px">${leads.length} call request${leads.length === 1 ? "" : "s"}, ${discoveries.length} diagnostic${discoveries.length === 1 ? "" : "s"}</h1>
+<h2 style="margin:0 0 8px;font-size:15px">Book a call</h2>
+<table style="width:100%;border-collapse:collapse">${leadRows}</table>
+<h2 style="margin:24px 0 8px;font-size:15px">Growth diagnostic</h2>
+<ul style="margin:0;padding-left:18px;font-size:14px">${discoveryRows}</ul>
+<p style="margin:24px 0 0;font-size:12px;color:#6b7280">This email also confirms the website, database and email are all running.</p>`),
+  };
+}

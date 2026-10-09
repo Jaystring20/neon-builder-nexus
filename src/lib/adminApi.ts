@@ -4,6 +4,7 @@
  */
 
 import type { Role, LeadStatus } from "@/data/adminRoles";
+import type { ContentKey } from "@/data/siteContent";
 
 export class AdminApiError extends Error {
   constructor(public status: number, message: string) {
@@ -109,6 +110,39 @@ export interface Overview {
   activity: Activity[];
 }
 
+export interface ContentState<T> {
+  value: T | null;
+  updatedAt: string | null;
+  updatedBy: Person;
+  versions: { id: string; savedAt: string; savedBy: Person; reset: boolean }[];
+}
+
+/**
+ * Shrink an image in the browser (longest side 1600px, WebP) and upload it
+ * through a one-time link. Returns the public address to store.
+ */
+async function uploadImage(folder: "portfolio" | "leaders", file: File): Promise<string> {
+  if (!file.type.startsWith("image/")) throw new AdminApiError(400, "Choose an image file.");
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/webp", 0.85));
+  if (!blob) throw new AdminApiError(400, "That image couldn't be read.");
+
+  const { uploadUrl, publicUrl } = await call<{ uploadUrl: string; publicUrl: string }>("upload-url", {
+    body: { folder, contentType: blob.type },
+  });
+  const form = new FormData();
+  form.append("cacheControl", "31536000");
+  form.append("", blob);
+  const res = await fetch(uploadUrl, { method: "PUT", body: form });
+  if (!res.ok) throw new AdminApiError(res.status, "The upload didn't go through. Please try again.");
+  return publicUrl;
+}
+
 export const adminApi = {
   login: (email: string) => call<{ ok: true }>("login", { body: { email } }),
   verify: (token: string) => call<{ ok: true }>("verify", { body: { token } }),
@@ -130,4 +164,9 @@ export const adminApi = {
   team: () => call<{ team: TeamMember[] }>("team"),
   saveMember: (m: { id?: string; email?: string; name: string; role: Role; active?: boolean }) =>
     call<{ ok?: true; id?: string }>("team-save", { body: m }),
+  content: <T,>(key: ContentKey) => call<ContentState<T>>("content", { query: { key } }),
+  saveContent: (key: ContentKey, value: unknown) => call<{ ok: true }>("content-save", { body: { key, value } }),
+  resetContent: (key: ContentKey) => call<{ ok: true }>("content-reset", { body: { key } }),
+  restoreContent: (id: string) => call<{ ok: true }>("content-restore", { body: { id } }),
+  uploadImage,
 };

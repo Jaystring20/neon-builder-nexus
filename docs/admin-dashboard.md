@@ -51,3 +51,43 @@ the only protection. Removing someone's access takes effect immediately.
 - `src/data/adminRoles.ts`: roles and permissions, shared by page and server.
 - `src/pages/admin/*`: the screens, loaded separately from the public site
   and hidden from search engines.
+
+# Phase 2: website content
+
+Under **Website** in the dashboard (Owners and Editors):
+
+- **Programmes**: the five programmes the Growth Diagnostic recommends, and
+  the three options on each (name, length, who it's for, what's included,
+  price). Changes show on the diagnostic result and in its emails. Only an
+  Owner can change prices or switch **Show price ranges** on.
+- **Portfolio**: the projects on Our Work and the home page. Edit text and
+  links, upload a new screenshot, choose the crop, reorder, hide, or add a new
+  project. A project with a story (problem, what we built, what exists now)
+  and a screenshot is featured; the rest show in the grid.
+- **Leadership**: the people under "At the helm" on About: name, role, bio,
+  quote, link and photo. Add, reorder or hide people.
+
+Nothing changes until **Save and publish**; the site then updates within
+about a minute. **History** keeps every save, and **Restore** brings any of
+them back. **Go back to the original content** returns a page to what ships
+with the site.
+
+## Turning it on (once)
+
+Run `supabase/migrations/20261011090000_site_content.sql` in the Supabase SQL
+Editor. It adds the content tables and a `site-media` storage bucket for
+uploaded images. Nothing to change in Vercel.
+
+## How it works
+
+- `site_content` holds one edited version per area; with no row the site shows
+  the content in the code (`programDefinitions.ts`, `portfolio.ts`,
+  `leaders.ts`), so a failed request or an empty table never breaks a page.
+- `GET /api/content` serves the edits to every page, cached for a minute.
+- Saving goes through `api/admin.ts`, which checks the role, validates the
+  content (`src/data/siteContentSchemas.ts`) and keeps prices as they were when
+  an Editor saves.
+- Images are resized to WebP in the browser and uploaded straight to Supabase
+  Storage through a one-time link.
+- Projects or people added to the code later still appear after older edits,
+  at the end of the list.

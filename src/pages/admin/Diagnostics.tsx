@@ -8,15 +8,7 @@ import { TIER_LABEL, matchOffer } from "@/data/offerMatch";
 import { PRACTICE_TITLES } from "@/data/leadIntake";
 import { adminApi } from "@/lib/adminApi";
 import { useMe } from "./AdminApp";
-import { ActivityList, ErrorNote, Loading, NotesPanel, PageHeader, Panel, StatusBadge, ago, fmtDate } from "./ui";
-
-const SEGMENT_LABEL: Record<string, string> = {
-  msme_value: "Business, premium",
-  msme_volume: "Business, volume",
-  startup: "Startup",
-  professional_service: "Professional service",
-  development_org: "Development organisation",
-};
+import { ActivityList, ErrorNote, Loading, NotesPanel, PageHeader, Panel, SEGMENT_LABEL, StatusBadge, ago, fmtDate } from "./ui";
 
 export function DiagnosticsList() {
   const list = useQuery({ queryKey: ["admin", "diagnostics"], queryFn: adminApi.diagnostics });

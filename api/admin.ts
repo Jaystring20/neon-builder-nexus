@@ -29,6 +29,8 @@ import {
   siteOrigin,
 } from "../src/lib/adminAuth.server.js";
 import { LEAD_STATUSES, ROLES, can, type Permission, type Role } from "../src/data/adminRoles.js";
+import { CONTENT_KEYS, TIER_KEYS, defaultProgrammes, type ContentKey, type ProgrammesContent } from "../src/data/siteContent.js";
+import { CONTENT_SCHEMAS } from "../src/data/siteContentSchemas.js";
 
 interface AdminUser {
   id: string;
@@ -372,6 +374,117 @@ async function teamSave(ctx: Ctx) {
   return { ok: true };
 }
 
+// ---------------------------------------------------------------- website content
+
+const contentKey = (v: unknown): ContentKey => {
+  if (!(CONTENT_KEYS as readonly unknown[]).includes(v)) throw new HttpError(400, "Unknown content.");
+  return v as ContentKey;
+};
+
+/** Prices and the show-prices switch are the Owner's; other changes to those keys are anyone's with content.edit. */
+const needsPrices = (key: ContentKey) => key === "settings";
+
+async function contentGet(ctx: Ctx) {
+  allow(await currentUser(ctx), "content.edit");
+  const key = contentKey(ctx.req.query.key);
+  const [row, versions] = await Promise.all([
+    ctx.db.from("site_content").select("value,updated_at,editor:admin_users(name,email)").eq("key", key).maybeSingle(),
+    ctx.db
+      .from("site_content_versions")
+      .select("id,value,saved_at,saver:admin_users(name,email)")
+      .eq("key", key)
+      .order("saved_at", { ascending: false })
+      .limit(15),
+  ]);
+  const r = must(row) as { value: unknown; updated_at: string; editor: unknown } | null;
+  return {
+    value: r?.value ?? null,
+    updatedAt: r?.updated_at ?? null,
+    updatedBy: r?.editor ?? null,
+    // Values stay on the server; the list only needs to say who and when.
+    versions: (must(versions) as { id: string; value: unknown; saved_at: string; saver: unknown }[]).map((v) => ({
+      id: v.id,
+      savedAt: v.saved_at,
+      savedBy: v.saver,
+      reset: v.value === null,
+    })),
+  };
+}
+
+/** Write one key, or clear it (value null = back to the original content). */
+async function writeContent(db: SupabaseClient, user: AdminUser, key: ContentKey, value: unknown | null, action: string) {
+  if (needsPrices(key) && !can(user.role, "prices.edit")) throw new HttpError(403, "Only an Owner can change this.");
+
+  let clean: unknown = null;
+  if (value !== null) {
+    const parsed = CONTENT_SCHEMAS[key].safeParse(value);
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0];
+      throw new HttpError(400, issue ? `${issue.path.join(" › ") || "Content"}: ${issue.message}` : "That content isn't valid.");
+    }
+    clean = parsed.data;
+  }
+
+  if (key === "programmes" && !can(user.role, "prices.edit")) {
+    // Keep the prices as they are: Editors change the words, Owners the numbers.
+    const current = ((must(await db.from("site_content").select("value").eq("key", "programmes").maybeSingle()) as { value: ProgrammesContent } | null)
+      ?.value ?? defaultProgrammes()) as ProgrammesContent;
+    const next = (clean ?? defaultProgrammes()) as ProgrammesContent;
+    for (const [segment, programme] of Object.entries(next)) {
+      const before = current[segment] ?? defaultProgrammes()[segment];
+      if (!programme || !before) continue;
+      for (const tier of TIER_KEYS) programme[tier].price = { ...before[tier].price };
+    }
+    clean = next;
+  }
+
+  if (clean === null) must(await db.from("site_content").delete().eq("key", key));
+  else must(await db.from("site_content").upsert({ key, value: clean, updated_by: user.id, updated_at: new Date().toISOString() }));
+  must(await db.from("site_content_versions").insert([{ key, value: clean, saved_by: user.id }]));
+  await log(db, user, action, null, null, { key });
+}
+
+async function contentSave(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "content.edit");
+  await writeContent(ctx.db, user, contentKey(ctx.body.key), ctx.body.value ?? null, "content.save");
+  return { ok: true };
+}
+
+async function contentReset(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "content.edit");
+  const key = contentKey(ctx.body.key);
+  if (key === "programmes" && !can(user.role, "prices.edit")) throw new HttpError(403, "Only an Owner can reset programmes, because it resets prices too.");
+  await writeContent(ctx.db, user, key, null, "content.reset");
+  return { ok: true };
+}
+
+async function contentRestore(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "content.edit");
+  const id = str(ctx.body.id, 40);
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown version.");
+  const v = must(await ctx.db.from("site_content_versions").select("key,value").eq("id", id).maybeSingle()) as { key: string; value: unknown } | null;
+  if (!v) throw new HttpError(404, "Unknown version.");
+  const key = contentKey(v.key);
+  if (v.value === null && key === "programmes" && !can(user.role, "prices.edit")) throw new HttpError(403, "Only an Owner can restore this version.");
+  await writeContent(ctx.db, user, key, v.value, "content.restore");
+  return { ok: true };
+}
+
+const UPLOAD_TYPES: Record<string, string> = { "image/webp": "webp", "image/jpeg": "jpg", "image/png": "png" };
+
+/** A one-time link the browser uploads an image to, straight into Storage. */
+async function uploadUrl(ctx: Ctx) {
+  allow(await currentUser(ctx), "content.edit");
+  const folder = ctx.body.folder === "leaders" ? "leaders" : ctx.body.folder === "portfolio" ? "portfolio" : null;
+  const ext = UPLOAD_TYPES[str(ctx.body.contentType, 40)];
+  if (!folder || !ext) throw new HttpError(400, "Upload a WebP, JPEG or PNG image.");
+  const path = `${folder}/${Date.now()}-${newLoginToken().slice(0, 10)}.${ext}`;
+  const bucket = ctx.db.storage.from("site-media");
+  const { data, error } = await bucket.createSignedUploadUrl(path);
+  if (error || !data) throw new Error(error?.message ?? "No upload link");
+  return { uploadUrl: data.signedUrl, publicUrl: bucket.getPublicUrl(path).data.publicUrl };
+}
+
 // ---------------------------------------------------------------- router
 
 const OPS: Record<string, { method: "GET" | "POST"; run: (ctx: Ctx) => unknown }> = {
@@ -396,6 +509,11 @@ const OPS: Record<string, { method: "GET" | "POST"; run: (ctx: Ctx) => unknown }
   "diagnostic-to-lead": { method: "POST", run: diagnosticToLead },
   team: { method: "GET", run: teamList },
   "team-save": { method: "POST", run: teamSave },
+  content: { method: "GET", run: contentGet },
+  "content-save": { method: "POST", run: contentSave },
+  "content-reset": { method: "POST", run: contentReset },
+  "content-restore": { method: "POST", run: contentRestore },
+  "upload-url": { method: "POST", run: uploadUrl },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

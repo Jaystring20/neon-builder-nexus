@@ -10,7 +10,7 @@ import { createContext, useContext, useEffect, useRef, useState, type FormEvent 
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BarChart3, ClipboardList, Inbox, Loader2, LogOut, Users } from "lucide-react";
+import { BarChart3, BookOpen, Briefcase, ClipboardList, Inbox, Loader2, LogOut, UserRound, Users } from "lucide-react";
 import dchLogo from "@/assets/dch-logo-primary.png";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -20,15 +20,21 @@ import Overview from "./Overview";
 import { LeadDetail, LeadsList } from "./Leads";
 import { DiagnosticDetail, DiagnosticsList } from "./Diagnostics";
 import Team from "./Team";
+import Programmes from "./Programmes";
+import Portfolio from "./Portfolio";
+import Leadership from "./Leadership";
 
 const MeContext = createContext<Me | null>(null);
 export const useMe = () => useContext(MeContext)!;
 
-const NAV: { to: string; label: string; icon: typeof Inbox; perm: Permission; end?: boolean }[] = [
+const NAV: { to: string; label: string; icon: typeof Inbox; perm: Permission; end?: boolean; group?: string }[] = [
   { to: "/admin", label: "Overview", icon: BarChart3, perm: "overview", end: true },
   { to: "/admin/leads", label: "Leads", icon: Inbox, perm: "leads.read" },
   { to: "/admin/diagnostics", label: "Diagnostics", icon: ClipboardList, perm: "leads.read" },
-  { to: "/admin/team", label: "Team", icon: Users, perm: "team.manage" },
+  { to: "/admin/programmes", label: "Programmes", icon: BookOpen, perm: "content.edit", group: "Website" },
+  { to: "/admin/portfolio", label: "Portfolio", icon: Briefcase, perm: "content.edit", group: "Website" },
+  { to: "/admin/leadership", label: "Leadership", icon: UserRound, perm: "content.edit", group: "Website" },
+  { to: "/admin/team", label: "Team", icon: Users, perm: "team.manage", group: "Settings" },
 ];
 
 const Logo = () => (
@@ -58,21 +64,26 @@ function Shell() {
           <span className="text-xs uppercase tracking-wide text-muted-foreground md:hidden">{ROLE_LABEL[me.role]}</span>
         </div>
         <nav className="flex gap-1 overflow-x-auto px-2 pb-2 md:flex-1 md:flex-col md:px-3 md:pb-0">
-          {nav.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                cn(
-                  "flex shrink-0 items-center gap-3 px-3 py-2 text-sm transition-colors",
-                  isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground",
-                )
-              }
-            >
-              <Icon className="h-4 w-4" />
-              {label}
-            </NavLink>
+          {nav.map(({ to, label, icon: Icon, end, group }, i) => (
+            // A heading above each group, on the desktop sidebar only.
+            <div key={to} className="contents">
+              {group && group !== nav[i - 1]?.group && (
+                <p className="hidden px-3 pb-1 pt-5 text-xs uppercase tracking-wide text-muted-foreground/70 md:block">{group}</p>
+              )}
+              <NavLink
+                to={to}
+                end={end}
+                className={({ isActive }) =>
+                  cn(
+                    "flex shrink-0 items-center gap-3 px-3 py-2 text-sm transition-colors",
+                    isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground",
+                  )
+                }
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </NavLink>
+            </div>
           ))}
         </nav>
         <div className="hidden border-t border-border/40 p-4 md:block">
@@ -96,6 +107,13 @@ function Shell() {
                 <Route path="leads/:id" element={<LeadDetail />} />
                 <Route path="diagnostics" element={<DiagnosticsList />} />
                 <Route path="diagnostics/:id" element={<DiagnosticDetail />} />
+              </>
+            )}
+            {can(me.role, "content.edit") && (
+              <>
+                <Route path="programmes" element={<Programmes />} />
+                <Route path="portfolio" element={<Portfolio />} />
+                <Route path="leadership" element={<Leadership />} />
               </>
             )}
             {can(me.role, "team.manage") && <Route path="team" element={<Team />} />}

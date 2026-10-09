@@ -6,6 +6,14 @@ import { cn } from "@/lib/utils";
 import { STATUS_LABEL, type LeadStatus } from "@/data/adminRoles";
 import { adminApi, type Activity, type Note } from "@/lib/adminApi";
 
+export const SEGMENT_LABEL: Record<string, string> = {
+  msme_value: "Business, premium",
+  msme_volume: "Business, volume",
+  startup: "Startup",
+  professional_service: "Professional service",
+  development_org: "Development organisation",
+};
+
 export const fmtDate = (iso: string | null | undefined, withTime = false) =>
   iso
     ? new Date(iso).toLocaleString("en-GB", {
@@ -88,6 +96,13 @@ export const ErrorNote = ({ error }: { error: unknown }) => (
 
 const who = (p: { name: string; email: string } | null) => (p ? p.name || p.email : "Someone");
 
+const CONTENT_LABEL: Record<string, string> = {
+  programmes: "the programmes",
+  settings: "price display",
+  portfolio: "the portfolio",
+  leaders: "the leadership bios",
+};
+
 const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "lead.status": (d) => `moved it to ${STATUS_LABEL[d.to as LeadStatus] ?? d.to}`,
   "lead.call_at": (d) => (d.to ? `set the call for ${fmtDate(d.to as string, true)}` : "cleared the call date"),
@@ -97,6 +112,9 @@ const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "lead.created_from_diagnostic": () => "created this lead from a diagnostic",
   "team.add": (d) => `added ${d.email} to the team`,
   "team.update": (d) => `updated ${d.email}${d.active === false ? " (access removed)" : ""}`,
+  "content.save": (d) => `updated ${CONTENT_LABEL[d.key as string] ?? d.key} on the website`,
+  "content.restore": (d) => `restored an earlier version of ${CONTENT_LABEL[d.key as string] ?? d.key}`,
+  "content.reset": (d) => `put ${CONTENT_LABEL[d.key as string] ?? d.key} back to the original`,
 };
 
 export const describeActivity = (a: Activity) => `${who(a.actor)} ${(ACTION_TEXT[a.action] ?? (() => a.action))(a.detail ?? {})}`;

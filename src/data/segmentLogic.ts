@@ -64,9 +64,9 @@ const SEGMENTS = {
     playbookSection: 3,
     playbookTitle: "The MSME Playbook",
     description:
-      "You're building a premium business. Few customers, high margin, obsessive quality. Your advantage is unique access or a defensible recipe. You don't need venture scale — you need to own your market.",
+      "You're building a premium business. Few customers, high margin, obsessive quality. Your advantage is unique access or a defensible recipe. You don't need venture scale. You need to own your market.",
     problemStatement:
-      "Most Value MSME founders compete on price because they haven't articulated their true advantage. You have one — we help you weaponize it.",
+      "Most Value MSME founders compete on price because they haven't articulated their true advantage. You have one, and we help you use it.",
     programFit:
       "This program teaches you to: (1) Identify & amplify your defensible advantage, (2) Build a brand that commands premium pricing, (3) Scale to 10x demand without diluting quality.",
     callToAction: "Book a call to discuss your unfair advantage.",
@@ -90,7 +90,7 @@ const SEGMENTS = {
     description:
       "You're building for venture scale. Problem-focused, network-effect driven, fast growth required. You're solving something at scale that incumbents won't touch.",
     problemStatement:
-      "Most startup founders confuse 'product-market fit' with 'ship fast and iterate.' You need both — but the order matters. You also need to solve for team capacity at every stage.",
+      "Most startup founders confuse 'product-market fit' with 'ship fast and iterate.' You need both, but the order matters. You also need to solve for team capacity at every stage.",
     programFit:
       "This program teaches you to: (1) Find product-market fit before scaling spend, (2) Build a team that scales with your growth curve, (3) Recognize when to pivot vs. persevere.",
     callToAction: "Book a call to lock in your first 90 days.",
@@ -102,7 +102,7 @@ const SEGMENTS = {
     description:
       "You're licensing your expertise. Credentialed, relationship-based, revenue is often capped by hours you sell. Your moat is reputation, not product.",
     problemStatement:
-      "Professional services founders plateau because they don't build leverage. You can't scale expertise with more expertise — you need productization, systems, or delegation.",
+      "Professional services founders plateau because they don't build leverage. You can't scale expertise with more expertise. You need productization, systems or delegation.",
     programFit:
       "This program teaches you to: (1) Build a practice (firm model) OR productize your expertise (courses/templates) OR specialize in a profitable niche, (2) Scale beyond your personal hours.",
     callToAction: "Book a call to choose your scaling path.",
@@ -160,7 +160,7 @@ export function calculateSegment(answers: DiscoveryAnswers): SegmentResult {
     // Startups demand leadership and management
     const startupMin = CAPABILITY_MINIMUMS.startup;
     if (q4_leadership < startupMin.leadership) {
-      capabilityGap = `Your model is Startup, but leadership (${q4_leadership}/5) is your critical gap. Startups demand exceptional leadership — you'll need to develop this fast or co-found with someone strong here.`;
+      capabilityGap = `Your model is Startup, but leadership (${q4_leadership}/5) is your critical gap. Startups demand exceptional leadership. You'll need to develop this fast or co-found with someone strong here.`;
     }
     if (q4_management < startupMin.management) {
       capabilityGap = `Your model is Startup, but general management (${q4_management}/5) is weak. Startups scale fast; without coordination skills, everything falls apart.`;
@@ -292,7 +292,7 @@ export const EMAIL_TEMPLATES = {
 
 Your competitive advantage: **${advantage}**
 
-This is NOT accidental. Most founders try to compete on price. You're competing on ${advantage.toLowerCase()}. That's a different game — and it's winnable.
+This is NOT accidental. Most founders try to compete on price. You're competing on ${advantage.toLowerCase()}. That's a different game, and it's winnable.
 
 Here's your playbook section: Section 3 teaches you to own your market through value, not volume.`,
 
@@ -309,7 +309,7 @@ Here's the truth: most startup founders ship fast and iterate. But iteration wit
   professional_service_email2_opener: (vision: string, expertise: number) =>
     `You're building toward: **${vision}**
 
-Your domain expertise (${expertise}/5) is your moat. The challenge isn't getting clients — it's scaling without burning yourself out or hiring cheaper talent that dilutes your brand.
+Your domain expertise (${expertise}/5) is your moat. The challenge isn't getting clients. It's scaling without burning yourself out or hiring cheaper talent that dilutes your brand.
 
 Your playbook section teaches you three paths: (1) build a firm, (2) productize your expertise, or (3) specialize in a premium niche.`,
 

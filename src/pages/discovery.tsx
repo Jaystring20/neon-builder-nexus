@@ -1,39 +1,37 @@
-/**
- * Discovery Page
- *
- * Main page for the founder discovery questionnaire.
- * Mounts the DiscoveryForm component and handles routing.
- *
- * Typography: Geist sans-serif (imported in layout.tsx / root layout)
- * Dark Mode: Supports prefers-color-scheme and manual toggle
- * Accessibility: Full WCAG AA compliance, reduced-motion honored
- */
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import SEO from "@/components/SEO";
+import DiscoveryFlow from "@/components/discovery/DiscoveryFlow";
+import dchLogo from "@/assets/dch-logo-primary.png";
 
-/**
- * Discovery Page
- *
- * Main page for the founder discovery questionnaire (v3 - multi-segment).
- * Mounts the DiscoveryFormV3 component and handles routing.
- *
- * v3 Features:
- * - Segment-agnostic questions (works for all 5 segments equally)
- * - Real-time insights after each answer
- * - Verification follow-ups to catch contradictions
- * - "I'm not sure" discovery pathways
- * - No AI slop in copy
- *
- * Typography: Geist sans-serif (imported in layout.tsx / root layout)
- * Dark Mode: Supports prefers-color-scheme and manual toggle
- * Accessibility: Full WCAG AA compliance, reduced-motion honored
- */
-
-import React from "react";
-import { DiscoveryFormV3 } from "../components/DiscoveryForm.v3";
-
+// A focused page: the logo and a way out, nothing else competing with the
+// questions. The flow itself is src/components/discovery/DiscoveryFlow.tsx.
 export default function DiscoveryPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 transition-colors">
-      <DiscoveryFormV3 />
+    <div className="relative min-h-screen bg-background">
+      <SEO
+        title="Discovery"
+        description="Twelve questions, about four minutes: see what kind of business you're building, what's holding it back, and where to start."
+        path="/discovery"
+      />
+      <div className="blueprint-grid" />
+      <header className="container-narrow relative z-10 flex items-center justify-between py-6">
+        <Link to="/" aria-label="Digital Creatives Hub home">
+          <img
+            src={dchLogo}
+            alt="Digital Creatives Hub"
+            className="h-10 w-auto"
+            style={{ filter: "hue-rotate(-2deg) saturate(0.58)" }}
+          />
+        </Link>
+        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="h-4 w-4" />
+          Back to site
+        </Link>
+      </header>
+      <main className="container-narrow relative z-10 pb-24 pt-10 md:pt-16">
+        <DiscoveryFlow />
+      </main>
     </div>
   );
 }

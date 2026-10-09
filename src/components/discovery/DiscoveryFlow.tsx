@@ -8,6 +8,7 @@ import { questions, labelFor, type DiscoveryQuestion } from "@/data/discoveryQue
 import { calculateSegment, SEGMENT_PROFILES, type DiscoveryAnswers, type SegmentResult } from "@/data/segmentLogic";
 import { serviceCategories } from "@/data/services";
 import { calendlyUrl } from "@/lib/booking";
+import { matchOffer, offerLine, priceRange, SHOW_PRICES, TIER_LABEL } from "@/data/offerMatch";
 import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
 
 /**
@@ -24,23 +25,6 @@ type Stage = "intro" | "questions" | "result";
 
 const STORAGE_KEY = "dch-discovery";
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-/** DCH practices that answer each model, plus the one tied to their biggest constraint. */
-const SEGMENT_PRACTICES: Record<string, string[]> = {
-  msme_value: ["brand-architecture", "growth-operations"],
-  msme_volume: ["growth-operations", "ai-automation"],
-  startup: ["digital-infrastructure", "brand-architecture"],
-  professional_service: ["brand-architecture", "ai-automation"],
-  development_org: ["growth-operations", "training"],
-};
-const CHALLENGE_PRACTICE: Record<string, string> = {
-  customers: "growth-operations",
-  corporate_access: "growth-operations",
-  team: "training",
-  motivation: "training",
-  model: "brand-architecture",
-  scaling: "ai-automation",
-};
 
 const loadSaved = (): { answers: Answers; index: number; stage: Stage } | null => {
   try {
@@ -425,15 +409,10 @@ const Result = ({
   const segment: SegmentResult = useMemo(() => calculateSegment(answers as unknown as DiscoveryAnswers), [answers]);
   const profile = SEGMENT_PROFILES[segment.segment as keyof typeof SEGMENT_PROFILES];
 
-  const practices = useMemo(() => {
-    const slugs = [...(SEGMENT_PRACTICES[segment.segment] ?? [])];
-    const fromChallenge = CHALLENGE_PRACTICE[answers.q9_challenge as string];
-    if (fromChallenge && !slugs.includes(fromChallenge)) slugs.unshift(fromChallenge);
-    return slugs
-      .slice(0, 3)
-      .map((s) => serviceCategories.find((c) => c.slug === s))
-      .filter((c): c is (typeof serviceCategories)[number] => Boolean(c));
-  }, [segment.segment, answers.q9_challenge]);
+  const offer = useMemo(() => matchOffer(segment.segment, answers), [segment.segment, answers]);
+  const practices = offer.practices
+    .map((s) => serviceCategories.find((c) => c.slug === s))
+    .filter((c): c is (typeof serviceCategories)[number] => Boolean(c));
 
   type RecapRow = { label: string; value: string | null; quoted?: boolean };
   const rows: RecapRow[] = [
@@ -449,11 +428,12 @@ const Result = ({
     () =>
       calendlyUrl("discovery", {
         notes: [
-          `Discovery result: ${profile?.archetype ?? ""} (${segment.program})`,
+          `Discovery result: ${profile?.archetype ?? ""}`,
+          offerLine(offer),
           ...recap.map((r) => `${r.label}: ${r.value}`),
         ].join("\n"),
       }),
-    [profile, segment.program, recap],
+    [profile, offer, recap],
   );
 
   const fade = (i: number) => ({
@@ -500,37 +480,67 @@ const Result = ({
         </motion.dl>
       )}
 
-      {practices.length > 0 && (
-        <motion.section {...fade(6)} aria-labelledby="fit-heading" className="mt-14">
-          <h2 id="fit-heading" className="font-heading text-2xl font-medium tracking-tight text-foreground">
-            Where we&rsquo;d start
+      {offer.program && (
+        <motion.section {...fade(6)} aria-labelledby="path-heading" className="mt-14">
+          <p className="text-sm font-medium text-primary">Your path</p>
+          <h2 id="path-heading" className="font-display-refined mt-3 text-3xl leading-[1.05] text-foreground sm:text-4xl">
+            {offer.program.name}
           </h2>
-          <ul className="mt-6 grid gap-4 sm:grid-cols-3">
-            {practices.map((p) => (
-              <li key={p.slug}>
-                <Link
-                  to={`/services/${p.slug}`}
-                  className="group block h-full border border-border/60 bg-card/40 p-5 transition-colors hover:border-primary/50"
+          <p className="mt-3 max-w-2xl text-lg text-muted-foreground">{offer.program.tagline}</p>
+
+          <ul className="mt-8 grid gap-4 md:grid-cols-3">
+            {(["paidProgram", "doneWithYou", "doneForYou"] as const).map((key) => {
+              const tier = offer.program![key];
+              const best = key === offer.bestTier;
+              return (
+                <li
+                  key={key}
+                  className={cn(
+                    "relative flex flex-col border p-5",
+                    best ? "border-secondary bg-secondary/[0.06]" : "border-border/60 bg-card/40",
+                  )}
                 >
-                  <span className="text-sm text-primary">{p.pillar}</span>
-                  <span className="mt-2 flex items-start justify-between gap-2 font-heading text-lg font-medium text-foreground">
-                    {p.title}
-                    <ArrowRight className="mt-1 h-4 w-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                  <span className={cn("text-sm font-medium", best ? "text-secondary" : "text-primary")}>
+                    {TIER_LABEL[key]}
+                    {best && " · Best fit"}
                   </span>
-                  <span className="mt-2 block text-sm text-muted-foreground">{p.tagline}</span>
-                </Link>
-              </li>
-            ))}
+                  <span className="mt-2 font-heading text-lg font-medium leading-snug text-foreground">
+                    {tier.name.replace(/^Done (with|for) You:\s*/i, "")}
+                  </span>
+                  <span className="mt-2 text-sm text-muted-foreground">{tier.duration}</span>
+                  {SHOW_PRICES && (
+                    <span className="mt-1 text-sm text-foreground">{priceRange(offer.program!, key)}</span>
+                  )}
+                  <span className="mt-3 text-sm leading-relaxed text-foreground/80">{tier.ideal_for}</span>
+                </li>
+              );
+            })}
           </ul>
+          <p className="mt-5 max-w-2xl border-l-2 border-secondary pl-4 text-base text-foreground/90">{offer.reason}</p>
+
+          {practices.length > 0 && (
+            <p className="mt-6 text-sm text-muted-foreground">
+              Delivered through{" "}
+              {practices.map((p, i) => (
+                <span key={p.slug}>
+                  {i > 0 && (i === practices.length - 1 ? " and " : ", ")}
+                  <Link to={`/services/${p.slug}`} className="font-medium text-primary hover:text-foreground">
+                    {p.title}
+                  </Link>
+                </span>
+              ))}
+              .
+            </p>
+          )}
         </motion.section>
       )}
 
       <motion.section {...fade(7)} className="mt-14 border-t border-border/40 pt-10">
         <h2 className="font-display-refined text-3xl leading-[1.05] text-foreground sm:text-4xl">
-          Talk it through with us.
+          Start with a discovery call.
         </h2>
         <p className="mt-3 max-w-xl text-lg text-muted-foreground">
-          A short call to test this against your real numbers and agree the first move.
+          One-on-one. We test this against your real numbers and confirm the right path before anything is sold.
         </p>
         <div className="mt-8">
           {showCalendar ? (

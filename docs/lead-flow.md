@@ -61,9 +61,28 @@ help prepare for our meeting" works).
 
 | Variable | What it does |
 |---|---|
-| `LEAD_ALERT_EMAIL` | Inbox for lead alerts. Falls back to `RESEND_REPLY_TO`, then hello@digitalcreativeshub.com |
+| `LEAD_ALERT_EMAIL` | Optional. Overrides the alert inbox, which is digitalcreativeshubltd@gmail.com |
 | `RESEND_API_KEY`, `RESEND_FROM_EMAIL` | Already used by the discovery emails |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Already used by the discovery |
 
 The `leads` table is created by `supabase/migrations/20261009090000_leads.sql`.
 Until it exists, leads still reach DCH by the alert email; nothing is lost.
+
+## How a discovery result becomes an offer
+
+`src/data/offerMatch.ts`, on top of the model from `segmentLogic.ts`:
+
+1. **Programme:** one per model, from `programDefinitions.ts` (for example a
+   Craftsperson gets MSME Mastery: Premium Positioning).
+2. **Best fit, out of three ways to work:**
+   - Starting, building or unsure → **Programme** (structured, least spend)
+   - Building fast (60+ hours or wants a team) → **Done with you**
+   - Scaling or hiring → **Done with you**, or **Done for you** if they want
+     balance (growth without more of their hours)
+3. **Practices** that deliver it: two from the model, plus one from their
+   biggest constraint, linked to the service pages.
+
+The result screen shows all three tiers with the best fit marked and a one-line
+reason. The same line goes into the Calendly notes and DCH's alert email.
+Prices exist in `programDefinitions.ts` but are hidden until DCH confirms them
+(`SHOW_PRICES` in `offerMatch.ts`).

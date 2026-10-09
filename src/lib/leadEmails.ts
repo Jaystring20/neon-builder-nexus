@@ -14,9 +14,8 @@ import { calendlyUrl } from "./booking.js";
 
 const SITE = "https://www.digitalcreativeshubltd.com";
 
-/** Where lead alerts go. Set LEAD_ALERT_EMAIL in Vercel; the reply-to inbox is the fallback. */
-export const alertInbox = () =>
-  process.env.LEAD_ALERT_EMAIL || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com";
+/** Where lead alerts go: DCH's Gmail, the same inbox Calendly notifies. LEAD_ALERT_EMAIL overrides it. */
+export const alertInbox = () => process.env.LEAD_ALERT_EMAIL || "digitalcreativeshubltd@gmail.com";
 
 const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -107,6 +106,7 @@ export function discoveryAlertEmail(
   email: string,
   result: { segment: string; program: string; capabilityGap: string | null },
   answers: Record<string, unknown>,
+  offer?: string,
 ): EmailPayload {
   const text = (k: string) => (typeof answers[k] === "string" ? (answers[k] as string) : undefined);
   return {
@@ -118,6 +118,7 @@ export function discoveryAlertEmail(
 <h1 style="margin:8px 0 20px;font-size:22px">${esc(email)}</h1>
 ${rows([
   ["Result", `${result.program} (${result.segment})`],
+  ["Recommended", offer || undefined],
   ["Building", text("q2_vision")],
   ["Edge", text("q8_advantage")],
   ["90-day win", text("q10_priority")],

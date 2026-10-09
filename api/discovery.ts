@@ -25,6 +25,7 @@ import {
   type EmailContext,
 } from "../src/lib/resend.v3.js";
 import { discoveryAlertEmail } from "../src/lib/leadEmails.js";
+import { matchOffer, offerLine } from "../src/data/offerMatch.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -123,6 +124,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           trimmedEmail,
           { segment: segment.segment, program: segment.program, capabilityGap: segment.capabilityGap },
           answers as unknown as Record<string, unknown>,
+          offerLine(matchOffer(segment.segment, answers as unknown as Record<string, unknown>)),
         ),
       );
       if (!alert.ok) console.error("Discovery alert not sent:", alert.error);

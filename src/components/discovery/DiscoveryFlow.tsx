@@ -8,7 +8,8 @@ import { questions, labelFor, type DiscoveryQuestion } from "@/data/discoveryQue
 import { calculateSegment, SEGMENT_PROFILES, type DiscoveryAnswers, type SegmentResult } from "@/data/segmentLogic";
 import { serviceCategories } from "@/data/services";
 import { calendlyUrl } from "@/lib/booking";
-import { matchOffer, offerLine, priceRange, SHOW_PRICES, TIER_LABEL } from "@/data/offerMatch";
+import { matchOffer, offerLine, priceRange, TIER_LABEL } from "@/data/offerMatch";
+import { useProgramme, useShowPrices } from "@/hooks/useSiteContent";
 import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
 import discoveryCallQr from "@/assets/qr/discovery-call.svg";
 
@@ -410,7 +411,9 @@ const Result = ({
   const segment: SegmentResult = useMemo(() => calculateSegment(answers as unknown as DiscoveryAnswers), [answers]);
   const profile = SEGMENT_PROFILES[segment.segment as keyof typeof SEGMENT_PROFILES];
 
-  const offer = useMemo(() => matchOffer(segment.segment, answers), [segment.segment, answers]);
+  const programme = useProgramme(segment.segment);
+  const showPrices = useShowPrices();
+  const offer = useMemo(() => matchOffer(segment.segment, answers, programme), [segment.segment, answers, programme]);
   const practices = offer.practices
     .map((s) => serviceCategories.find((c) => c.slug === s))
     .filter((c): c is (typeof serviceCategories)[number] => Boolean(c));
@@ -509,7 +512,7 @@ const Result = ({
                     {tier.name.replace(/^Done (with|for) You:\s*/i, "")}
                   </span>
                   <span className="mt-2 text-sm text-muted-foreground">{tier.duration}</span>
-                  {SHOW_PRICES && (
+                  {showPrices && (
                     <span className="mt-1 text-sm text-foreground">{priceRange(offer.program!, key)}</span>
                   )}
                   <span className="mt-3 text-sm leading-relaxed text-foreground/80">{tier.ideal_for}</span>

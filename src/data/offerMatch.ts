@@ -18,9 +18,6 @@ export const TIER_LABEL: Record<TierKey, string> = {
   doneForYou: "Done for you",
 };
 
-/** Show NGN price ranges on the result screen. Off until DCH confirms the numbers. */
-export const SHOW_PRICES = false;
-
 const SEGMENT_PRACTICES: Record<string, string[]> = {
   msme_value: ["brand-architecture", "growth-operations"],
   msme_volume: ["growth-operations", "ai-automation"],
@@ -46,7 +43,12 @@ export interface OfferMatch {
   practices: string[];
 }
 
-export function matchOffer(segment: string, answers: Record<string, unknown>): OfferMatch {
+/** `program` is the programme with any dashboard edits applied; the original is used when it's left out. */
+export function matchOffer(
+  segment: string,
+  answers: Record<string, unknown>,
+  program: Program | null = getProgramBySegment(segment),
+): OfferMatch {
   const stage = answers.q1_brings_you as string;
   const pace = answers.q5_pressure as string;
   const wantsTeam = answers.q4_management_followup as string;
@@ -73,7 +75,7 @@ export function matchOffer(segment: string, answers: Record<string, unknown>): O
   const fromChallenge = CHALLENGE_PRACTICE[answers.q9_challenge as string];
   if (fromChallenge && !practices.includes(fromChallenge)) practices.unshift(fromChallenge);
 
-  return { program: getProgramBySegment(segment), bestTier, reason, practices: practices.slice(0, 3) };
+  return { program, bestTier, reason, practices: practices.slice(0, 3) };
 }
 
 const naira = (n: number) =>

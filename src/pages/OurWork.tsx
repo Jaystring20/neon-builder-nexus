@@ -4,7 +4,8 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactCTASection from "@/components/ContactCTASection";
-import { portfolioProjects, type PortfolioProject } from "@/data/portfolio";
+import { type PortfolioProject } from "@/data/portfolio";
+import { usePortfolio } from "@/hooks/useSiteContent";
 
 // Copy: docs/our-work-copy.md. Real screenshots only (PRODUCT.md, principle
 // 2): projects with a story are told as problem, what we built, and what
@@ -13,8 +14,6 @@ import { portfolioProjects, type PortfolioProject } from "@/data/portfolio";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-const featured = portfolioProjects.filter((p) => p.story && p.image);
-const more = portfolioProjects.filter((p) => !featured.includes(p));
 
 // A link to the live site when there is one, otherwise a plain frame.
 const Screenshot = ({
@@ -57,6 +56,9 @@ const Screenshot = ({
 };
 
 const OurWork = () => {
+  const projects = usePortfolio();
+  const featured = projects.filter((p) => p.story && p.image);
+  const more = projects.filter((p) => !featured.includes(p));
   const reduce = useReducedMotion();
   const reveal = (i = 0) => ({
     initial: reduce ? false : { opacity: 0, y: 24 },

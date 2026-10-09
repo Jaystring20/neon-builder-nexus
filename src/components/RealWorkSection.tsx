@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
 import StoryImage from "@/components/StoryImage";
-import { portfolioProjects } from "@/data/portfolio";
+import { usePortfolio } from "@/hooks/useSiteContent";
 import { cn } from "@/lib/utils";
 
 /**
@@ -45,6 +45,7 @@ const STORIES = [
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const RealWorkSection = () => {
+  const portfolioProjects = usePortfolio();
   const [open, setOpen] = useState<string | null>(STORIES[0].projectId);
   const reduce = useReducedMotion();
   const baseId = useId();

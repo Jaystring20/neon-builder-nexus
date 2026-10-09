@@ -15,18 +15,18 @@ export const ROLE_LABEL: Record<Role, string> = {
 };
 
 export const ROLE_SUMMARY: Record<Role, string> = {
-  owner: "Everything, including team accounts.",
+  owner: "Everything, including prices and team accounts.",
   manager: "Leads, bookings and diagnostics: status, call dates and notes.",
-  editor: "Website content, as those screens arrive. Overview for now.",
+  editor: "Website content: programmes, portfolio and leadership bios. Not prices.",
   viewer: "Overview and numbers only. Changes nothing.",
 };
 
-export type Permission = "overview" | "leads.read" | "leads.write" | "team.manage";
+export type Permission = "overview" | "leads.read" | "leads.write" | "content.edit" | "prices.edit" | "team.manage";
 
 const GRANTS: Record<Role, Permission[]> = {
-  owner: ["overview", "leads.read", "leads.write", "team.manage"],
+  owner: ["overview", "leads.read", "leads.write", "content.edit", "prices.edit", "team.manage"],
   manager: ["overview", "leads.read", "leads.write"],
-  editor: ["overview"],
+  editor: ["overview", "content.edit"],
   viewer: ["overview"],
 };
 

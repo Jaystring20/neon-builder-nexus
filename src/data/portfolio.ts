@@ -18,7 +18,7 @@ const screenshots = import.meta.glob("/src/assets/portfolio/*.{png,jpg,jpeg,webp
   query: "?url",
   import: "default",
 }) as Record<string, string>;
-const screenshot = (id: string): string | undefined =>
+export const screenshot = (id: string): string | undefined =>
   Object.entries(screenshots).find(([path]) => path.split("/").pop()!.replace(/\.[a-z]+$/, "") === id)?.[1];
 
 export interface PortfolioProject {

@@ -9,8 +9,7 @@ import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
 import { trainingPartner } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
-import jerryImage from "@/assets/team/jeremiah-adeyemi.webp";
-import gideonImage from "@/assets/team/gideon-olawuyi.webp";
+import { useLeaders } from "@/hooks/useSiteContent";
 
 // Copy: docs/about-copy.md, built from the brand brief in PRODUCT.md. The home
 // page already makes the case; this page answers "who are you, and how do you
@@ -39,35 +38,6 @@ const BUILT_FOR_GROWTH = [
   },
 ];
 
-// Bios supplied by DCH, cut to one line and one quote each.
-const LEADERS: {
-  name: string;
-  role: string;
-  title: string;
-  line: string;
-  quote: string;
-  image: string;
-  link?: { label: string; href: string };
-}[] = [
-  {
-    name: "Jeremiah Adeyemi",
-    role: "Founder & Lead Architect",
-    title: "The DigiTech Strategist",
-    line: "Founded DCH on one idea: real growth needs the vision of a creative and the precision of an engineer.",
-    quote: "He doesn\u2019t just draw the map. He builds the road, the car and the fuel.",
-    image: jerryImage,
-    link: { label: "Connect with Jeremiah", href: "https://thedigitechstrategist.lovable.app" },
-  },
-  {
-    name: "Gideon Olawuyi",
-    role: "Chief Operating Officer",
-    title: "Development practitioner",
-    line: "Works where corporate business meets African development, building the systems, organisations and partnerships that create lasting social and economic impact across Africa and beyond.",
-    quote: "\u201cBusiness is the most sustainable solution to global challenges.\u201d",
-    image: gideonImage,
-  },
-];
-
 const APPROACH = [
   { title: "Diagnostic.", line: "We find the real problem before we build anything." },
   { title: "Deliberate.", line: "Every part is designed to work with the others." },
@@ -75,6 +45,7 @@ const APPROACH = [
 ];
 
 const About = () => {
+  const leaders = useLeaders();
   const reduce = useReducedMotion();
   const reveal = (i = 0) => ({
     initial: reduce ? false : { opacity: 0, y: 24 },
@@ -198,15 +169,21 @@ const About = () => {
             </p>
 
             <div className="mt-14 grid gap-16 md:mt-20 md:grid-cols-2 md:gap-12">
-              {LEADERS.map((leader, i) => (
-                <motion.article key={leader.name} {...reveal(i)}>
+              {leaders.map((leader, i) => (
+                <motion.article key={leader.id} {...reveal(i)}>
                   <div className="relative aspect-[4/5] overflow-hidden bg-card/40">
-                    <img
-                      src={leader.image}
-                      alt={`${leader.name}, ${leader.role} of Digital Creatives Hub`}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover object-top"
-                    />
+                    {leader.image ? (
+                      <img
+                        src={leader.image}
+                        alt={`${leader.name}, ${leader.role} of Digital Creatives Hub`}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                      />
+                    ) : (
+                      <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center font-display-refined text-7xl text-muted-foreground/40">
+                        {leader.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("")}
+                      </span>
+                    )}
                     <div aria-hidden="true" className="pointer-events-none absolute inset-0 border border-foreground/[0.06]" />
                   </div>
                   <p className="mt-8 text-sm font-medium text-primary">{leader.role}</p>

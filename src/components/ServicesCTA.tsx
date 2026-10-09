@@ -19,10 +19,10 @@ const ServicesCTA = ({ heading = "Not sure where to start?" }: { heading?: strin
           </a>
         </Button>
         <Link
-          to="/discovery"
+          to="/diagnostic"
           className="group inline-flex items-center justify-center gap-2 text-base text-foreground/75 hover:text-foreground sm:justify-start"
         >
-          Not ready to talk? <span className="font-semibold text-foreground">Take the discovery.</span>
+          Not sure where you stand? <span className="font-semibold text-foreground">Take the free diagnostic.</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>

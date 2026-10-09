@@ -24,6 +24,8 @@ import {
   sendEmailViaResendDetailed,
   type EmailContext,
 } from "../src/lib/resend.v3.js";
+import { discoveryAlertEmail } from "../src/lib/leadEmails.js";
+import { matchOffer, offerLine } from "../src/data/offerMatch.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -113,6 +115,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (err) {
       emailError = err instanceof Error ? err.message : String(err);
       console.error("Email 1 send failed:", err);
+    }
+
+    // Tell DCH a new lead has arrived. Best-effort, like every send here.
+    try {
+      const alert = await sendEmailViaResendDetailed(
+        discoveryAlertEmail(
+          trimmedEmail,
+          { segment: segment.segment, program: segment.program, capabilityGap: segment.capabilityGap },
+          answers as unknown as Record<string, unknown>,
+          offerLine(matchOffer(segment.segment, answers as unknown as Record<string, unknown>)),
+        ),
+      );
+      if (!alert.ok) console.error("Discovery alert not sent:", alert.error);
+    } catch (err) {
+      console.error("Discovery alert failed:", err);
     }
 
     // Logged, never returned: this is a public endpoint, and the reason a send

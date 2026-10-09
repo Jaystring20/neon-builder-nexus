@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,9 +20,8 @@ const FloatingCTA = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleClick = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const navigate = useNavigate();
+  const handleClick = () => navigate("/book");
 
   return (
     <button

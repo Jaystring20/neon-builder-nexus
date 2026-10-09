@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
@@ -20,6 +21,9 @@ import CookiePolicy from "./pages/CookiePolicy";
 import DiscoveryPage from "./pages/discovery";
 import BookCall from "./pages/BookCall";
 import NotFound from "./pages/NotFound";
+
+// The team dashboard loads on its own, so none of it ships with the public site.
+const AdminApp = lazy(() => import("./pages/admin/AdminApp"));
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -46,6 +50,14 @@ const App = () => (
           <Route path="/diagnostic" element={<DiscoveryPage />} />
           <Route path="/discovery" element={<DiscoveryPage />} />
           <Route path="/book" element={<BookCall />} />
+          <Route
+            path="/admin/*"
+            element={
+              <Suspense fallback={<div className="min-h-screen bg-background" />}>
+                <AdminApp />
+              </Suspense>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -184,3 +184,16 @@ export function weeklyDigestEmail(leads: DigestLead[], discoveries: DigestDiscov
 <p style="margin:24px 0 0;font-size:12px;color:#6b7280">This email also confirms the website, database and email are all running.</p>`),
   };
 }
+
+/** The one-time sign-in link for the admin dashboard. */
+export function adminLoginEmail(to: string, name: string, link: string, minutes: number): EmailPayload {
+  return {
+    to,
+    subject: "Your sign-in link for the DCH dashboard",
+    html: shell(`
+<h1 style="margin:0 0 16px;font-size:22px">Sign in${name ? `, ${esc(name.split(/\s+/)[0])}` : ""}.</h1>
+<p style="margin:0 0 24px;line-height:1.6">Use the button below to open the DCH dashboard. It works once, for the next ${minutes} minutes.</p>
+<p style="margin:0 0 24px">${button(link, "Open the dashboard")}</p>
+<p style="margin:0;font-size:14px;color:#4b5563">Didn't ask for this? Ignore it; nobody can sign in without this email.</p>`),
+  };
+}

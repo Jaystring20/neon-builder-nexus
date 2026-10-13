@@ -1,7 +1,7 @@
+import StartCTA from "@/components/StartCTA";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,7 +9,6 @@ import StoryImage from "@/components/StoryImage";
 import ServicesCTA from "@/components/ServicesCTA";
 import { serviceCategories, pillarOrder, type Pillar } from "@/data/services";
 import { storyImage } from "@/lib/storyImages";
-import { BOOK_A_CALL } from "@/lib/contact";
 
 // Copy: docs/services-copy.md. The page reads in the same order as the home
 // page's "Brand. Platforms. People.": the pillar map first, then one block per
@@ -65,15 +64,10 @@ const Services = () => {
                 style={{ animationDelay: "120ms" }}
               >
                 Brand, platforms and people, built together and powered by AI. Start where you need to; we
-                connect the rest.
+                connect the rest. Not sure where to start? The Growth Diagnostic points to the practices that fit.
               </p>
               <div className="hero-animate mt-10" style={{ animationDelay: "220ms" }}>
-                <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-                  <a href={BOOK_A_CALL}>
-                    Book a call
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </Button>
+                <StartCTA />
               </div>
             </div>
             {hasEngine && (

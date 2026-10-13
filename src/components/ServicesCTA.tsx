@@ -1,7 +1,4 @@
-import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { BOOK_A_CALL } from "@/lib/contact";
+import StartCTA from "@/components/StartCTA";
 
 /** Closing call to action shared by /services and each practice page. */
 const ServicesCTA = ({ heading = "Not sure where to start?" }: { heading?: string }) => (
@@ -9,23 +6,9 @@ const ServicesCTA = ({ heading = "Not sure where to start?" }: { heading?: strin
     <div className="container-narrow max-w-3xl">
       <h2 className="font-display-refined text-[2.4rem] leading-[1.05] text-foreground sm:text-5xl">{heading}</h2>
       <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-        Most clients aren&rsquo;t. Tell us what you&rsquo;re trying to move and we&rsquo;ll find the right first step.
+        Most clients aren&rsquo;t. The Growth Diagnostic shows where you stand and which practices fit, in about four minutes.
       </p>
-      <div className="mt-10 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center">
-        <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-          <a href={BOOK_A_CALL}>
-            Book a call
-            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </a>
-        </Button>
-        <Link
-          to="/diagnostic"
-          className="group inline-flex items-center justify-center gap-2 text-base text-foreground/75 hover:text-foreground sm:justify-start"
-        >
-          Not sure where you stand? <span className="font-semibold text-foreground">Take the free diagnostic.</span>
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Link>
-      </div>
+      <StartCTA className="mt-10" />
     </div>
   </section>
 );

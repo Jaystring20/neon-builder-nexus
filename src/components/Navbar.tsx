@@ -184,11 +184,11 @@ const Navbar = () => {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/diagnostic" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-              Free diagnostic
+            <Link to="/book" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Book a call
             </Link>
             <Button variant="action" size="sm" asChild>
-              <Link to="/book">Book a Call</Link>
+              <Link to="/diagnostic">Free diagnostic</Link>
             </Button>
           </div>
 
@@ -307,16 +307,16 @@ const Navbar = () => {
               </a>
 
               <Link
-                to="/diagnostic"
+                to="/book"
                 className="block py-3 text-foreground hover:text-primary transition-colors font-medium"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Free diagnostic
+                Book a call
               </Link>
 
               <div className="pt-4">
                 <Button variant="action" className="w-full" asChild>
-                  <Link to="/book" onClick={() => setIsMobileMenuOpen(false)}>Book a Call</Link>
+                  <Link to="/diagnostic" onClick={() => setIsMobileMenuOpen(false)}>Take the free diagnostic</Link>
                 </Button>
               </div>
             </div>

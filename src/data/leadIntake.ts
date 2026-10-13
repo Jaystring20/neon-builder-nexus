@@ -28,7 +28,8 @@ export const NEEDS: Choice[] = [
   { value: "unsure", label: "Not sure yet" },
 ];
 
-export const CURRENCIES = ["NGN", "USD"] as const;
+// USD first: DCH works internationally, so international defaults lead.
+export const CURRENCIES = ["USD", "NGN"] as const;
 export type Currency = (typeof CURRENCIES)[number];
 
 /** Same tiers in both currencies, so routing never depends on the currency. */
@@ -148,7 +149,7 @@ export function parseLead(body: unknown): { lead: LeadIntake } | { error: string
     phone: str(b.phone, 40) || undefined,
     needs: Array.isArray(b.needs) ? b.needs.map((n) => str(n, 40)).filter(Boolean).slice(0, 6) : [],
     problem: str(b.problem, 2000),
-    currency: (CURRENCIES as readonly string[]).includes(b.currency as string) ? (b.currency as Currency) : "NGN",
+    currency: (CURRENCIES as readonly string[]).includes(b.currency as string) ? (b.currency as Currency) : "USD",
     budget: str(b.budget, 20),
     timeline: str(b.timeline, 20),
   };

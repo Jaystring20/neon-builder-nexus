@@ -512,7 +512,7 @@ You'll go from "I'm maxed out" to "Here's how I scale without burning myself."
 // For mission-driven founders (non-profits, social enterprises, development orgs)
 // ============================================================
 export const impactOrganizationMastery: Program = {
-  name: "Impact Organization Mastery",
+  name: "Impact Organisation Mastery",
   segment: "development_org",
   tagline:
     "Build a model that replicates. Measure impact that donors care about. Raise capital aligned with your values.",
@@ -548,7 +548,7 @@ You'll go from "How do we survive next quarter?" to "Here's our model, here's ou
   },
 
   paidProgram: {
-    name: "Impact Organization Intensive",
+    name: "Impact Organisation Intensive",
     price: { min: 100_000, max: 250_000, billing: "one-time" },
     description:
       "8-week program: validate model, build impact metrics, create fundraising strategy",
@@ -568,7 +568,7 @@ You'll go from "How do we survive next quarter?" to "Here's our model, here's ou
   },
 
   doneWithYou: {
-    name: "Done with You: Impact Organization Growth",
+    name: "Done with You: Impact Organisation Growth",
     price: { min: 300_000, max: 1_000_000, billing: "monthly" },
     description:
       "6 months: refine model, build impact metrics, secure grants + major donors",
@@ -588,7 +588,7 @@ You'll go from "How do we survive next quarter?" to "Here's our model, here's ou
   },
 
   doneForYou: {
-    name: "Done for You: Impact Organization Transformation",
+    name: "Done for You: Impact Organisation Transformation",
     price: { min: 2_000_000, max: 5_000_000, billing: "engagement" },
     description: "6-12 months: we build your model, metrics, and funding engine",
     includes: [

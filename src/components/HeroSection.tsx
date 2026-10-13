@@ -87,22 +87,22 @@ const HeroSection = () => {
                 variant="action"
                 size="xl"
                 isLoading={isLoading}
-                onClick={() => handleCtaClick(() => navigate("/book"))}
+                onClick={() => handleCtaClick(() => navigate("/diagnostic"))}
                 onMouseMove={handleCtaMouseMove}
                 onMouseLeave={handleCtaMouseLeave}
                 className="group w-full sm:w-auto"
               >
                 {!isLoading && (
                   <>
-                    Book a call
+                    Take the free diagnostic
                     <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
               </Button>
 
               <Button asChild variant="subtle" size="xl" className="group w-full sm:w-auto">
-                <Link to="/diagnostic">
-                  Take the diagnostic
+                <Link to="/book">
+                  Book a call
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>

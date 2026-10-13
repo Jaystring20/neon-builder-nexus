@@ -1,3 +1,5 @@
+import StartCTA from "@/components/StartCTA";
+import PhilosophySection from "@/components/PhilosophySection";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -5,10 +7,8 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StoryImage from "@/components/StoryImage";
-import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
 import { SHOW_TRAINING_PARTNER, trainingPartner } from "@/data/services";
-import { BOOK_A_CALL } from "@/lib/contact";
 import { useLeaders } from "@/hooks/useSiteContent";
 
 // Copy: docs/about-copy.md, built from the brand brief in PRODUCT.md. The home
@@ -156,6 +156,11 @@ const About = () => {
         </section>
 
         {/* At the helm */}
+        {/* Philosophy: a supporting line, so it lives here rather than on the home page. */}
+        <div className="border-t border-border/40">
+          <PhilosophySection />
+        </div>
+
         <section id="founder" aria-labelledby="founder-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
           <div className="container-narrow">
             <h2
@@ -192,9 +197,11 @@ const About = () => {
                   </h3>
                   <p className="mt-2 text-base text-muted-foreground">{leader.title}</p>
                   <p className="mt-6 max-w-lg text-lg leading-snug text-foreground/90">{leader.line}</p>
-                  <blockquote className="mt-6 max-w-lg border-l-2 border-primary/50 pl-5 text-base italic text-muted-foreground">
-                    {leader.quote}
-                  </blockquote>
+                  {leader.quote && (
+                    <blockquote className="mt-6 max-w-lg border-l-2 border-primary/50 pl-5 text-base italic text-muted-foreground">
+                      {leader.quote}
+                    </blockquote>
+                  )}
                   {leader.link && (
                     <a
                       href={leader.link.href}
@@ -262,21 +269,7 @@ const About = () => {
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
               We pursue the right problems, and we solve them completely.
             </p>
-            <div className="mt-10 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center">
-              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-                <a href={BOOK_A_CALL}>
-                  Book a call
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
-              <Link
-                to="/diagnostic"
-                className="group inline-flex items-center justify-center gap-2 text-base text-foreground/75 transition-colors hover:text-foreground sm:justify-start"
-              >
-                Not sure where you stand? <span className="font-semibold text-foreground">Take the free diagnostic.</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+            <StartCTA className="mt-10" />
           </div>
         </section>
       </main>

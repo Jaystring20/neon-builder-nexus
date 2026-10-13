@@ -19,8 +19,8 @@ const STORIES = [
   {
     projectId: "fitness-religion",
     client: "Fitness Religion",
-    question: "Can one platform run the same event in five cities at once?",
-    answer: "Registration, leaderboards, event management and sponsors, all in sync.",
+    question: "Can one platform bring communities in different cities together?",
+    answer: "Registration, leaderboards, event management and sponsors in one system, built to scale city by city.",
     imageId: "proof-five-cities",
     imageAlt: "One central glass slab sending a single line of light through five smaller slabs",
   },

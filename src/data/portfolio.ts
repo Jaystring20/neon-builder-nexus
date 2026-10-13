@@ -73,9 +73,9 @@ export const portfolioProjects: PortfolioProject[] = [
     image: vieraAmberImg,
     story: {
       problem:
-        "Five businesses that would normally need five teams, five sites and five stacks, and would drift apart the moment they launched.",
+        "Five businesses that would normally need five teams, five sites and five tech stacks, and would drift apart the moment they launched.",
       built: ["Shared identity layer", "Cross-brand routing", "One commerce spine"],
-      outcome: "One brand. Five expressions.",
+      outcome: "Five brands on one platform instead of five. One brand. Five expressions.",
     },
   },
   {
@@ -137,7 +137,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "The Fitness Religion Company",
     category: "Community & Events",
     description:
-      "The platform behind the 2004 M00VE Challenge: registration, leaderboards, event management and sponsor integration across 5+ Nigerian cities.",
+      "The platform behind the 2004 M00VE Challenge: registration, leaderboards, event management and sponsor integration, built so many communities and cities can run as one.",
     tags: ["Web Platform", "Event Management", "Community"],
     url: "https://www.thefitnessreligioncompany.com.ng/",
     displayDomain: "thefitnessreligioncompany.com.ng",
@@ -145,9 +145,11 @@ export const portfolioProjects: PortfolioProject[] = [
     image: fitnessReligionImg,
     story: {
       problem:
-        "One event, five cities, running at the same time, with no room for a city to fall out of sync.",
-      built: ["Multi-city registration", "Live leaderboards", "Sponsor integration"],
-      outcome: "The 2004 M00VE Challenge across 5+ Nigerian cities.",
+        "Bringing communities in different cities together around one shared goal, without a separate system for each city.",
+      built: ["Registration", "Live leaderboards", "Sponsor integration"],
+      // "2004 M00VE Challenge" is the event's name, not a year. It ran in one
+      // location; the platform is built to scale to more cities.
+      outcome: "Powered the 2004 M00VE Challenge, and built to scale to more cities.",
     },
   },
   {
@@ -179,7 +181,7 @@ export const portfolioProjects: PortfolioProject[] = [
     title: "The DigiTech Strategist",
     category: "Personal Brand",
     description:
-      "A personal brand and consulting platform for a digital transformation strategist, with paths for professionals, business owners and educators.",
+      "Founder Jeremiah Adeyemi's own consulting platform, with paths for professionals, business owners and educators.",
     tags: ["Personal Brand", "Consulting", "Strategy"],
     url: "https://thedigitechstrategist.lovable.app",
     displayDomain: "The DigiTech Strategist",

@@ -1,3 +1,5 @@
+import StartCTA from "@/components/StartCTA";
+import PhilosophySection from "@/components/PhilosophySection";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -5,10 +7,8 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StoryImage from "@/components/StoryImage";
-import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
-import { trainingPartner } from "@/data/services";
-import { BOOK_A_CALL } from "@/lib/contact";
+import { SHOW_TRAINING_PARTNER, trainingPartner } from "@/data/services";
 import { useLeaders } from "@/hooks/useSiteContent";
 
 // Copy: docs/about-copy.md, built from the brand brief in PRODUCT.md. The home
@@ -156,6 +156,11 @@ const About = () => {
         </section>
 
         {/* At the helm */}
+        {/* Philosophy: a supporting line, so it lives here rather than on the home page. */}
+        <div className="border-t border-border/40">
+          <PhilosophySection />
+        </div>
+
         <section id="founder" aria-labelledby="founder-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
           <div className="container-narrow">
             <h2
@@ -192,9 +197,11 @@ const About = () => {
                   </h3>
                   <p className="mt-2 text-base text-muted-foreground">{leader.title}</p>
                   <p className="mt-6 max-w-lg text-lg leading-snug text-foreground/90">{leader.line}</p>
-                  <blockquote className="mt-6 max-w-lg border-l-2 border-primary/50 pl-5 text-base italic text-muted-foreground">
-                    {leader.quote}
-                  </blockquote>
+                  {leader.quote && (
+                    <blockquote className="mt-6 max-w-lg border-l-2 border-primary/50 pl-5 text-base italic text-muted-foreground">
+                      {leader.quote}
+                    </blockquote>
+                  )}
                   {leader.link && (
                     <a
                       href={leader.link.href}
@@ -212,41 +219,43 @@ const About = () => {
           </div>
         </section>
 
-        {/* Partners */}
-        <section id="partners" aria-labelledby="partners-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
-          <div className="container-narrow grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16">
-            <div>
-              <h2
-                id="partners-heading"
-                className="font-display-refined text-balance text-4xl leading-[1.05] text-foreground sm:text-5xl"
-              >
-                Built with partners.
-              </h2>
-              <div className="mt-10 border-t border-border/40 pt-6">
-                <p className="text-sm font-medium text-primary">Training partner</p>
-                <p className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
-                  {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
-                </p>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  Most of our training is co-organised with {trainingPartner.short}.
-                </p>
-                <Link
-                  to="/services/training"
-                  className="group mt-6 inline-flex items-center gap-2 text-base font-semibold text-primary hover:text-foreground"
+        {/* Partners: hidden while SHOW_TRAINING_PARTNER is off. */}
+        {SHOW_TRAINING_PARTNER && (
+          <section id="partners" aria-labelledby="partners-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
+            <div className="container-narrow grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16">
+              <div>
+                <h2
+                  id="partners-heading"
+                  className="font-display-refined text-balance text-4xl leading-[1.05] text-foreground sm:text-5xl"
                 >
-                  See the training
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                  Built with partners.
+                </h2>
+                <div className="mt-10 border-t border-border/40 pt-6">
+                  <p className="text-sm font-medium text-primary">Training partner</p>
+                  <p className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
+                    {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
+                  </p>
+                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                    Most of our training is co-organised with {trainingPartner.short}.
+                  </p>
+                  <Link
+                    to="/services/training"
+                    className="group mt-6 inline-flex items-center gap-2 text-base font-semibold text-primary hover:text-foreground"
+                  >
+                    See the training
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
               </div>
+              <StoryImage
+                id="about-partnership"
+                alt="Two structures, one graphite and one glass, building a bridge toward each other"
+                aspect="aspect-[16/9]"
+                hideIfMissing
+              />
             </div>
-            <StoryImage
-              id="about-partnership"
-              alt="Two structures, one graphite and one glass, building a bridge toward each other"
-              aspect="aspect-[16/9]"
-              hideIfMissing
-            />
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Close */}
         <section aria-labelledby="close-heading" className="border-t border-border/40 py-28 md:py-40">
@@ -260,21 +269,7 @@ const About = () => {
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
               We pursue the right problems, and we solve them completely.
             </p>
-            <div className="mt-10 flex flex-col items-stretch gap-5 sm:flex-row sm:items-center">
-              <Button asChild variant="action" size="xl" className="group w-full sm:w-auto">
-                <a href={BOOK_A_CALL}>
-                  Book a call
-                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
-              <Link
-                to="/diagnostic"
-                className="group inline-flex items-center justify-center gap-2 text-base text-foreground/75 transition-colors hover:text-foreground sm:justify-start"
-              >
-                Not sure where you stand? <span className="font-semibold text-foreground">Take the free diagnostic.</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
+            <StartCTA className="mt-10" />
           </div>
         </section>
       </main>

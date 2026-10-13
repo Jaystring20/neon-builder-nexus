@@ -122,8 +122,8 @@ export function generateEmail1(
     to: email,
     subject: `Your Personalized Program Match: ${segment.program}`,
     html,
-    from: "hello@digitalcreativeshub.com",
-    replyTo: "hello@digitalcreativeshub.com",
+    from: "hello@digitalcreativeshubltd.com",
+    replyTo: "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -242,8 +242,8 @@ export function generateEmail2(
     to: email,
     subject: `${program.name} – How It Works`,
     html,
-    from: "hello@digitalcreativeshub.com",
-    replyTo: "hello@digitalcreativeshub.com",
+    from: "hello@digitalcreativeshubltd.com",
+    replyTo: "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -353,8 +353,8 @@ export function generateEmail3(
     to: email,
     subject: `${program.name} – Let's Get Started`,
     html,
-    from: "hello@digitalcreativeshub.com",
-    replyTo: "hello@digitalcreativeshub.com",
+    from: "hello@digitalcreativeshubltd.com",
+    replyTo: "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -373,8 +373,8 @@ export async function sendEmailViaResend(payload: EmailPayload): Promise<boolean
       return false;
     }
 
-    const senderEmail = process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com";
-    const replyToEmail = process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com";
+    const senderEmail = process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com";
+    const replyToEmail = process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com";
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",

@@ -108,9 +108,9 @@ const SEGMENTS = {
     callToAction: "Book a call to choose your scaling path.",
   },
   development_org: {
-    program: "Impact Organization Mastery",
+    program: "Impact Organisation Mastery",
     playbookSection: 6,
-    playbookTitle: "The Development Organization Playbook",
+    playbookTitle: "The Development Organisation Playbook",
     description:
       "You're mission-driven. Grant/donation funded, solving problems government/market won't touch. Impact is the north star, profit is the constraint.",
     problemStatement:

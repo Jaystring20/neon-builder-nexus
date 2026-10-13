@@ -261,8 +261,8 @@ export function generateEmail1(
     to: email,
     subject: `${emoji} ${title}: Your Program Match`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -429,8 +429,8 @@ export function generateEmail2(
     to: email,
     subject: `${emoji} Deep Dive: ${program.name}`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -574,8 +574,8 @@ export function generateEmail3(
     to: email,
     subject: `${title}: Let's Get You Started →`,
     html,
-    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -592,8 +592,8 @@ export async function sendEmailViaResend(payload: EmailPayload): Promise<boolean
       return false;
     }
 
-    const senderEmail = process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshub.com";
-    const replyToEmail = process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com";
+    const senderEmail = process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com";
+    const replyToEmail = process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com";
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",

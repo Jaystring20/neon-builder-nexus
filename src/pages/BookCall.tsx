@@ -43,7 +43,7 @@ const empty: LeadIntake = {
   phone: "",
   needs: [],
   problem: "",
-  currency: "NGN",
+  currency: "USD",
   budget: "",
   timeline: "",
 };

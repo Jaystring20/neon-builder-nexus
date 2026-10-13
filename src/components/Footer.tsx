@@ -1,14 +1,15 @@
 import { Twitter, Linkedin, Instagram, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import dchLogo from "@/assets/dch-logo-primary.png";
-import { serviceCategories } from "@/data/services";
+import { SHOW_TRAINING_PARTNER, serviceCategories } from "@/data/services";
+import { CONTACT_EMAIL, FOUNDER_EMAIL } from "@/lib/contact";
 
 const Footer = () => {
   const links = {
     company: [
       { label: "About Us", href: "/about", isRoute: true },
       { label: "Leadership", href: "/about#founder", isRoute: true },
-      { label: "Partners", href: "/about#partners", isRoute: true },
+      ...(SHOW_TRAINING_PARTNER ? [{ label: "Partners", href: "/about#partners", isRoute: true }] : []),
       { label: "Careers", href: "/careers", isRoute: true },
     ],
     services: [
@@ -60,6 +61,19 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Business development creative agency. Brand, platforms and people, built to compound.
             </p>
+            <ul className="mb-6 space-y-1 text-sm">
+              <li>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-foreground/85 hover:text-primary">
+                  {CONTACT_EMAIL}
+                </a>
+              </li>
+              <li className="text-muted-foreground">
+                Founder:{" "}
+                <a href={`mailto:${FOUNDER_EMAIL}`} className="hover:text-primary">
+                  {FOUNDER_EMAIL}
+                </a>
+              </li>
+            </ul>
             <div className="flex items-center gap-2 sm:gap-3">
               {socials.map((social) => (
                 <a

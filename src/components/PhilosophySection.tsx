@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-// Copy: docs/landing-copy.md, section 5. Type only: by this point the visitor
+// The philosophy (Build agency. Create value. Drive growth.), shown on About:
+// it is a supporting line, not a headline. Type only: by this point the visitor
 // knows what DCH does, so the double meaning of "agency" can land, and the
 // three beats arrive one at a time as they scroll.
 const BEATS = [

@@ -204,8 +204,8 @@ export const serviceCategories: ServiceCategory[] = [
     title: "Agentic AI & Automation",
     slug: "ai-automation",
     pillar: "Platforms",
-    tagline: "Systems that work while you sleep.",
-    description: "AI agents and automation that take the repeat work off your team.",
+    tagline: "Systems that carry the repeat work.",
+    description: "AI agents and automation that take the repeat work off your team, so people spend their time where judgment matters.",
     color: "primary",
     subServices: [
       {
@@ -237,7 +237,7 @@ export const serviceCategories: ServiceCategory[] = [
     pillar: "People",
     tagline: "Capability that stays after we leave.",
     description:
-      "Training for teams and individuals, so the people behind the business grow with it. Cohorts, workshops or one-to-one, online or in person.",
+      "Training for teams and individuals, so the people behind the business grow with it. Cohorts, workshops or one-to-one, online or in person, so participants can join from anywhere.",
     color: "primary",
     menu: [
       { title: "AI Training", icon: Brain },
@@ -357,5 +357,13 @@ export const trainingPartner = {
   name: "Artificial Intelligence & Robotics School",
   short: "AIRS",
 };
+
+/**
+ * Whether the AIRS partnership is shown anywhere on the site: the About
+ * "Built with partners" section, the Partners links in the menu and footer,
+ * and the credit on the Training page. Off for now at DCH's request; set to
+ * true to bring all of it back.
+ */
+export const SHOW_TRAINING_PARTNER = false;
 
 export const pillarOrder: Pillar[] = ["Brand", "Platforms", "People"];

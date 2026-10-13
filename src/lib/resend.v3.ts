@@ -77,7 +77,7 @@ const SEGMENT_INFO: Record<
   },
   development_org: {
     emoji: "🌱",
-    title: "Impact Organization Builder",
+    title: "Impact Organisation Builder",
     description:
       "You're building for impact: mission-driven, sustainable revenue, creating change.",
   },
@@ -304,7 +304,7 @@ export function generateEmail1(
     subject: `${emoji} ${title}: Your Program Match`,
     html,
     from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -476,7 +476,7 @@ export function generateEmail2(
     subject: `${emoji} Deep Dive: ${program?.name || "Your Program"}`,
     html,
     from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -725,7 +725,7 @@ export function generateEmail3(
     subject: `${emoji} ${title}: Let's Get Started →`,
     html,
     from: process.env.RESEND_FROM_EMAIL || "hello@digitalcreativeshubltd.com",
-    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+    replyTo: process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
   };
 }
 
@@ -894,7 +894,7 @@ export async function sendEmailViaResendDetailed(
         to: payload.to,
         subject: payload.subject,
         html: payload.html,
-        reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+        reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
       }),
     });
 
@@ -932,7 +932,7 @@ export async function sendEmailBatchViaResend(payloads: EmailPayload[]): Promise
       to: p.to,
       subject: p.subject,
       html: p.html,
-      reply_to: p.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshub.com",
+      reply_to: p.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
     }));
     try {
       const response = await fetch("https://api.resend.com/emails/batch", {

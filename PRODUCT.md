@@ -21,8 +21,9 @@ they are to where their potential points:
 The market is international. DCH goes wherever growth needs to happen; no
 copy or imagery should place it as a local or regional studio.
 
-Secondary audience: visitors not yet ready to talk, served by the discovery
-form at `/discovery`, which segments them and starts a follow-up sequence.
+Every visitor's front door is the free Growth Diagnostic at `/diagnostic`
+(`/discovery` is an alias): it shows a business where it stands and what fits
+before anyone books a call, and starts a follow-up sequence.
 
 ## Product Purpose
 
@@ -36,19 +37,25 @@ The website exists to make a visitor feel that DCH builds momentum, not just
 deliverables, and then act.
 
 Success on the marketing site:
-1. **Primary:** the visitor books a call (`https://calendly.com/dch/consultation`,
-   reached through the `#contact` section and the navbar "Book a Call").
-2. **Secondary:** a visitor not ready to talk takes the discovery
-   (`/discovery`).
+1. **Primary:** the visitor takes the free Growth Diagnostic (`/diagnostic`).
+2. **Secondary:** a visitor who already knows what they need books a call
+   (`/book`: a short intake, then Calendly).
 
 ## Positioning
 
-"Some agencies build things. We build momentum." (working headline, still
-being refined.) Most agencies hand over a deliverable and leave. DCH builds
+"Projects end. Momentum doesn't." (the positioning line; the home page hero.) Most agencies hand over a deliverable and leave. DCH builds
 growth that compounds: brand, platforms and people designed to keep moving
 after the engagement ends.
 
-Philosophy: **Build agency. Create value. Drive growth.**
+Philosophy: **Build agency. Create value. Drive growth.** A supporting line,
+used on About and in team material, never as a headline.
+
+Key lines: one lead line per piece. Lead lines (public, everywhere):
+"Projects end. Momentum doesn't." and the sign-off "Strategy. Creativity.
+Growth. Without limits." Supporting lines appear only where their topic is the
+subject: "Brand. Platforms. People.", "Five practices. One engine.", "AI isn't
+our pitch. It's our multiplier.", "We don't chase every brief.", "Capability
+that stays after we leave."
 
 Selective by design: DCH does not chase every brief. It pursues the right
 problems and solves them completely.
@@ -83,7 +90,11 @@ people) with AI embedded, then compound (measure and iterate after launch).
   "unleash". No em-dashes in visible copy.
 - Beyond borders: imply international reach through what DCH does and who it
   serves. Do not lead with a city or country (no "Born in Lagos",
-  "Headquartered in Lagos" as positioning).
+  "Headquartered in Lagos" as positioning). Where a place is part of the
+  proof, state it plainly as fact, never as a boundary. Defaults are
+  international: USD shown first, delivery remote or in person.
+- Never call something a result unless it is a measured outcome.
+- Contact: hello@digitalcreativeshubltd.com (general), jerry@digitalcreativeshubltd.com (founder).
 - Visual language: dark graphite field; glossy studio-rendered 3D objects for
   generated imagery; motion that expresses momentum (things starting,
   engaging, compounding).
@@ -98,16 +109,20 @@ people) with AI embedded, then compound (measure and iterate after launch).
   `src/assets/portfolio/` (Viera Amber, Innerspace, The Discovery,
   M & H Eyewear, The Fitness Religion Company). More shipped projects exist
   and are still to be added; the site must not imply this list is complete.
-- Case stories with real details in `src/components/ProofStorySection.tsx`
-  (Fitness Religion: multi-city event platform; M & H Eyewear: AI try-on,
-  style quiz and eye exams in the purchase flow; Viera Amber: five businesses
-  in one system).
+- Case stories: Fitness Religion (one platform for registration,
+  leaderboards, events and sponsors; it powered the "2004 M00VE Challenge",
+  which is the event's name, not a year, held in one location, and is built
+  to scale to more cities: never say "five cities" or "across 5+ cities");
+  M & H Eyewear (AI try-on, style quiz and eye exams in the purchase flow;
+  "145 five-star reviews · 2,800+ frames", repeated exactly, not described as
+  sales); Viera Amber (five brands on one platform instead of five).
 - Training of individuals: real past work exists; the owner will supply the
   material. Until it arrives, the People capability is described without
   invented outcomes.
 - Key partner: Artificial Intelligence & Robotics School (AIRS). Most DCH
-  training is co-organised with AIRS; credit it as a partner (no outbound
-  link). STEAM training runs on STEAM Foundry, DCH's own platform
+  training is co-organised with AIRS. Hidden on the site for now
+  (`SHOW_TRAINING_PARTNER` in `src/data/services.ts`); when shown, credit it
+  as a partner with no outbound link. STEAM training runs on STEAM Foundry, DCH's own platform
   (https://apen.digitalcreativeshubltd.com/).
 - **Absent, must not be fabricated:** testimonials not supplied by the owner,
   client logos, revenue or growth figures, team headcount, awards, press,
@@ -125,5 +140,6 @@ people) with AI embedded, then compound (measure and iterate after launch).
    starting, gathering speed and compounding, from hero to call to action.
 4. **Proof across all three: brand, platforms, people.** Work is not only
    platforms; each capability gets its own real evidence as it is supplied.
-5. **Book a call first, discovery second.** Every section leaves the visitor
-   one step from booking; the discovery form is the softer exit.
+5. **Diagnostic first, Book a call second.** Every section leaves the visitor
+   one step from the free Growth Diagnostic (`StartCTA`), with Book a call
+   beside it for people who already know what they need.

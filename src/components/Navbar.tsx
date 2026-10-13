@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import dchLogo from "@/assets/dch-logo-primary.png";
 import { cn } from "@/lib/utils";
-import { serviceCategories } from "@/data/services";
+import { SHOW_TRAINING_PARTNER, serviceCategories } from "@/data/services";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,7 +34,7 @@ const Navbar = () => {
   const whoWeAreItems = [
     { title: "About Us", description: "Who we are and how we think", href: "/about" },
     { title: "Leadership", description: "Meet the founder and the team at the helm", href: "/about#founder" },
-    { title: "Partners", description: "The partners we build and train with", href: "/about#partners" },
+    ...(SHOW_TRAINING_PARTNER ? [{ title: "Partners", description: "The partners we build and train with", href: "/about#partners" }] : []),
     { title: "Events", description: "Webinars, workshops and masterclasses", href: "/events" },
     { title: "Digital Creatives Network", description: "A global community of builders, creators, and innovators", href: "/dcn" },
   ];

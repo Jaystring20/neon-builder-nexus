@@ -358,4 +358,12 @@ export const trainingPartner = {
   short: "AIRS",
 };
 
+/**
+ * Whether the AIRS partnership is shown anywhere on the site: the About
+ * "Built with partners" section, the Partners links in the menu and footer,
+ * and the credit on the Training page. Off for now at DCH's request; set to
+ * true to bring all of it back.
+ */
+export const SHOW_TRAINING_PARTNER = false;
+
 export const pillarOrder: Pillar[] = ["Brand", "Platforms", "People"];

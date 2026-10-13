@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import ServicesCTA from "@/components/ServicesCTA";
 import StoryImage from "@/components/StoryImage";
 import { storyImage } from "@/lib/storyImages";
-import { serviceCategories, steamLinks, trainingPartner, type ServiceCategory, type SubService } from "@/data/services";
+import { SHOW_TRAINING_PARTNER, serviceCategories, steamLinks, trainingPartner, type ServiceCategory, type SubService } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
 
 // Copy: docs/services-copy.md. Four practices list their services; Training
@@ -64,12 +64,14 @@ const TrainingBody = ({ category }: { category: ServiceCategory }) => {
     <>
       {/* Partner credit: most of the training is co-organised by DCH and
           AIRS, so the partnership sits over all three tracks, not one. */}
-      <div className="mt-12 flex flex-col gap-2 border-y border-border/40 py-6 sm:flex-row sm:items-baseline sm:gap-6">
-        <p className="text-sm font-medium text-primary">Co-organised with</p>
-        <p className="font-heading text-xl font-medium tracking-tight text-foreground">
-          {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
-        </p>
-      </div>
+      {SHOW_TRAINING_PARTNER && (
+        <div className="mt-12 flex flex-col gap-2 border-y border-border/40 py-6 sm:flex-row sm:items-baseline sm:gap-6">
+          <p className="text-sm font-medium text-primary">Co-organised with</p>
+          <p className="font-heading text-xl font-medium tracking-tight text-foreground">
+            {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
+          </p>
+        </div>
+      )}
 
       <TrackHeading
         title="AI Training"

@@ -1,14 +1,14 @@
 import { Twitter, Linkedin, Instagram, Youtube, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import dchLogo from "@/assets/dch-logo-primary.png";
-import { serviceCategories } from "@/data/services";
+import { SHOW_TRAINING_PARTNER, serviceCategories } from "@/data/services";
 
 const Footer = () => {
   const links = {
     company: [
       { label: "About Us", href: "/about", isRoute: true },
       { label: "Leadership", href: "/about#founder", isRoute: true },
-      { label: "Partners", href: "/about#partners", isRoute: true },
+      ...(SHOW_TRAINING_PARTNER ? [{ label: "Partners", href: "/about#partners", isRoute: true }] : []),
       { label: "Careers", href: "/careers", isRoute: true },
     ],
     services: [

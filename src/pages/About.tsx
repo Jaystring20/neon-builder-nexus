@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import StoryImage from "@/components/StoryImage";
 import { Button } from "@/components/ui/button";
 import { storyImage } from "@/lib/storyImages";
-import { trainingPartner } from "@/data/services";
+import { SHOW_TRAINING_PARTNER, trainingPartner } from "@/data/services";
 import { BOOK_A_CALL } from "@/lib/contact";
 import { useLeaders } from "@/hooks/useSiteContent";
 
@@ -212,41 +212,43 @@ const About = () => {
           </div>
         </section>
 
-        {/* Partners */}
-        <section id="partners" aria-labelledby="partners-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
-          <div className="container-narrow grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16">
-            <div>
-              <h2
-                id="partners-heading"
-                className="font-display-refined text-balance text-4xl leading-[1.05] text-foreground sm:text-5xl"
-              >
-                Built with partners.
-              </h2>
-              <div className="mt-10 border-t border-border/40 pt-6">
-                <p className="text-sm font-medium text-primary">Training partner</p>
-                <p className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
-                  {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
-                </p>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  Most of our training is co-organised with {trainingPartner.short}.
-                </p>
-                <Link
-                  to="/services/training"
-                  className="group mt-6 inline-flex items-center gap-2 text-base font-semibold text-primary hover:text-foreground"
+        {/* Partners: hidden while SHOW_TRAINING_PARTNER is off. */}
+        {SHOW_TRAINING_PARTNER && (
+          <section id="partners" aria-labelledby="partners-heading" className="scroll-mt-28 border-t border-border/40 py-24 md:py-32">
+            <div className="container-narrow grid gap-12 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16">
+              <div>
+                <h2
+                  id="partners-heading"
+                  className="font-display-refined text-balance text-4xl leading-[1.05] text-foreground sm:text-5xl"
                 >
-                  See the training
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                  Built with partners.
+                </h2>
+                <div className="mt-10 border-t border-border/40 pt-6">
+                  <p className="text-sm font-medium text-primary">Training partner</p>
+                  <p className="mt-2 font-heading text-2xl font-medium tracking-tight text-foreground">
+                    {trainingPartner.name} <span className="text-muted-foreground">({trainingPartner.short})</span>
+                  </p>
+                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                    Most of our training is co-organised with {trainingPartner.short}.
+                  </p>
+                  <Link
+                    to="/services/training"
+                    className="group mt-6 inline-flex items-center gap-2 text-base font-semibold text-primary hover:text-foreground"
+                  >
+                    See the training
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
               </div>
+              <StoryImage
+                id="about-partnership"
+                alt="Two structures, one graphite and one glass, building a bridge toward each other"
+                aspect="aspect-[16/9]"
+                hideIfMissing
+              />
             </div>
-            <StoryImage
-              id="about-partnership"
-              alt="Two structures, one graphite and one glass, building a bridge toward each other"
-              aspect="aspect-[16/9]"
-              hideIfMissing
-            />
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Close */}
         <section aria-labelledby="close-heading" className="border-t border-border/40 py-28 md:py-40">

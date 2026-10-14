@@ -14,7 +14,8 @@ const SITE_NAME = "Digital Creatives Hub";
  * should name the URL that serves the content rather than one that bounces.
  */
 const BASE_URL = "https://www.digitalcreativeshubltd.com";
-const DEFAULT_IMAGE = "https://storage.googleapis.com/gpt-engineer-file-uploads/Y2zF3uaJHjh13RMvylpGg9mu4BJ3/social-images/social-1765923602293-The Digital Creatives Hub Logo.png";
+// Built by scripts/site-images/og-render.mjs over Higgsfield art (1200 x 630).
+const DEFAULT_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 interface SEOProps {
   title: string;

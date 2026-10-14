@@ -7,6 +7,9 @@ import fitnessReligionImg from "@/assets/portfolio/fitness-religion.webp";
 import ecopathImg from "@/assets/portfolio/ecopath-circular-economy.webp";
 import everythingHouseholdImg from "@/assets/portfolio/everything-household.webp";
 import digitechImg from "@/assets/portfolio/digitech-strategist.webp";
+import fitnessReligionFilmPoster from "@/assets/portfolio/film/fitness-religion-poster.webp";
+import fitnessReligionTeaserMp4 from "@/assets/portfolio/film/fitness-religion-teaser.mp4";
+import fitnessReligionTeaserWebm from "@/assets/portfolio/film/fitness-religion-teaser.webm";
 
 /**
  * Screenshots not imported above are picked up by file name, so adding one
@@ -56,6 +59,22 @@ export interface PortfolioProject {
     built: string[];
     /** What exists now. Quoted from the live site or countable from it. */
     outcome: string;
+  };
+
+  /**
+   * A film DCH produced for the client. The teaser is a short silent loop cut
+   * from it, small enough to ship with the site; the full film is too heavy
+   * for the bundle and plays from storage once `src` is set.
+   */
+  film?: {
+    /** One line shown under the film. */
+    caption: string;
+    poster: string;
+    teaser: { webm: string; mp4: string };
+    /** The full film (public Supabase Storage URL). Until set, only the teaser shows. */
+    src?: string;
+    /** Running time, e.g. "2:17". */
+    duration: string;
   };
 }
 
@@ -150,6 +169,12 @@ export const portfolioProjects: PortfolioProject[] = [
       // "2004 M00VE Challenge" is the event's name, not a year. It ran in one
       // location; the platform is built to scale to more cities.
       outcome: "Powered the 2004 M00VE Challenge, and built to scale to more cities.",
+    },
+    film: {
+      caption: "We also produced the event film for the 2004 M00VE Challenge.",
+      poster: fitnessReligionFilmPoster,
+      teaser: { webm: fitnessReligionTeaserWebm, mp4: fitnessReligionTeaserMp4 },
+      duration: "2:17",
     },
   },
   {

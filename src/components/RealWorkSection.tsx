@@ -1,7 +1,8 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Plus } from "lucide-react";
+import ProjectFilm from "@/components/ProjectFilm";
 import StoryImage from "@/components/StoryImage";
 import { usePortfolio } from "@/hooks/useSiteContent";
 import { cn } from "@/lib/utils";
@@ -47,6 +48,8 @@ const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const RealWorkSection = () => {
   const portfolioProjects = usePortfolio();
   const [open, setOpen] = useState<string | null>(STORIES[0].projectId);
+  // Films stay folded away until asked for, so the landing page never loads one unprompted.
+  const [filmOpen, setFilmOpen] = useState(false);
   const reduce = useReducedMotion();
   const baseId = useId();
 
@@ -151,6 +154,44 @@ const RealWorkSection = () => {
                             </a>
                           ) : null}
                         </div>
+
+                        {project?.film && (
+                          <div className="mt-8 border-t border-border/40 pt-6">
+                            <button
+                              type="button"
+                              aria-expanded={filmOpen}
+                              aria-controls={`${panelId}-film`}
+                              onClick={() => setFilmOpen(!filmOpen)}
+                              className="group inline-flex items-center gap-2 text-base font-semibold text-foreground/85 transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                            >
+                              {filmOpen ? "Hide the film" : `Watch the film we made for ${story.client}`}
+                              <ChevronDown
+                                aria-hidden="true"
+                                className={cn(
+                                  "h-5 w-5 text-secondary transition-transform duration-500",
+                                  filmOpen && "rotate-180"
+                                )}
+                              />
+                            </button>
+                            <AnimatePresence initial={false}>
+                              {filmOpen && (
+                                <motion.div
+                                  id={`${panelId}-film`}
+                                  key="film"
+                                  initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                                  animate={reduce ? { opacity: 1 } : { height: "auto", opacity: 1 }}
+                                  exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.55, ease: EASE }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="pt-6">
+                                    <ProjectFilm film={project.film} />
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   )}

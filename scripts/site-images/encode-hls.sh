@@ -4,10 +4,12 @@
 # on the lightest level and moves up or down with the visitor's connection,
 # so playback starts fast and keeps going on a weak network.
 #
-#   scripts/site-images/encode-hls.sh <source> <out dir> landscape|portrait [seconds]
+#   scripts/site-images/encode-hls.sh <source> <out dir> landscape|portrait|light [seconds]
 #
 # Landscape ladder: 270p 350k, 432p 800k, 720p 1600k.
 # Portrait ladder:  360x640 450k, 720x1280 1300k.
+# Light ladder:     360p 400k, 720p 900k (sources already encoded at a low
+#                   bitrate, where a heavier top level would only add size).
 # [seconds] trims the source (e.g. to drop an editor's end card).
 set -euo pipefail
 
@@ -17,6 +19,8 @@ trim=(); [ -n "$dur" ] && trim=(-t "$dur")
 
 if [ "$shape" = landscape ]; then
   sizes=("-2:270" "-2:432" "-2:720"); rates=(350k 800k 1600k)
+elif [ "$shape" = light ]; then
+  sizes=("-2:360" "-2:720"); rates=(400k 900k)
 else
   sizes=("360:-2" "720:-2"); rates=(450k 1300k)
 fi

@@ -49,7 +49,7 @@ const RealWorkSection = () => {
   const portfolioProjects = usePortfolio();
   const [open, setOpen] = useState<string | null>(STORIES[0].projectId);
   // Films stay folded away until asked for, so the landing page never loads one unprompted.
-  const [filmOpen, setFilmOpen] = useState(false);
+  const [filmOpen, setFilmOpen] = useState<string | null>(null);
   const reduce = useReducedMotion();
   const baseId = useId();
 
@@ -159,22 +159,26 @@ const RealWorkSection = () => {
                           <div className="mt-8 border-t border-border/40 pt-6">
                             <button
                               type="button"
-                              aria-expanded={filmOpen}
+                              aria-expanded={filmOpen === story.projectId}
                               aria-controls={`${panelId}-film`}
-                              onClick={() => setFilmOpen(!filmOpen)}
+                              onClick={() => setFilmOpen(filmOpen === story.projectId ? null : story.projectId)}
                               className="group inline-flex items-center gap-2 text-base font-semibold text-foreground/85 transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                             >
-                              {filmOpen ? "Hide the film" : `Watch the film we made for ${story.client}`}
+                              {filmOpen === story.projectId
+                                ? "Hide the film"
+                                : project.film.credit === "dch"
+                                  ? `Watch the film we made for ${story.client}`
+                                  : `Watch ${story.client}'s film`}
                               <ChevronDown
                                 aria-hidden="true"
                                 className={cn(
                                   "h-5 w-5 text-secondary transition-transform duration-500",
-                                  filmOpen && "rotate-180"
+                                  filmOpen === story.projectId && "rotate-180"
                                 )}
                               />
                             </button>
                             <AnimatePresence initial={false}>
-                              {filmOpen && (
+                              {filmOpen === story.projectId && (
                                 <motion.div
                                   id={`${panelId}-film`}
                                   key="film"

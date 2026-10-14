@@ -11,6 +11,9 @@ import fitnessReligionFilmPoster from "@/assets/portfolio/film/fitness-religion-
 import fitnessReligionTeaserMp4 from "@/assets/portfolio/film/fitness-religion-teaser.mp4";
 import fitnessReligionTeaserWebm from "@/assets/portfolio/film/fitness-religion-teaser.webm";
 import fitnessReligionReelPoster from "@/assets/portfolio/film/fitness-religion-reel-poster.webp";
+import vieraAmberFilmPoster from "@/assets/portfolio/film/viera-amber-poster.webp";
+import vieraAmberTeaserMp4 from "@/assets/portfolio/film/viera-amber-teaser.mp4";
+import vieraAmberTeaserWebm from "@/assets/portfolio/film/viera-amber-teaser.webm";
 
 /**
  * Screenshots not imported above are picked up by file name, so adding one
@@ -63,14 +66,19 @@ export interface PortfolioProject {
   };
 
   /**
-   * A film DCH produced for the client. The teaser is a short silent loop cut
+   * A film shown with the project: one DCH produced, or the client's own film
+   * that the site DCH built showcases (`credit` says which, and the labels
+   * follow it so DCH never claims a film it did not make). The teaser is a short silent loop cut
    * from it. The film and reel are adaptive streams (HLS master playlists in
    * public/media, made by scripts/site-images/encode-hls.sh) that only load
    * when the visitor presses play.
    */
   film?: {
+    credit: "dch" | "client";
     /** One line shown under the film. */
     caption: string;
+    /** Frame shape; defaults to 16:9. */
+    aspect?: "16/9" | "4/3";
     poster: string;
     teaser: { webm: string; mp4: string };
     /** The full film's HLS master playlist. Until set, only the teaser shows. */
@@ -99,6 +107,18 @@ export const portfolioProjects: PortfolioProject[] = [
         "Five businesses that would normally need five teams, five sites and five tech stacks, and would drift apart the moment they launched.",
       built: ["Shared identity layer", "Cross-brand routing", "One commerce spine"],
       outcome: "Five brands on one platform instead of five. One brand. Five expressions.",
+    },
+    // Viera Amber's own film, not a DCH production: it showcases their
+    // illustration work on the Illustration page of the site DCH built.
+    film: {
+      credit: "client",
+      caption:
+        "Time Will Tell, Viera Amber's own illustration film, showcased on the Illustration page of the site we built.",
+      aspect: "4/3",
+      poster: vieraAmberFilmPoster,
+      teaser: { webm: vieraAmberTeaserWebm, mp4: vieraAmberTeaserMp4 },
+      duration: "1:03",
+      src: "/media/viera-amber/film/master.m3u8",
     },
   },
   {
@@ -175,6 +195,7 @@ export const portfolioProjects: PortfolioProject[] = [
       outcome: "Powered the 2004 M00VE Challenge, and built to scale to more cities.",
     },
     film: {
+      credit: "dch",
       caption: "We also produced the event film and the 2004 Steps reel for the 2004 M00VE Challenge.",
       poster: fitnessReligionFilmPoster,
       teaser: { webm: fitnessReligionTeaserWebm, mp4: fitnessReligionTeaserMp4 },

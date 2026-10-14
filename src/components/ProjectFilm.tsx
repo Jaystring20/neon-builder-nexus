@@ -78,7 +78,7 @@ const StreamVideo = ({
 };
 
 /**
- * A film we produced for the client: a silent teaser loop until the visitor
+ * A project's film (ours, or the client's own: see `film.credit`): a silent teaser loop until the visitor
  * asks for the full film, which then streams in place with sound and
  * controls, with the vertical reel beside it when there is one. With reduced
  * motion the teaser does not autoplay; the poster stands in.
@@ -86,12 +86,14 @@ const StreamVideo = ({
 const ProjectFilm = ({ film }: { film: NonNullable<PortfolioProject["film"]> }) => {
   const reduce = useReducedMotion();
   const [playing, setPlaying] = useState(false);
+  // A 4:3 film at full column width would be taller than the screen.
+  const frame = film.aspect === "4/3" ? "aspect-[4/3] md:max-w-3xl" : "aspect-video";
 
   return (
     <figure>
       {/* The reel column is sized so a 9:16 reel matches the 16:9 film's height. */}
       <div className={film.reel ? "grid gap-4 md:grid-cols-[1fr_0.3164fr]" : undefined}>
-        <div className="relative aspect-video overflow-hidden border border-foreground/[0.08] bg-card/40">
+        <div className={`relative overflow-hidden border border-foreground/[0.08] bg-card/40 ${frame}`}>
           {playing && film.src ? (
             <StreamVideo
               src={film.src}

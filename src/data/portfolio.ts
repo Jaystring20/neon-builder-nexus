@@ -10,8 +10,6 @@ import digitechImg from "@/assets/portfolio/digitech-strategist.webp";
 import fitnessReligionFilmPoster from "@/assets/portfolio/film/fitness-religion-poster.webp";
 import fitnessReligionTeaserMp4 from "@/assets/portfolio/film/fitness-religion-teaser.mp4";
 import fitnessReligionTeaserWebm from "@/assets/portfolio/film/fitness-religion-teaser.webm";
-import fitnessReligionFilm from "@/assets/portfolio/film/fitness-religion-film.mp4";
-import fitnessReligionReel from "@/assets/portfolio/film/fitness-religion-reel.mp4";
 import fitnessReligionReelPoster from "@/assets/portfolio/film/fitness-religion-reel-poster.webp";
 
 /**
@@ -66,18 +64,20 @@ export interface PortfolioProject {
 
   /**
    * A film DCH produced for the client. The teaser is a short silent loop cut
-   * from it. The full film only downloads when the visitor presses play.
+   * from it. The film and reel are adaptive streams (HLS master playlists in
+   * public/media, made by scripts/site-images/encode-hls.sh) that only load
+   * when the visitor presses play.
    */
   film?: {
     /** One line shown under the film. */
     caption: string;
     poster: string;
     teaser: { webm: string; mp4: string };
-    /** The full film. Until set, only the teaser shows. */
+    /** The full film's HLS master playlist. Until set, only the teaser shows. */
     src?: string;
     /** Running time, e.g. "2:17". */
     duration: string;
-    /** A vertical social reel shown beside the film. Small enough to ship with the site. */
+    /** A vertical social reel shown beside the film (HLS master playlist). */
     reel?: { src: string; poster: string; label: string };
   };
 }
@@ -179,9 +179,9 @@ export const portfolioProjects: PortfolioProject[] = [
       poster: fitnessReligionFilmPoster,
       teaser: { webm: fitnessReligionTeaserWebm, mp4: fitnessReligionTeaserMp4 },
       duration: "2:17",
-      src: fitnessReligionFilm,
+      src: "/media/fitness-religion/film/master.m3u8",
       reel: {
-        src: fitnessReligionReel,
+        src: "/media/fitness-religion/reel/master.m3u8",
         poster: fitnessReligionReelPoster,
         label: "2004 Steps reel (0:37)",
       },

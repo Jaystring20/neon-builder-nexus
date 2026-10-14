@@ -10,6 +10,22 @@
       "destination": "/index.html"
     }
   ],
+  "headers": [
+    {
+      "source": "/media/(.*)\\.m3u8",
+      "headers": [
+        { "key": "Content-Type", "value": "application/vnd.apple.mpegurl" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/media/(.*)\\.ts",
+      "headers": [
+        { "key": "Content-Type", "value": "video/mp2t" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/send-scheduled-emails",

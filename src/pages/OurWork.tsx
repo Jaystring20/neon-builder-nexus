@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Play } from "lucide-react";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -52,6 +53,80 @@ const Screenshot = ({
         )}
       </span>
     </Frame>
+  );
+};
+
+// A film we produced for the client: a silent teaser loop until the visitor
+// asks for the full film, which then plays in place with sound and controls.
+// With reduced motion the teaser does not autoplay; the poster stands in.
+const Film = ({ project }: { project: PortfolioProject }) => {
+  const film = project.film!;
+  const reduce = useReducedMotion();
+  const [playing, setPlaying] = useState(false);
+
+  return (
+    <figure className="md:col-span-2">
+      {/* The reel column is sized so a 9:16 reel matches the 16:9 film's height. */}
+      <div className={film.reel ? "grid gap-4 md:grid-cols-[1fr_0.3164fr]" : undefined}>
+        <div className="relative aspect-video overflow-hidden border border-foreground/[0.08] bg-card/40">
+          {playing && film.src ? (
+            <video
+              src={film.src}
+              poster={film.poster}
+              controls
+              autoPlay
+              playsInline
+              className="absolute inset-0 h-full w-full bg-black object-contain"
+            >
+              Your browser can&rsquo;t play this video.
+            </video>
+          ) : (
+            <>
+              <video
+                poster={film.poster}
+                autoPlay={!reduce}
+                muted
+                loop
+                playsInline
+                preload={reduce ? "none" : "metadata"}
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover"
+              >
+                <source src={film.teaser.webm} type="video/webm" />
+                <source src={film.teaser.mp4} type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+              {film.src && (
+                <button
+                  type="button"
+                  onClick={() => setPlaying(true)}
+                  className="absolute bottom-3 left-3 inline-flex items-center gap-2 bg-secondary px-4 py-2.5 text-sm sm:bottom-5 sm:left-5 sm:px-5 sm:py-3 font-semibold text-secondary-foreground transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <Play className="h-4 w-4" aria-hidden="true" />
+                  Watch the film ({film.duration})
+                </button>
+              )}
+            </>
+          )}
+        </div>
+        {film.reel && (
+          <div className="relative mx-auto aspect-[9/16] w-3/5 overflow-hidden border border-foreground/[0.08] bg-card/40 md:aspect-auto md:w-full">
+            <video
+              src={film.reel.src}
+              poster={film.reel.poster}
+              controls
+              playsInline
+              preload="none"
+              aria-label={film.reel.label}
+              className="absolute inset-0 h-full w-full bg-black object-cover"
+            >
+              Your browser can&rsquo;t play this video.
+            </video>
+          </div>
+        )}
+      </div>
+      <figcaption className="mt-4 text-base text-muted-foreground">{film.caption}</figcaption>
+    </figure>
   );
 };
 
@@ -126,6 +201,7 @@ const OurWork = () => {
                     {project.story!.outcome}
                   </p>
                 </div>
+                {project.film && <Film project={project} />}
               </motion.article>
             ))}
           </div>

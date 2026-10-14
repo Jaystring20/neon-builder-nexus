@@ -10,6 +10,8 @@ import digitechImg from "@/assets/portfolio/digitech-strategist.webp";
 import fitnessReligionFilmPoster from "@/assets/portfolio/film/fitness-religion-poster.webp";
 import fitnessReligionTeaserMp4 from "@/assets/portfolio/film/fitness-religion-teaser.mp4";
 import fitnessReligionTeaserWebm from "@/assets/portfolio/film/fitness-religion-teaser.webm";
+import fitnessReligionReel from "@/assets/portfolio/film/fitness-religion-reel.mp4";
+import fitnessReligionReelPoster from "@/assets/portfolio/film/fitness-religion-reel-poster.webp";
 
 /**
  * Screenshots not imported above are picked up by file name, so adding one
@@ -75,6 +77,8 @@ export interface PortfolioProject {
     src?: string;
     /** Running time, e.g. "2:17". */
     duration: string;
+    /** A vertical social reel shown beside the film. Small enough to ship with the site. */
+    reel?: { src: string; poster: string; label: string };
   };
 }
 
@@ -171,10 +175,15 @@ export const portfolioProjects: PortfolioProject[] = [
       outcome: "Powered the 2004 M00VE Challenge, and built to scale to more cities.",
     },
     film: {
-      caption: "We also produced the event film for the 2004 M00VE Challenge.",
+      caption: "We also produced the event film and the 2004 Steps reel for the 2004 M00VE Challenge.",
       poster: fitnessReligionFilmPoster,
       teaser: { webm: fitnessReligionTeaserWebm, mp4: fitnessReligionTeaserMp4 },
       duration: "2:17",
+      reel: {
+        src: fitnessReligionReel,
+        poster: fitnessReligionReelPoster,
+        label: "2004 Steps reel (0:37)",
+      },
     },
   },
   {

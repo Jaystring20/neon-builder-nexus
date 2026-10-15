@@ -111,6 +111,8 @@ const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "lead.assigned_to": (d) => (d.to ? "assigned the follow-up" : "unassigned the follow-up"),
   "note.add": () => "added a note",
   "diagnostic.to_lead": () => "added it to the leads pipeline",
+  "diagnostic.deck_sent": (d) => `sent the deck ${d.file} to ${d.to}`,
+  "lead.deck_sent": (d) => `sent the deck ${d.file}`,
   "lead.created_from_diagnostic": () => "created this lead from a diagnostic",
   "team.add": (d) => `added ${d.email} to the team`,
   "team.update": (d) => `updated ${d.email}${d.active === false ? " (access removed)" : ""}`,

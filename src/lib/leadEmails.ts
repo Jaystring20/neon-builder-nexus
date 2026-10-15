@@ -189,6 +189,35 @@ export function weeklyDigestEmail(leads: DigestLead[], discoveries: DigestDiscov
   };
 }
 
+/**
+ * A diagnostic deck, sent by a team member from the dashboard. The message is
+ * written (and can be edited) in the dashboard, so the preview there is
+ * exactly what the client reads; this only lays it out and signs it.
+ */
+export function deckEmail(input: {
+  to: string;
+  subject: string;
+  message: string;
+  sender: { name: string; email: string };
+  file: { filename: string; content: string };
+}): EmailPayload {
+  const paragraphs = input.message
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p style="margin:0 0 16px;line-height:1.6">${esc(p).replace(/\n/g, "<br>")}</p>`)
+    .join("");
+  return {
+    to: input.to,
+    replyTo: input.sender.email,
+    subject: input.subject,
+    attachments: [input.file],
+    html: shell(`${paragraphs}
+<p style="margin:8px 0 24px">${button(`${SITE}/book`, "Book a discovery call")}</p>
+<p style="margin:0;font-size:14px;color:#4b5563">${esc(input.sender.name)}<br>Digital Creatives Hub</p>`),
+  };
+}
+
 /** The one-time sign-in link for the admin dashboard. */
 export function adminLoginEmail(to: string, name: string, link: string, minutes: number): EmailPayload {
   return {

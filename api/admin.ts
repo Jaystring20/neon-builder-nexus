@@ -16,7 +16,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabase, missingServerEnv } from "../src/lib/supabase.server.js";
 import { sendEmailViaResendDetailed, teamCopy } from "../src/lib/resend.v3.js";
-import { adminLoginEmail } from "../src/lib/leadEmails.js";
+import { adminLoginEmail, deckEmail } from "../src/lib/leadEmails.js";
 import {
   LINK_MINUTES,
   SESSION_COOKIE,
@@ -316,11 +316,15 @@ async function diagnosticDetail(ctx: Ctx) {
 /** Put a diagnostic into the leads pipeline, so it's followed up like any call request. */
 async function diagnosticToLead(ctx: Ctx) {
   const user = allow(await currentUser(ctx), "leads.write");
-  const { db, body } = ctx;
-  const id = str(body.id, 40);
+  const id = str(ctx.body.id, 40);
   if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown result.");
-  const existing = must(await db.from("leads").select("id").eq("discovery_id", id).maybeSingle()) as { id: string } | null;
-  if (existing) return { leadId: existing.id };
+  return { leadId: (await ensureLead(ctx.db, user, id)).id };
+}
+
+/** The diagnostic's lead, creating it first if it isn't in the pipeline yet. */
+async function ensureLead(db: SupabaseClient, user: AdminUser, id: string): Promise<{ id: string; status: string }> {
+  const existing = must(await db.from("leads").select("id,status").eq("discovery_id", id).maybeSingle()) as { id: string; status: string } | null;
+  if (existing) return existing;
 
   const d = must(await db.from("discovery_results").select("id,email,program,answers").eq("id", id).maybeSingle()) as
     | { id: string; email: string; program: string; answers: Record<string, unknown> }
@@ -352,7 +356,94 @@ async function diagnosticToLead(ctx: Ctx) {
   ) as { id: string };
   await log(db, user, "diagnostic.to_lead", "diagnostic", d.id, { lead_id: lead.id });
   await log(db, user, "lead.created_from_diagnostic", "lead", lead.id, { discovery_id: d.id });
-  return { leadId: lead.id };
+  return { id: lead.id, status: "new" };
+}
+
+// ---------------------------------------------------------------- decks
+
+/**
+ * Decks made for a client (from NotebookLM or by hand) go out from the
+ * dashboard as a PDF attachment. The file is uploaded to a private bucket
+ * first, which keeps it clear of the request size limit and keeps a copy of
+ * exactly what was sent.
+ */
+const DECK_BUCKET = "client-decks";
+const DECK_MAX_BYTES = 20 * 1024 * 1024; // Resend allows 40 MB after base64.
+
+async function ensureDeckBucket(db: SupabaseClient) {
+  const { error } = await db.storage.getBucket(DECK_BUCKET);
+  if (!error) return;
+  const made = await db.storage.createBucket(DECK_BUCKET, { public: false, fileSizeLimit: DECK_MAX_BYTES, allowedMimeTypes: ["application/pdf"] });
+  if (made.error && !/exists/i.test(made.error.message)) throw new Error(made.error.message);
+}
+
+async function deckUploadUrl(ctx: Ctx) {
+  allow(await currentUser(ctx), "leads.write");
+  const id = str(ctx.body.id, 40);
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown result.");
+  if (ctx.body.contentType !== "application/pdf") throw new HttpError(400, "Upload the deck as a PDF.");
+  if (typeof ctx.body.size !== "number" || ctx.body.size > DECK_MAX_BYTES) throw new HttpError(400, "The PDF is over 20 MB. Export a smaller one.");
+  const found = must(await ctx.db.from("discovery_results").select("id").eq("id", id).maybeSingle());
+  if (!found) throw new HttpError(404, "Result not found.");
+  await ensureDeckBucket(ctx.db);
+  const path = `${id}/${Date.now()}-${newLoginToken().slice(0, 10)}.pdf`;
+  const { data, error } = await ctx.db.storage.from(DECK_BUCKET).createSignedUploadUrl(path);
+  if (error || !data) throw new Error(error?.message ?? "No upload link");
+  return { uploadUrl: data.signedUrl, path };
+}
+
+async function deckSend(ctx: Ctx) {
+  const user = allow(await currentUser(ctx), "leads.write");
+  const { db, body } = ctx;
+  const id = str(body.id, 40);
+  const path = str(body.path, 200);
+  const subject = str(body.subject, 200);
+  const message = str(body.message, 5000);
+  const filename = (str(body.filename, 120).replace(/[^\w .()-]/g, "").replace(/\.pdf$/i, "") || "Growth Diagnostic") + ".pdf";
+  if (!UUID_RE.test(id)) throw new HttpError(400, "Unknown result.");
+  // Only a file uploaded for this diagnostic can go to this client.
+  if (!new RegExp(`^${id}/\\d+-[\\w-]+\\.pdf$`).test(path)) throw new HttpError(400, "Upload the deck again.");
+  if (!subject || !message) throw new HttpError(400, "Add a subject and a message.");
+
+  const d = must(await db.from("discovery_results").select("id,email").eq("id", id).maybeSingle()) as { id: string; email: string } | null;
+  if (!d) throw new HttpError(404, "Result not found.");
+  const before = must(
+    await db.from("admin_activity").select("created_at").eq("entity_type", "diagnostic").eq("entity_id", id).eq("action", "diagnostic.deck_sent").limit(1),
+  ) as unknown[];
+  if (before.length && body.again !== true) throw new HttpError(409, "A deck has already gone to this client. Confirm to send another.");
+
+  const { data: blob, error } = await db.storage.from(DECK_BUCKET).download(path);
+  if (error || !blob) throw new HttpError(400, "The upload wasn't found. Choose the file again.");
+  const bytes = Buffer.from(await blob.arrayBuffer());
+  if (bytes.length > DECK_MAX_BYTES) throw new HttpError(400, "The PDF is over 20 MB. Export a smaller one.");
+  if (bytes.subarray(0, 5).toString("latin1") !== "%PDF-") throw new HttpError(400, "That file isn't a PDF.");
+
+  const sent = await sendEmailViaResendDetailed({
+    ...deckEmail({ to: d.email, subject, message, sender: { name: user.name, email: user.email }, file: { filename, content: bytes.toString("base64") } }),
+    bcc: teamCopy(),
+  });
+  if (!sent.ok) {
+    console.error("deck not sent:", sent.error);
+    throw new HttpError(502, "The email didn't send. Nothing went out; please try again.");
+  }
+
+  // The deck is the personal follow-up now, so the generic ones still queued are dropped.
+  const { data: dropped } = await db
+    .from("scheduled_emails")
+    .delete()
+    .eq("email", d.email)
+    .eq("sent", false)
+    .in("email_type", ["email_2", "email_3"])
+    .select("id");
+  await log(db, user, "diagnostic.deck_sent", "diagnostic", id, { to: d.email, file: filename, path, bytes: bytes.length, subject, followups_cancelled: dropped?.length ?? 0 });
+
+  const lead = await ensureLead(db, user, id);
+  await log(db, user, "lead.deck_sent", "lead", lead.id, { file: filename, discovery_id: id });
+  if (lead.status === "new") {
+    must(await db.from("leads").update({ status: "contacted", updated_at: new Date().toISOString() }).eq("id", lead.id));
+    await log(db, user, "lead.status", "lead", lead.id, { from: "new", to: "contacted" });
+  }
+  return { ok: true, to: d.email, followupsCancelled: dropped?.length ?? 0, leadId: lead.id };
 }
 
 // ---------------------------------------------------------------- team
@@ -675,6 +766,8 @@ const OPS: Record<string, { method: "GET" | "POST"; run: (ctx: Ctx) => unknown }
   diagnostics: { method: "GET", run: diagnosticsList },
   diagnostic: { method: "GET", run: diagnosticDetail },
   "diagnostic-to-lead": { method: "POST", run: diagnosticToLead },
+  "deck-upload-url": { method: "POST", run: deckUploadUrl },
+  "deck-send": { method: "POST", run: deckSend },
   team: { method: "GET", run: teamList },
   "team-save": { method: "POST", run: teamSave },
   content: { method: "GET", run: contentGet },

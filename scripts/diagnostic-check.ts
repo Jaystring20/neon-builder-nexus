@@ -19,6 +19,8 @@ interface Case {
   gap?: "expertise" | "management" | "leadership";
   tier?: TierKey;
   confidence?: "low";
+  /** Words the first move must contain. */
+  move?: string;
 }
 
 // Middle-of-the-road capabilities, so each case only states what matters to it.
@@ -158,6 +160,29 @@ const cases: Case[] = [
     expect: "professional_service",
     tier: "doneForYou",
   },
+  {
+    who: "21. Funmimo: AI exam prep, product works",
+    answers: {
+      q0_type: "startup",
+      q1_brings_you: "scaling",
+      q2_vision: "An AI-powered exam prep platform helping Nigerian students pass WAEC, JAMB and SAT",
+      q3_values: ["Impact", "Growth"],
+      q4_expertise: 4,
+      q4_leadership: 4,
+      q5_pressure: "80_hours",
+      q6_model: "volume",
+      q7_revenue: "subscription",
+      q9_challenge: "customers",
+    },
+    expect: "startup",
+    move: "distribution is now the job",
+  },
+  {
+    who: "22. Pre-launch app, just starting",
+    answers: { q0_type: "startup", q1_brings_you: "starting", q6_model: "product", q7_revenue: "unsure", q9_challenge: "customers" },
+    expect: "startup",
+    move: "Talk to ten target users",
+  },
 ];
 
 let failed = 0;
@@ -171,6 +196,8 @@ for (const c of cases) {
   if (c.gap && r.weakest?.capability !== c.gap) problems.push(`gap ${r.weakest?.capability ?? "none"}, expected ${c.gap}`);
   if (c.tier && offer.bestTier !== c.tier) problems.push(`tier ${offer.bestTier}, expected ${c.tier}`);
   if (c.confidence && r.confidence !== c.confidence) problems.push(`confidence ${r.confidence}, expected ${c.confidence}`);
+  if (c.move && !buildReading(r, answers as Record<string, unknown>).firstMove.includes(c.move))
+    problems.push(`first move lacks "${c.move}"`);
   const scores = Object.entries(r.scores)
     .filter(([, n]) => n > 0)
     .map(([s, n]) => `${s} ${n}`)

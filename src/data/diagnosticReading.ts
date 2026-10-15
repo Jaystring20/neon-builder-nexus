@@ -2,8 +2,8 @@
  * Discovery answers + archetype → the personal part of the result.
  *
  * segmentLogic.ts decides who the visitor is; this decides what to say to
- * them: one first move written for their archetype and their biggest
- * obstacle, where DCH comes in, the tensions in their own answers, a piece
+ * them: one first move written for their archetype, their biggest obstacle
+ * and their stage, where DCH comes in, the tensions in their own answers, a piece
  * of shipped work like theirs, and their 90-day win reflected back.
  *
  * Shared by the result screen and the first email, so both say the same
@@ -118,6 +118,58 @@ const FIRST_MOVES: Record<string, Record<string, string>> = {
   },
 };
 
+/**
+ * Where the stage changes the advice, it overrides the move above. The same
+ * obstacle needs opposite advice at different stages: a startup still finding
+ * fit should talk to users before building more, while one whose product
+ * works has a distribution problem. Only the combinations where the advice
+ * genuinely differs are listed; everywhere else the move above already fits.
+ */
+type StageGroup = "start" | "build" | "grow";
+
+const stageGroup = (stage: unknown): StageGroup =>
+  stage === "scaling" || stage === "team" ? "grow" : stage === "building" ? "build" : "start";
+
+const STAGE_MOVES: Record<string, Partial<Record<StageGroup, Record<string, string>>>> = {
+  msme_value: {
+    start: {
+      customers:
+        "Before chasing anyone, name the one customer you'd most love to serve, and ask five people like them what they'd pay for. Build your first offer around the answers.",
+    },
+  },
+  msme_volume: {
+    start: {
+      customers:
+        "Prove people will buy before you buy stock. Pre-sell a small batch through one channel and watch what actually moves.",
+    },
+  },
+  startup: {
+    start: {
+      team: "Before you hire, find the co-founder or first partner who covers what you can't. Early on, one committed person beats three hires.",
+      cash: "Fund the next milestone, not the whole vision. Decide the one thing you need to prove, and raise or earn exactly enough to prove it.",
+    },
+    grow: {
+      customers:
+        "Your product works; distribution is now the job. Pick one channel you can own, such as partnerships or referrals, work out what it costs to win one customer there, and repeat it before you add paid ads.",
+      model:
+        "Look closely at who already pays, and why. Double down on that group and price for them before chasing new segments.",
+    },
+  },
+  professional_service: {
+    start: {
+      customers:
+        "Your first clients come from people who already trust you. List twenty people in your network and tell each one exactly what you now do.",
+    },
+  },
+  development_org: {
+    start: {
+      model:
+        "Run one small pilot with the people you want to serve, and measure what changes. Evidence from a pilot opens the first funding conversations.",
+      cash: "Start with funders who back early pilots, such as small grants, foundations and local sponsors, before approaching the large institutions.",
+    },
+  },
+};
+
 /** Fallbacks when an obstacle wasn't answered, by archetype. */
 const DEFAULT_MOVE: Record<string, string> = {
   msme_value: FIRST_MOVES.msme_value.customers,
@@ -180,14 +232,15 @@ function findTensions(r: SegmentResult, a: Record<string, unknown>): string[] {
   return out.slice(0, 2);
 }
 
-/** The first move written for this archetype and obstacle, or null if none is. */
-export function firstMoveFor(segment: string, challenge: string): string | null {
-  return FIRST_MOVES[segment]?.[challenge] ?? null;
+/** The first move written for this archetype, obstacle and stage, or null if none is. */
+export function firstMoveFor(segment: string, challenge: string, stage?: unknown): string | null {
+  return STAGE_MOVES[segment]?.[stageGroup(stage)]?.[challenge] ?? FIRST_MOVES[segment]?.[challenge] ?? null;
 }
 
 export function buildReading(r: SegmentResult, answers: Record<string, unknown>): Reading {
   const challenge = answers.q9_challenge === "corporate_access" ? "customers" : (answers.q9_challenge as string);
-  const firstMove = firstMoveFor(r.segment, challenge) ?? DEFAULT_MOVE[r.segment] ?? DEFAULT_MOVE.msme_value;
+  const firstMove =
+    firstMoveFor(r.segment, challenge, answers.q1_brings_you) ?? DEFAULT_MOVE[r.segment] ?? DEFAULT_MOVE.msme_value;
 
   const practice = challengePractice(r.segment, { ...answers, q9_challenge: challenge });
   const dch = practice && PRACTICE_LINE[practice] ? { practice, ...PRACTICE_LINE[practice] } : null;

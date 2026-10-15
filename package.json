@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "node scripts/check-undefined-identifiers.mjs && vite build",
     "check:identifiers": "node scripts/check-undefined-identifiers.mjs",
+    "check:diagnostic": "tsx scripts/diagnostic-check.ts",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

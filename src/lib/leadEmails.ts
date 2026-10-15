@@ -107,6 +107,7 @@ export function discoveryAlertEmail(
   result: { segment: string; program: string; capabilityGap: string | null },
   answers: Record<string, unknown>,
   offer?: string,
+  reading?: { name?: string; archetype?: string; firstMove?: string; tensions?: string[] },
 ): EmailPayload {
   const text = (k: string) => (typeof answers[k] === "string" ? (answers[k] as string) : undefined);
   return {
@@ -115,14 +116,17 @@ export function discoveryAlertEmail(
     subject: `New discovery result: ${email} (${result.program})`,
     html: shell(`
 <p style="margin:0;font-size:13px;color:#0f766e;font-weight:600">New lead · Discovery form</p>
-<h1 style="margin:8px 0 20px;font-size:22px">${esc(email)}</h1>
+<h1 style="margin:8px 0 20px;font-size:22px">${esc(reading?.name ? `${reading.name} · ${email}` : email)}</h1>
 ${rows([
+  ["Archetype", reading?.archetype],
   ["Result", `${result.program} (${result.segment})`],
   ["Recommended", offer || undefined],
   ["Building", text("q2_vision")],
   ["Edge", text("q8_advantage")],
   ["90-day win", text("q10_priority")],
   ["Gap flagged", result.capabilityGap ?? undefined],
+  ["Tensions", reading?.tensions?.length ? reading.tensions.join(" ") : undefined],
+  ["First move we gave", reading?.firstMove],
 ])}
 <p style="margin:24px 0 0;font-size:13px;color:#6b7280">They received the emailed breakdown. If they book, it comes through the discovery-call event in Calendly.</p>`),
   };

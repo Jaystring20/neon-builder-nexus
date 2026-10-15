@@ -1,326 +1,378 @@
 /**
- * Segmentation Logic for Discovery Pathway
- * Maps founder answers → business model → program recommendation
+ * Discovery answers → the founder archetype.
  *
- * This is the business logic that makes personalization work.
- * Every founder gets exactly one segment, one program, and one warning (if applicable).
+ * Grounded in the DCH company brief: five business archetypes, plus two
+ * paths for visitors who aren't running a business model (schools and
+ * individuals building a career).
+ *
+ * Scoring is by weight, not first-match rules. Every answer adds points to
+ * the archetypes it is evidence for; the highest total wins, the runner-up is
+ * reported when it is close, and the size of the lead sets the confidence.
+ * No single answer can override the rest: valuing "Impact" makes a business
+ * a little more Changemaker, it does not turn it into an NGO.
+ *
+ * The expected result for twenty realistic visitors is pinned in
+ * scripts/diagnostic-check.ts (npm run check:diagnostic). Change a weight,
+ * run it.
  */
 
 export interface DiscoveryAnswers {
-  // Foundation (Q1-Q5)
-  q1_brings_you: string; // "starting" | "building" | "scaling" | "team" | "confused"
-  q2_vision: string; // free text
-  q3_values: string[]; // array of 1-3 values
-  q4_expertise: number; // 1-5
-  q4_management: number; // 1-5
-  q4_leadership: number; // 1-5
-  q5_pressure: string; // "balance" | "real_but_bounded" | "80_hours" | "mission"
-
-  // Business Model (Q6-Q8)
-  q6_scale: string; // "local" | "national" | "international"
-  q7_revenue: string; // "project" | "subscription" | "transaction" | "upfront" | "unsure"
-  q8_advantage: string; // free text
-
-  // Gaps (Q9-Q10)
-  q9_challenge: string; // "customers" | "team" | "model" | "scaling" | "corporate_access" | "cash" | "motivation"
-  q10_priority: string; // free text
+  q0_type?: string; // VisitorType, see discoveryQuestions.ts
+  q1_brings_you?: string; // "starting" | "building" | "scaling" | "team" | "confused"
+  q2_vision?: string; // free text
+  q3_values?: string[]; // 1 to 3 values
+  q4_expertise?: number; // 1-5
+  q4_management?: number; // 1-5
+  q4_leadership?: number; // 1-5
+  q5_pressure?: string; // "balance" | "real_but_bounded" | "80_hours" | "mission"
+  q6_scale?: string; // "local" | "national" | "international"
+  q6_model?: string; // "quality" | "volume" | "product" | "expertise" | "cause"
+  q7_revenue?: string; // "project" | "subscription" | "transaction" | "upfront" | "unsure"
+  q8_advantage?: string; // free text
+  q9_challenge?: string; // see discoveryQuestions.ts, per audience
+  q10_priority?: string; // free text
 }
 
+export type BusinessSegment =
+  | "msme_value"
+  | "msme_volume"
+  | "startup"
+  | "professional_service"
+  | "development_org";
+
+export type Segment = BusinessSegment | "education" | "individual";
+
+export type Confidence = "high" | "medium" | "low";
+
+export type Capability = "expertise" | "management" | "leadership";
+
 export interface SegmentResult {
-  segment: "msme_value" | "msme_volume" | "startup" | "professional_service" | "development_org" | "unclear";
-  program: string; // Program name
-  playbookSection: number; // Section 3, 4, 5, or 6
+  segment: Segment;
+  program: string; // Programme (or path) name
+  playbookSection: number;
   playbookTitle: string;
-  capabilityGap: string | null; // Warning if they're pursuing a model they're not equipped for
+  /** A close second archetype, shown as "with X traits". Null when the lead is clear. */
+  secondary: BusinessSegment | null;
+  confidence: Confidence;
+  /** The capability furthest below what this archetype needs, if any. */
+  weakest: { capability: Capability; score: number; needed: number } | null;
+  /** Plain-language warning built from `weakest`. */
+  capabilityGap: string | null;
+  /** Points per business archetype, for the admin view and the checks. */
+  scores: Record<BusinessSegment, number>;
   emailPersonalization: {
-    // Used in Email 2 and 3
     modelDescription: string;
-    problemStatement: string; // The real constraint they're facing
-    programFit: string; // Why THIS program solves their gap
+    problemStatement: string;
+    programFit: string;
     callToAction: string;
   };
 }
 
 /**
- * CAPABILITY REQUIREMENTS BY MODEL
- * These are the minimum founder capabilities each model demands.
- * If a founder scores below these, they get a warning.
+ * The minimum founder capabilities each model demands (1-5). A founder below
+ * one gets a single, specific warning: the furthest gap, not a list.
  */
-const CAPABILITY_MINIMUMS = {
+const CAPABILITY_MINIMUMS: Record<BusinessSegment, Record<Capability, number>> = {
   msme_value: { expertise: 3, management: 2, leadership: 2 },
-  msme_volume: { expertise: 2, management: 3, leadership: 1 },
-  startup: { expertise: 3, management: 3, leadership: 4 }, // Leadership is strict
+  msme_volume: { expertise: 2, management: 3, leadership: 2 },
+  startup: { expertise: 3, management: 3, leadership: 4 },
   professional_service: { expertise: 4, management: 2, leadership: 3 },
   development_org: { expertise: 3, management: 2, leadership: 3 },
 };
 
-/**
- * SEGMENT DEFINITIONS
- * Each segment captures a distinct founder archetype and maps to a program
- */
-const SEGMENTS = {
+const SEGMENTS: Record<Segment, Omit<SegmentResult["emailPersonalization"], never> & {
+  program: string;
+  playbookSection: number;
+  playbookTitle: string;
+}> = {
   msme_value: {
     program: "MSME Mastery: Premium Positioning",
     playbookSection: 3,
     playbookTitle: "The MSME Playbook",
-    description:
-      "You're building a premium business. Few customers, high margin, obsessive quality. Your advantage is unique access or a defensible recipe. You don't need venture scale. You need to own your market.",
+    modelDescription:
+      "You're building on value: fewer customers, higher margins, and quality people can feel. You don't need venture scale. You need to own your market.",
     problemStatement:
-      "Most Value MSME founders compete on price because they haven't articulated their true advantage. You have one, and we help you use it.",
+      "Most value-led businesses end up competing on price because they haven't put their real advantage into words. You have one, and we help you use it.",
     programFit:
-      "This program teaches you to: (1) Identify & amplify your defensible advantage, (2) Build a brand that commands premium pricing, (3) Scale to 10x demand without diluting quality.",
+      "This programme helps you name and amplify your advantage, build a brand that commands premium pricing, and grow demand without diluting quality.",
     callToAction: "Book a call to discuss your unfair advantage.",
   },
   msme_volume: {
     program: "MSME Mastery: Market Penetration",
     playbookSection: 3,
     playbookTitle: "The MSME Playbook",
-    description:
-      "You're building a volume business. Many customers, low margin per unit, relentless efficiency. You win on speed and scale, not on what makes you special.",
+    modelDescription:
+      "You're building on volume: many customers, thin margins, and efficiency that compounds. You win on reach, speed and systems.",
     problemStatement:
-      "Volume MSMEs fail when founders try to build quality-first. You're competing on efficiency, not craftsmanship. Your challenge is supply chain, not storytelling.",
+      "Volume businesses stall when every new customer adds work instead of profit. Your challenge is systems and supply, not storytelling.",
     programFit:
-      "This program teaches you to: (1) Build repeatable, scalable operations, (2) Create cost advantages competitors can't match, (3) Expand distribution without losing margin.",
-    callToAction: "Book a call to map your supply chain roadmap.",
+      "This programme helps you build repeatable operations, create cost advantages competitors can't match, and widen distribution without losing margin.",
+    callToAction: "Book a call to map your growth engine.",
   },
   startup: {
     program: "Startup Strategy Intensive",
     playbookSection: 4,
     playbookTitle: "The Startup Playbook",
-    description:
-      "You're building for venture scale. Problem-focused, network-effect driven, fast growth required. You're solving something at scale that incumbents won't touch.",
+    modelDescription:
+      "You're building for scale: a problem big enough that growth comes first and the model has to work for thousands, not dozens.",
     problemStatement:
-      "Most startup founders confuse 'product-market fit' with 'ship fast and iterate.' You need both, but the order matters. You also need to solve for team capacity at every stage.",
+      "Startups confuse moving fast with moving forward. You need product-market fit before scaling spend, and a team that can keep up at every stage.",
     programFit:
-      "This program teaches you to: (1) Find product-market fit before scaling spend, (2) Build a team that scales with your growth curve, (3) Recognize when to pivot vs. persevere.",
+      "This programme takes you from a strategy sprint to product-market fit, a team that scales with you, and the decision of when to pivot and when to persevere.",
     callToAction: "Book a call to lock in your first 90 days.",
   },
   professional_service: {
     program: "Professional Services Scaling",
     playbookSection: 5,
     playbookTitle: "The Professional Service Playbook",
-    description:
-      "You're licensing your expertise. Credentialed, relationship-based, revenue is often capped by hours you sell. Your moat is reputation, not product.",
+    modelDescription:
+      "You're selling expertise: reputation brings the work, relationships keep it, and your own hours are both the product and the ceiling.",
     problemStatement:
-      "Professional services founders plateau because they don't build leverage. You can't scale expertise with more expertise. You need productization, systems or delegation.",
+      "Expert-led practices plateau because more expertise doesn't scale expertise. You need leverage: productised offers, systems, or people.",
     programFit:
-      "This program teaches you to: (1) Build a practice (firm model) OR productize your expertise (courses/templates) OR specialize in a profitable niche, (2) Scale beyond your personal hours.",
+      "This programme helps you choose your leverage, whether a firm, a productised offer or a premium niche, and grow beyond your own hours.",
     callToAction: "Book a call to choose your scaling path.",
   },
   development_org: {
     program: "Impact Organisation Mastery",
     playbookSection: 6,
     playbookTitle: "The Development Organisation Playbook",
-    description:
-      "You're mission-driven. Grant/donation funded, solving problems government/market won't touch. Impact is the north star, profit is the constraint.",
+    modelDescription:
+      "You're building for impact: the mission comes first, and the model's job is to keep that impact going and growing.",
     problemStatement:
-      "Development org founders burn out or dilute mission because they chase funding instead of building replicable models. Your challenge is sustainability, not survival.",
+      "Impact organisations burn out or drift when they chase funding instead of building a model that works and can be repeated.",
     programFit:
-      "This program teaches you to: (1) Build a model that works in one place and can replicate, (2) Measure impact in a way donors care about, (3) Raise capital that aligns with your values.",
-    callToAction: "Book a call to design your fundraising roadmap.",
+      "This programme helps you build a model that works in one place and can replicate, measure impact the way funders trust, and fund it sustainably.",
+    callToAction: "Book a call to design a model that lasts.",
+  },
+  education: {
+    program: "AI for Educators and STEAM Training",
+    playbookSection: 0,
+    playbookTitle: "Training & Workforce Development",
+    modelDescription:
+      "You're preparing people for an AI world: your teachers first, then your students. The win is capability that stays after the training ends.",
+    problemStatement:
+      "Schools adopt technology in bursts and it fades. What lasts is teachers who are confident with it and a curriculum built to use it.",
+    programFit:
+      "AI for Educators brings AI into teaching, planning and assessment, and STEAM Training brings hands-on AI and robotics to your students through STEAM Foundry.",
+    callToAction: "Book a call to plan your school's first term.",
+  },
+  individual: {
+    program: "AI Training",
+    playbookSection: 0,
+    playbookTitle: "Training & Workforce Development",
+    modelDescription:
+      "You're investing in yourself: the skills, visibility and direction that move a career forward faster than waiting for the next role.",
+    problemStatement:
+      "Careers stall when skills fall behind the work. AI is moving the line faster than most people can keep up alone.",
+    programFit:
+      "AI Training takes you from first steps to building: AI literacy, agents and automation, and creating with AI, applied to your own work.",
+    callToAction: "Book a call to map your next step.",
   },
 };
 
-/**
- * SEGMENTATION RULES
- * The decision tree that maps answers to segments.
- * Read top-to-bottom; first match wins.
- */
+const BUSINESS: BusinessSegment[] = [
+  "msme_value",
+  "msme_volume",
+  "startup",
+  "professional_service",
+  "development_org",
+];
+
+type Points = Partial<Record<BusinessSegment, number>>;
+
+/** What each answer is evidence for. Tuned against scripts/diagnostic-check.ts. */
+const WEIGHTS: Record<string, Record<string, Points>> = {
+  q0_type: {
+    product_business: { msme_value: 1, msme_volume: 2 },
+    service_business: { msme_value: 2, professional_service: 1 },
+    startup: { startup: 4 },
+    practice: { professional_service: 4 },
+    ngo: { development_org: 6 },
+  },
+  q6_model: {
+    quality: { msme_value: 3, professional_service: 1 },
+    volume: { msme_volume: 3, startup: 1 },
+    product: { startup: 3 },
+    expertise: { professional_service: 3 },
+    cause: { development_org: 3 },
+  },
+  q7_revenue: {
+    project: { msme_value: 1, professional_service: 1 },
+    subscription: { startup: 1, professional_service: 0.5 },
+    transaction: { msme_volume: 2 },
+    upfront: { msme_value: 1 },
+  },
+  q6_scale: {
+    local: { msme_value: 0.5, professional_service: 0.5 },
+    international: { startup: 1 },
+  },
+  q5_pressure: {
+    "80_hours": { startup: 1 },
+  },
+  q9_challenge: {
+    scaling: { msme_volume: 0.5 },
+  },
+};
+
+const VALUE_WEIGHTS: Record<string, Points> = {
+  Impact: { development_org: 1 },
+  Quality: { msme_value: 1 },
+  Speed: { msme_volume: 0.5, startup: 0.5 },
+  Growth: { msme_volume: 0.5, startup: 0.5 },
+  Freedom: { professional_service: 1 },
+  Money: { msme_volume: 0.5 },
+  Sustainability: { development_org: 0.5 },
+};
+
+/** The archetype q0_type points to, used to break ties. */
+const TYPE_LEAN: Record<string, BusinessSegment> = {
+  product_business: "msme_volume",
+  service_business: "msme_value",
+  startup: "startup",
+  practice: "professional_service",
+  ngo: "development_org",
+};
+
+export function scoreArchetypes(answers: DiscoveryAnswers): Record<BusinessSegment, number> {
+  const scores = Object.fromEntries(BUSINESS.map((s) => [s, 0])) as Record<BusinessSegment, number>;
+  const add = (p: Points | undefined) => {
+    for (const [s, n] of Object.entries(p ?? {})) scores[s as BusinessSegment] += n ?? 0;
+  };
+  for (const [id, table] of Object.entries(WEIGHTS)) {
+    const value = (answers as Record<string, unknown>)[id];
+    if (typeof value === "string") add(table[value]);
+  }
+  for (const v of answers.q3_values ?? []) add(VALUE_WEIGHTS[v]);
+  if (Number(answers.q4_expertise) >= 4) add({ professional_service: 1, msme_value: 0.5 });
+  return scores;
+}
+
+const CAPABILITY_WHY: Record<Capability, string> = {
+  expertise: "The work itself is what customers pay for, so depth matters more than anything else here.",
+  management: "Growth means more people doing the work, and coordinating them becomes the job.",
+  leadership: "Hard calls come faster as you grow, and the team takes its cue from how you make them.",
+};
+
+const CAPABILITY_NAME: Record<Capability, string> = {
+  expertise: "depth of expertise",
+  management: "experience leading a team",
+  leadership: "confidence making hard calls",
+};
+
+export const SEGMENT_NAME: Record<Segment, string> = {
+  msme_value: "Craftsperson",
+  msme_volume: "Operator",
+  startup: "Problem Solver",
+  professional_service: "Expert",
+  development_org: "Changemaker",
+  education: "Educator",
+  individual: "Builder",
+};
+
+function weakestCapability(segment: BusinessSegment, answers: DiscoveryAnswers): SegmentResult["weakest"] {
+  const mins = CAPABILITY_MINIMUMS[segment];
+  let worst: SegmentResult["weakest"] = null;
+  // Order breaks ties: for most models a missing leader hurts before a missing manager.
+  for (const capability of ["leadership", "management", "expertise"] as Capability[]) {
+    const score = Number(answers[`q4_${capability}` as keyof DiscoveryAnswers]);
+    if (!Number.isFinite(score) || score <= 0) continue;
+    const gap = mins[capability] - score;
+    if (gap > 0 && (!worst || gap > worst.needed - worst.score)) {
+      worst = { capability, score, needed: mins[capability] };
+    }
+  }
+  return worst;
+}
+
 export function calculateSegment(answers: DiscoveryAnswers): SegmentResult {
-  const {
-    q3_values,
-    q4_expertise,
-    q4_management,
-    q4_leadership,
-    q5_pressure,
-    q6_scale,
-    q7_revenue,
-    q9_challenge,
-  } = answers;
+  const scores = scoreArchetypes(answers);
 
-  let segment: string = "unclear";
-  let capabilityGap: string | null = null;
+  let segment: Segment;
+  let secondary: BusinessSegment | null = null;
+  let confidence: Confidence = "high";
+  let weakest: SegmentResult["weakest"] = null;
 
-  // ============================================================
-  // RULE 1: Values Include "Impact" → Development Org
-  // ============================================================
-  if (q3_values.includes("Impact") || q3_values.includes("Mission")) {
-    segment = "development_org";
-    // Check capability: DevOrgs need balanced capabilities, not specialized expertise
-    const devOrgMin = CAPABILITY_MINIMUMS.development_org;
-    if (q4_leadership < devOrgMin.leadership) {
-      capabilityGap = `Your model is Development Org, but leadership (${q4_leadership}/5) is below the minimum (${devOrgMin.leadership}/5). Mission-driven work demands strong leadership to keep the team aligned to purpose when funding is uncertain.`;
-    }
-  }
-  // ============================================================
-  // RULE 2: Scale=International + Revenue=Subscription → Startup
-  // ============================================================
-  else if (q6_scale === "international" && q7_revenue === "subscription") {
-    segment = "startup";
-    // Startups demand leadership and management
-    const startupMin = CAPABILITY_MINIMUMS.startup;
-    if (q4_leadership < startupMin.leadership) {
-      capabilityGap = `Your model is Startup, but leadership (${q4_leadership}/5) is your critical gap. Startups demand exceptional leadership. You'll need to develop this fast or co-found with someone strong here.`;
-    }
-    if (q4_management < startupMin.management) {
-      capabilityGap = `Your model is Startup, but general management (${q4_management}/5) is weak. Startups scale fast; without coordination skills, everything falls apart.`;
-    }
-  }
-  // ============================================================
-  // RULE 3: Revenue=Subscription + (not International) → Could be Startup or MSME
-  // ============================================================
-  else if (q7_revenue === "subscription") {
-    if (q5_pressure === "80_hours" || q6_scale === "national") {
-      segment = "startup";
-      const startupMin = CAPABILITY_MINIMUMS.startup;
-      if (q4_leadership < startupMin.leadership) {
-        capabilityGap = `You're pursuing venture-scale, but leadership (${q4_leadership}/5) is below startup minimum (${startupMin.leadership}/5). Consider co-founding or building a smaller subscription business as MSME instead.`;
-      }
-    } else {
-      // Subscription at local scale = MSME with recurring revenue
-      segment = "msme_value"; // Recurring revenue = higher margins
-    }
-  }
-  // ============================================================
-  // RULE 4: Revenue=Project-Based → Professional Service OR MSME
-  // ============================================================
-  else if (q7_revenue === "project" || q7_revenue === "upfront") {
-    // Professional Service = high expertise + local/regional + relationship-driven
-    if (q4_expertise >= 4 && q5_pressure !== "80_hours" && q6_scale !== "international") {
-      segment = "professional_service";
-      const psMin = CAPABILITY_MINIMUMS.professional_service;
-      if (q4_expertise < psMin.expertise) {
-        capabilityGap = `You're pursuing professional services, but domain expertise (${q4_expertise}/5) is the foundation. You must be able to do the core work yourself.`;
-      }
-    }
-    // Otherwise: MSME
-    else {
-      // Determine if Value or Volume MSME based on values and challenge
-      if (
-        q3_values.includes("Excellence") ||
-        q3_values.includes("Quality") ||
-        q3_values.includes("Premium")
-      ) {
-        segment = "msme_value";
-      } else if (q3_values.includes("Speed") && q9_challenge === "scaling") {
-        segment = "msme_volume";
-      } else {
-        // Default: Value MSME (easier to start, easier to sell)
-        segment = "msme_value";
-      }
-    }
-  }
-  // ============================================================
-  // RULE 5: Revenue=Unsure → Help them decide
-  // ============================================================
-  else if (q7_revenue === "unsure" || !q7_revenue) {
-    // Default to MSME; they'll figure out the model in the playbook
-    segment = q3_values.includes("Speed") ? "msme_volume" : "msme_value";
+  if (answers.q0_type === "school") segment = "education";
+  else if (answers.q0_type === "career") segment = "individual";
+  else {
+    const lean = TYPE_LEAN[answers.q0_type ?? ""];
+    const ranked = [...BUSINESS].sort(
+      (a, b) => scores[b] - scores[a] || (a === lean ? -1 : b === lean ? 1 : 0),
+    );
+    const [top, second] = ranked;
+    segment = top;
+    if (scores[second] > 0 && scores[second] >= scores[top] * 0.7) secondary = second;
+    confidence = scores[top] >= 6 && scores[top] - scores[second] >= 1 ? "high" : scores[top] >= 4 ? "medium" : "low";
+    weakest = weakestCapability(top, answers);
   }
 
-  // ============================================================
-  // FALLBACK: If no rules matched, default to MSME Value
-  // ============================================================
-  if (segment === "unclear") {
-    segment = "msme_value";
-  }
-
-  // ============================================================
-  // Resolve segment to segment details
-  // ============================================================
-  const segmentDef = SEGMENTS[segment as keyof typeof SEGMENTS] || SEGMENTS.msme_value;
+  const def = SEGMENTS[segment];
+  const capabilityGap = weakest
+    ? `${SEGMENT_NAME[segment]}s need ${CAPABILITY_NAME[weakest.capability]} at about ${weakest.needed} out of 5; you rated yourself ${weakest.score}. ${CAPABILITY_WHY[weakest.capability]}`
+    : null;
 
   return {
-    segment: segment as any,
-    program: segmentDef.program,
-    playbookSection: segmentDef.playbookSection,
-    playbookTitle: segmentDef.playbookTitle,
+    segment,
+    program: def.program,
+    playbookSection: def.playbookSection,
+    playbookTitle: def.playbookTitle,
+    secondary,
+    confidence,
+    weakest,
     capabilityGap,
+    scores,
     emailPersonalization: {
-      modelDescription: segmentDef.description,
-      problemStatement: segmentDef.problemStatement,
-      programFit: segmentDef.programFit,
-      callToAction: segmentDef.callToAction,
+      modelDescription: def.modelDescription,
+      problemStatement: def.problemStatement,
+      programFit: def.programFit,
+      callToAction: def.callToAction,
     },
   };
 }
 
-/**
- * SEGMENT PROFILES (For reference in marketing/positioning)
- * These are the founder archetypes that emerge from the logic above.
- */
-export const SEGMENT_PROFILES = {
+/** The archetypes as the company brief describes them. */
+export const SEGMENT_PROFILES: Record<Segment, { archetype: string; example: string; economics: string; nextChallenge: string }> = {
   msme_value: {
     archetype: "The Craftsperson",
-    example: "Premium interior designer, luxury tailoring, specialized consulting",
-    economics: "Low volume, high margin, quality > quantity",
+    example: "Premium interiors, luxury tailoring, specialist consulting",
+    economics: "Low volume, high margin",
     nextChallenge: "Scaling without losing quality",
   },
   msme_volume: {
     archetype: "The Operator",
-    example: "E-commerce reseller, bulk distribution, fast-food franchise",
-    economics: "High volume, low margin per unit, efficiency > uniqueness",
-    nextChallenge: "Scaling supply chain without diluting margins",
+    example: "E-commerce, distribution, food franchises",
+    economics: "High volume, thin margins",
+    nextChallenge: "Scaling supply without diluting margins",
   },
   startup: {
     archetype: "The Problem Solver",
-    example: "SaaS founder, marketplace, venture-backed tech",
-    economics: "Venture-scale, network effects, growth > profit (initially)",
-    nextChallenge: "Building leadership team while moving fast",
+    example: "SaaS, marketplaces, venture-backed tech",
+    economics: "Venture-scale, growth first",
+    nextChallenge: "Building leadership while moving fast",
   },
   professional_service: {
     archetype: "The Expert",
-    example: "Law firm, consulting practice, personal brand consultant",
-    economics: "High hourly rate, relationship-driven, reputation = distribution",
-    nextChallenge: "Scaling beyond personal hours",
+    example: "Law firms, consultancies, personal brands",
+    economics: "Reputation-led, high rate",
+    nextChallenge: "Growing beyond your own hours",
   },
   development_org: {
     archetype: "The Changemaker",
-    example: "Non-profit, social enterprise, mission-driven org",
-    economics: "Grant/donation funded, impact-first, sustainability is hard",
-    nextChallenge: "Building replicable model for sustained impact",
+    example: "Non-profits, social enterprises, mission-driven organisations",
+    economics: "Impact-first",
+    nextChallenge: "A model that sustains impact",
   },
-};
-
-/**
- * EMAIL PERSONALIZATION COPY (Fragments for Email 2 & 3)
- * Each segment has pre-written copy that references their answers.
- */
-export const EMAIL_TEMPLATES = {
-  msme_value_email2_opener: (vision: string, advantage: string) =>
-    `You're building toward: **${vision}**
-
-Your competitive advantage: **${advantage}**
-
-This is NOT accidental. Most founders try to compete on price. You're competing on ${advantage.toLowerCase()}. That's a different game, and it's winnable.
-
-Here's your playbook section: Section 3 teaches you to own your market through value, not volume.`,
-
-  startup_email2_opener: (vision: string, gap: string | null) => {
-    const gapText = gap
-      ? `Your critical gap right now is **${gap}**. `
-      : ``;
-    return `You're building toward: **${vision}**
-
-${gapText}
-Here's the truth: most startup founders ship fast and iterate. But iteration without strategy is just spinning. Your playbook section teaches you the order: problem clarity → product-market fit → team → scale.`;
+  education: {
+    archetype: "The Educator",
+    example: "Schools, colleges, training organisations",
+    economics: "Capability that stays",
+    nextChallenge: "Making technology stick in the classroom",
   },
-
-  professional_service_email2_opener: (vision: string, expertise: number) =>
-    `You're building toward: **${vision}**
-
-Your domain expertise (${expertise}/5) is your moat. The challenge isn't getting clients. It's scaling without burning yourself out or hiring cheaper talent that dilutes your brand.
-
-Your playbook section teaches you three paths: (1) build a firm, (2) productize your expertise, or (3) specialize in a premium niche.`,
-
-  email3_program_bridge: (segment: string, program: string) => {
-    const bridges: Record<string, string> = {
-      msme_value: `The **${program}** goes deeper than the playbook. You'll work through real scenarios from your business, refine your positioning, and practice commanding premium pricing.`,
-      msme_volume: `The **${program}** teaches you to build supply chains that competitors can't replicate. You'll model unit economics and figure out where to invest for scale.`,
-      startup: `The **${program}** isn't another course. It's a structured sprint: lock your problem, test product-market fit, and build a team that scales with you.`,
-      professional_service: `The **${program}** walks you through the three scaling paths and helps you choose the one that fits your life and your values.`,
-      development_org: `The **${program}** helps you design a model that works in one place, measure its impact, then replicate it elsewhere.`,
-    };
-    return bridges[segment] || bridges.msme_value;
+  individual: {
+    archetype: "The Builder",
+    example: "Professionals growing their career and skills",
+    economics: "Investing in yourself",
+    nextChallenge: "Keeping your skills ahead of the work",
   },
 };

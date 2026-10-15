@@ -13,6 +13,11 @@
  */
 
 import type { SegmentResult } from "../data/segmentLogic.js";
+import type { Reading } from "../data/diagnosticReading.js";
+import { labelFor } from "../data/discoveryQuestions.js";
+
+const esc = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 import { CALENDLY } from "./booking.js";
 import type { Program } from "../data/programDefinitions.js";
 
@@ -53,33 +58,38 @@ const SEGMENT_INFO: Record<
 > = {
   msme_value: {
     emoji: "💎",
-    title: "Premium Positioning Master",
-    description:
-      "You're building a premium business: few customers, high value, intentional positioning.",
+    title: "The Craftsperson",
+    description: "You're building on value: fewer customers, higher margins, quality people can feel.",
   },
   msme_volume: {
     emoji: "📈",
-    title: "Volume Growth Builder",
-    description:
-      "You're scaling through volume: many customers, recurring revenue, operational leverage.",
+    title: "The Operator",
+    description: "You're building on volume: many customers, thin margins, efficiency that compounds.",
   },
   startup: {
     emoji: "🚀",
-    title: "Venture-Scale Founder",
-    description:
-      "You're pursuing venture ambitions: high growth, team scaling, venture capital ready.",
+    title: "The Problem Solver",
+    description: "You're building for scale: growth first, a model that has to work for thousands.",
   },
   professional_service: {
     emoji: "🎯",
-    title: "Expert Service Provider",
-    description:
-      "You're selling expertise: your skills and knowledge are the product, high pricing power.",
+    title: "The Expert",
+    description: "You're selling expertise: reputation brings the work, and your hours are the ceiling.",
   },
   development_org: {
     emoji: "🌱",
-    title: "Impact Organisation Builder",
-    description:
-      "You're building for impact: mission-driven, sustainable revenue, creating change.",
+    title: "The Changemaker",
+    description: "You're building for impact: the mission first, and a model that keeps it going.",
+  },
+  education: {
+    emoji: "🎓",
+    title: "The Educator",
+    description: "You're preparing people for an AI world: teachers first, then students.",
+  },
+  individual: {
+    emoji: "🧭",
+    title: "The Builder",
+    description: "You're investing in yourself: skills, visibility and direction.",
   },
 };
 
@@ -108,15 +118,17 @@ export function generateEmail1(
   email: string,
   segment: SegmentResult,
   program: Program | null,
-  context?: EmailContext
+  context?: EmailContext,
+  reading?: Reading
 ): EmailPayload {
   const emoji = getSegmentEmoji(segment.segment);
   const title = getSegmentTitle(segment.segment);
   const info = SEGMENT_INFO[segment.segment];
+  const greeting = founderName ? `<p>Hi ${esc(founderName)},</p>` : "";
 
   // Build personalized content based on their answers
   const buildingStatement = context?.vision
-    ? `"${context.vision}"`
+    ? `"${esc(context.vision)}"`
     : "your business idea";
 
   const whyThisSegmentFits = getSegmentFitExplanation(segment.segment, context);
@@ -236,10 +248,11 @@ export function generateEmail1(
   <div class="container">
     <div class="header">
       <h1>${emoji} ${title}</h1>
-      <p>Your discovery results are here</p>
+      <p>${reading?.traits ? `${esc(reading.traits)}. ` : ""}Your discovery results are here</p>
     </div>
 
     <div class="content">
+      ${greeting}
       <div class="section">
         <h2>What You're Building</h2>
         <div class="quote">${buildingStatement}</div>
@@ -252,11 +265,26 @@ export function generateEmail1(
       </div>
 
       ${
-        context?.challenge
+        reading
+          ? `
+        <div class="section">
+          <h2>Your First Move</h2>
+          ${context?.challenge ? `<p>You told us what's holding you back most: <strong>${esc(labelFor("q9_challenge", context.challenge, { q0_type: segment.segment === "education" ? "school" : segment.segment === "individual" ? "career" : undefined }) ?? context.challenge)}</strong>.</p>` : ""}
+          <p><strong>${esc(reading.firstMove)}</strong></p>
+          ${reading.ninetyDay ? `<p>It's the first step toward your 90-day win: "${esc(reading.ninetyDay)}".</p>` : ""}
+          ${reading.dch ? `<p>Where DCH comes in: <strong>${esc(reading.dch.title)}</strong>. ${esc(reading.dch.line)}</p>` : ""}
+        </div>
+        ${
+          reading.tensions.length
+            ? `<div class="insight">${reading.tensions.map((t) => `<p>${esc(t)}</p>`).join("")}</div>`
+            : ""
+        }
+      `
+          : context?.challenge
           ? `
         <div class="section">
           <h2>Your Challenge</h2>
-          <p>You told us: <strong>${context.challenge}</strong></p>
+          <p>You told us: <strong>${esc(context.challenge)}</strong></p>
           <p>${getChallengeContext(context.challenge, segment.segment)}</p>
         </div>
       `

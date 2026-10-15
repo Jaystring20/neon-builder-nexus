@@ -12,6 +12,8 @@ export const SEGMENT_LABEL: Record<string, string> = {
   startup: "Startup",
   professional_service: "Professional service",
   development_org: "Development organisation",
+  education: "School or educator",
+  individual: "Individual, career",
 };
 
 export const fmtDate = (iso: string | null | undefined, withTime = false) =>

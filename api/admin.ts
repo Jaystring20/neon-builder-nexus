@@ -15,7 +15,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabase, missingServerEnv } from "../src/lib/supabase.server.js";
-import { sendEmailViaResendDetailed } from "../src/lib/resend.v3.js";
+import { sendEmailViaResendDetailed, teamCopy } from "../src/lib/resend.v3.js";
 import { adminLoginEmail } from "../src/lib/leadEmails.js";
 import {
   LINK_MINUTES,
@@ -110,6 +110,7 @@ async function login({ req, db, body }: Ctx) {
     ]),
   );
   const link = `${siteOrigin(req.headers.host)}/admin/verify#token=${token}`;
+  // Never copied to the team inbox: the link signs whoever holds it in.
   const sent = await sendEmailViaResendDetailed(adminLoginEmail(user.email, user.name, link, LINK_MINUTES));
   if (!sent.ok) {
     console.error("Admin sign-in email not sent:", sent.error);
@@ -593,7 +594,10 @@ async function eventCancel(ctx: Ctx) {
     email: string;
     reference: string;
   }[];
-  const { sent } = await sendEmailBatchViaResend(regs.map((r) => eventCancelledEmail(e, r, str(body.message, 1000))));
+  // The team gets a copy of the first notice only: every one says the same.
+  const { sent } = await sendEmailBatchViaResend(
+    regs.map((r, i) => ({ ...eventCancelledEmail(e, r, str(body.message, 1000)), bcc: i === 0 ? teamCopy() : undefined })),
+  );
   await log(db, user, "event.cancel", null, null, { title: e.title, emailed: sent });
   return { ok: true, emailed: sent };
 }
@@ -625,7 +629,7 @@ async function registrationUpdate(ctx: Ctx) {
 
   let emailed = false;
   if (paying) {
-    const sent = await sendEmailViaResendDetailed(registrationConfirmedEmail(e, reg, true));
+    const sent = await sendEmailViaResendDetailed({ ...registrationConfirmedEmail(e, reg, true), bcc: teamCopy() });
     emailed = sent.ok;
     if (!sent.ok) console.error("payment confirmation not sent:", sent.error);
   }
@@ -643,7 +647,8 @@ async function registrationResend(ctx: Ctx) {
     | null;
   if (!reg) throw new HttpError(404, "Unknown registration.");
   const e = must(await ctx.db.from("events").select("*").eq("id", reg.event_id).maybeSingle()) as EventRecord;
-  const sent = await sendEmailViaResendDetailed(reg.status === "pending_payment" ? registrationPendingEmail(e, reg) : registrationConfirmedEmail(e, reg));
+  const mail = reg.status === "pending_payment" ? registrationPendingEmail(e, reg) : registrationConfirmedEmail(e, reg);
+  const sent = await sendEmailViaResendDetailed({ ...mail, bcc: teamCopy() });
   if (!sent.ok) throw new HttpError(502, "The email didn't send. Please try again.");
   return { ok: true };
 }

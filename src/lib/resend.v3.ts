@@ -31,6 +31,18 @@ export interface EmailPayload {
   html: string;
   from?: string;
   replyTo?: string;
+  /** Hidden copies, e.g. the team's record of what went out. */
+  bcc?: string | string[];
+}
+
+/**
+ * Where the team keeps a copy of emails sent from the admin dashboard, so
+ * there's a record of exactly what each client received. Set TEAM_BCC_EMAIL
+ * to change it, or to "off" to stop the copies.
+ */
+export function teamCopy(): string | undefined {
+  const v = (process.env.TEAM_BCC_EMAIL ?? "digitalcreativeshubltd@gmail.com").trim();
+  return v && v !== "off" ? v : undefined;
 }
 
 export interface EmailContext {
@@ -923,6 +935,7 @@ export async function sendEmailViaResendDetailed(
         subject: payload.subject,
         html: payload.html,
         reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
+        ...(payload.bcc ? { bcc: payload.bcc } : {}),
       }),
     });
 
@@ -961,6 +974,7 @@ export async function sendEmailBatchViaResend(payloads: EmailPayload[]): Promise
       subject: p.subject,
       html: p.html,
       reply_to: p.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
+      ...(p.bcc ? { bcc: p.bcc } : {}),
     }));
     try {
       const response = await fetch("https://api.resend.com/emails/batch", {

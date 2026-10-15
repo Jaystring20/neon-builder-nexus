@@ -11,6 +11,7 @@ import { adminApi } from "@/lib/adminApi";
 import { briefResult, buildDiagnosticBrief, deckPrompt, type BriefInput } from "@/lib/diagnosticBrief";
 import { usePortfolio, useProgramme } from "@/hooks/useSiteContent";
 import { useMe } from "./AdminApp";
+import { SendDeck } from "./SendDeck";
 import { ActivityList, ErrorNote, Loading, NotesPanel, PageHeader, Panel, SEGMENT_LABEL, StatusBadge, ago, fmtDate } from "./ui";
 
 export function DiagnosticsList() {
@@ -146,6 +147,15 @@ export function DiagnosticDetail() {
             )}
           </Panel>
           <BriefExport brief={brief} />
+          {writable && (
+            <SendDeck
+              id={d.id}
+              email={d.email}
+              firstName={typeof answers.contact_name === "string" && answers.contact_name.trim() ? answers.contact_name.trim().split(/\s+/)[0] : null}
+              activity={activity}
+              queryKey={key}
+            />
+          )}
           {offer.program && (
             <Panel title="Best fit">
               <p className="text-xs uppercase tracking-wide text-primary">{TIER_LABEL[offer.bestTier]}</p>

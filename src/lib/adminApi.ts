@@ -185,6 +185,19 @@ async function uploadImage(folder: "portfolio" | "leaders" | "events", file: Fil
   return publicUrl;
 }
 
+/** Upload a deck PDF for a diagnostic through a one-time link. Returns where it was stored. */
+async function uploadDeck(id: string, file: File): Promise<string> {
+  if (file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) throw new AdminApiError(400, "Choose a PDF.");
+  const { uploadUrl, path } = await call<{ uploadUrl: string; path: string }>("deck-upload-url", {
+    body: { id, contentType: "application/pdf", size: file.size },
+  });
+  const form = new FormData();
+  form.append("", new Blob([file], { type: "application/pdf" }), file.name);
+  const res = await fetch(uploadUrl, { method: "PUT", body: form });
+  if (!res.ok) throw new AdminApiError(res.status, "The upload didn't go through. Please try again.");
+  return path;
+}
+
 export const adminApi = {
   login: (email: string) => call<{ ok: true }>("login", { body: { email } }),
   verify: (token: string) => call<{ ok: true }>("verify", { body: { token } }),
@@ -203,6 +216,9 @@ export const adminApi = {
       query: { id },
     }),
   diagnosticToLead: (id: string) => call<{ leadId: string }>("diagnostic-to-lead", { body: { id } }),
+  uploadDeck,
+  sendDeck: (d: { id: string; path: string; filename: string; subject: string; message: string; again: boolean }) =>
+    call<{ ok: true; to: string; followupsCancelled: number; leadId: string }>("deck-send", { body: d }),
   team: () => call<{ team: TeamMember[] }>("team"),
   saveMember: (m: { id?: string; email?: string; name: string; role: Role; active?: boolean }) =>
     call<{ ok?: true; id?: string }>("team-save", { body: m }),

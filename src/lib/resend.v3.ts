@@ -33,6 +33,8 @@ export interface EmailPayload {
   replyTo?: string;
   /** Hidden copies, e.g. the team's record of what went out. */
   bcc?: string | string[];
+  /** Files sent with the email; content is base64. Single sends only. */
+  attachments?: { filename: string; content: string }[];
 }
 
 /**
@@ -936,6 +938,7 @@ export async function sendEmailViaResendDetailed(
         html: payload.html,
         reply_to: payload.replyTo || process.env.RESEND_REPLY_TO || "hello@digitalcreativeshubltd.com",
         ...(payload.bcc ? { bcc: payload.bcc } : {}),
+        ...(payload.attachments?.length ? { attachments: payload.attachments } : {}),
       }),
     });
 

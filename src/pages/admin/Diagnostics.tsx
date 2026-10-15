@@ -1,12 +1,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Mail } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Check, Copy, Download, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { can } from "@/data/adminRoles";
-import { questions, labelFor } from "@/data/discoveryQuestions";
+import { questionsFor, labelFor } from "@/data/discoveryQuestions";
 import { TIER_LABEL, matchOffer } from "@/data/offerMatch";
 import { PRACTICE_TITLES } from "@/data/leadIntake";
 import { adminApi } from "@/lib/adminApi";
+import { briefResult, buildDiagnosticBrief, deckPrompt, type BriefInput } from "@/lib/diagnosticBrief";
+import { usePortfolio, useProgramme } from "@/hooks/useSiteContent";
 import { useMe } from "./AdminApp";
 import { ActivityList, ErrorNote, Loading, NotesPanel, PageHeader, Panel, SEGMENT_LABEL, StatusBadge, ago, fmtDate } from "./ui";
 
@@ -46,10 +49,10 @@ export function DiagnosticsList() {
   );
 }
 
-const showAnswer = (id: string, v: unknown, labels?: string[]): string | null => {
-  if (Array.isArray(v)) return v.map((x) => labelFor(id, x) ?? String(x)).join("\n") || null;
+const showAnswer = (id: string, v: unknown, answers: Record<string, unknown>, labels?: string[]): string | null => {
+  if (Array.isArray(v)) return v.map((x) => labelFor(id, x, answers) ?? String(x)).join("\n") || null;
   if (typeof v === "number") return labels?.[v - 1] ? `${v} of 5: ${labels[v - 1]}` : `${v} of 5`;
-  return labelFor(id, v);
+  return labelFor(id, v, answers);
 };
 
 export function DiagnosticDetail() {
@@ -60,6 +63,8 @@ export function DiagnosticDetail() {
   const writable = can(me.role, "leads.write");
   const key = ["admin", "diagnostic", id];
   const q = useQuery({ queryKey: key, queryFn: () => adminApi.diagnostic(id) });
+  const programme = useProgramme(q.data?.diagnostic.segment);
+  const portfolio = usePortfolio();
   const toLead = useMutation({
     mutationFn: () => adminApi.diagnosticToLead(id),
     onSuccess: ({ leadId }) => {
@@ -71,7 +76,10 @@ export function DiagnosticDetail() {
   if (q.isLoading) return <Loading />;
   if (q.error) return <ErrorNote error={q.error} />;
   const { diagnostic: d, lead, notes, activity } = q.data!;
-  const offer = matchOffer(d.segment, d.answers ?? {});
+  const answers = d.answers ?? {};
+  const offer = matchOffer(d.segment, answers);
+  const { result, reading } = briefResult(d.segment, answers);
+  const brief: BriefInput = { email: d.email, takenAt: d.updated_at, segment: d.segment, answers, programme, portfolio };
 
   return (
     <>
@@ -94,9 +102,9 @@ export function DiagnosticDetail() {
         <div className="space-y-8">
           <Panel title="Their answers">
             <ol className="space-y-5">
-              {questions.map((question, i) => {
-                const answer = showAnswer(question.id, d.answers?.[question.id], question.labels);
-                const follow = d.answers?.[`${question.id}_followup`];
+              {questionsFor(answers).map((question, i) => {
+                const answer = showAnswer(question.id, answers[question.id], answers, question.labels);
+                const follow = answers[`${question.id}_followup`];
                 return (
                   <li key={question.id}>
                     <p className="text-sm text-muted-foreground">
@@ -120,13 +128,24 @@ export function DiagnosticDetail() {
           <Panel title="Result">
             <p className="text-lg text-foreground">{d.program}</p>
             <p className="text-sm text-muted-foreground">{SEGMENT_LABEL[d.segment] ?? d.segment}</p>
+            {reading.traits && <p className="mt-1 text-sm text-muted-foreground">{reading.traits}, {result.confidence} confidence</p>}
             {d.capability_gap && (
               <p className="mt-4 text-sm">
                 <span className="text-muted-foreground">Gap flagged: </span>
                 <span className="text-foreground">{d.capability_gap}</span>
               </p>
             )}
+            <p className="mt-4 text-xs uppercase tracking-wide text-primary">First move</p>
+            <p className="mt-1 text-sm text-foreground">{reading.firstMove}</p>
+            {reading.tensions.length > 0 && (
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {reading.tensions.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            )}
           </Panel>
+          <BriefExport brief={brief} />
           {offer.program && (
             <Panel title="Best fit">
               <p className="text-xs uppercase tracking-wide text-primary">{TIER_LABEL[offer.bestTier]}</p>
@@ -165,5 +184,53 @@ export function DiagnosticDetail() {
         </div>
       </div>
     </>
+  );
+}
+
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 40) || "diagnostic";
+
+/** Hands a diagnostic to NotebookLM: the brief as a source, and a prompt for the slide deck. */
+function BriefExport({ brief }: { brief: BriefInput }) {
+  const [copied, setCopied] = useState<"ok" | "failed" | null>(null);
+  const name = typeof brief.answers.contact_name === "string" && brief.answers.contact_name.trim() ? brief.answers.contact_name : brief.email.split("@")[0];
+
+  const download = () => {
+    const url = URL.createObjectURL(new Blob([buildDiagnosticBrief(brief)], { type: "text/markdown;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `dch-brief-${slug(name)}.md`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const copy = () =>
+    navigator.clipboard.writeText(deckPrompt(brief)).then(
+      () => setCopied("ok"),
+      () => setCopied("failed"),
+    );
+
+  return (
+    <Panel title="Take it to NotebookLM">
+      <ol className="list-decimal space-y-1 pl-4 text-sm text-muted-foreground">
+        <li>Download the brief and add it as a source in a new notebook, with their website if they have one.</li>
+        <li>Copy the deck prompt and paste it into the Slide Deck customise box.</li>
+        <li>Check every slide before you send it.</li>
+      </ol>
+      <div className="mt-4 flex flex-col gap-2">
+        <Button size="sm" onClick={download}>
+          <Download className="h-4 w-4" /> Download brief
+        </Button>
+        <Button size="sm" variant="outline" onClick={copy}>
+          {copied === "ok" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copied === "ok" ? "Prompt copied" : "Copy deck prompt"}
+        </Button>
+        {copied === "failed" && <p className="text-sm text-destructive">Couldn't reach the clipboard. Try again.</p>}
+      </div>
+      <p className="mt-3 text-xs text-muted-foreground">Leaves out prices and team notes, so the deck is safe to share.</p>
+    </Panel>
   );
 }

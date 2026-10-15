@@ -194,9 +194,10 @@ const slug = (s: string) =>
     .replace(/^-|-$/g, "")
     .slice(0, 40) || "diagnostic";
 
-/** Hands a diagnostic to NotebookLM: the brief as a source, and a prompt for the slide deck. */
+/** Hands a diagnostic to NotebookLM or any AI chat: the brief as a source, and a prompt for the slide deck. */
 function BriefExport({ brief }: { brief: BriefInput }) {
-  const [copied, setCopied] = useState<"ok" | "failed" | null>(null);
+  type Copyable = "brief" | "prompt" | "both";
+  const [copied, setCopied] = useState<Copyable | "failed" | null>(null);
   const name = typeof brief.answers.contact_name === "string" && brief.answers.contact_name.trim() ? brief.answers.contact_name : brief.email.split("@")[0];
 
   const download = () => {
@@ -207,30 +208,44 @@ function BriefExport({ brief }: { brief: BriefInput }) {
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  const copy = () =>
-    navigator.clipboard.writeText(deckPrompt(brief)).then(
-      () => setCopied("ok"),
+  const copy = (what: Copyable) => {
+    const text =
+      what === "brief"
+        ? buildDiagnosticBrief(brief)
+        : what === "prompt"
+          ? deckPrompt(brief)
+          : `${deckPrompt(brief)}\n\n---\n\n${buildDiagnosticBrief(brief)}`;
+    navigator.clipboard.writeText(text).then(
+      () => setCopied(what),
       () => setCopied("failed"),
     );
+  };
+  const copyButton = (what: Copyable, label: string, primary = false) => (
+    <Button key={what} size="sm" variant={primary ? "default" : "outline"} onClick={() => copy(what)}>
+      {copied === what ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+      {copied === what ? "Copied" : label}
+    </Button>
+  );
 
   return (
-    <Panel title="Take it to NotebookLM">
-      <ol className="list-decimal space-y-1 pl-4 text-sm text-muted-foreground">
-        <li>Download the brief and add it as a source in a new notebook, with their website if they have one.</li>
-        <li>Copy the deck prompt and paste it into the Slide Deck customise box.</li>
-        <li>Check every slide before you send it.</li>
-      </ol>
+    <Panel title="Take it to AI">
+      <p className="text-sm text-muted-foreground">
+        <span className="text-foreground">NotebookLM:</span> copy the brief and add it as a source (Copied text), with their website if they have one.
+        Then copy the deck prompt into the Slide Deck customise box.
+      </p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        <span className="text-foreground">ChatGPT, Claude or Gemini:</span> copy both and paste them in one message.
+      </p>
       <div className="mt-4 flex flex-col gap-2">
-        <Button size="sm" onClick={download}>
+        {copyButton("brief", "Copy brief", true)}
+        {copyButton("prompt", "Copy deck prompt")}
+        {copyButton("both", "Copy both, for an AI chat")}
+        <Button size="sm" variant="ghost" onClick={download}>
           <Download className="h-4 w-4" /> Download brief
-        </Button>
-        <Button size="sm" variant="outline" onClick={copy}>
-          {copied === "ok" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-          {copied === "ok" ? "Prompt copied" : "Copy deck prompt"}
         </Button>
         {copied === "failed" && <p className="text-sm text-destructive">Couldn't reach the clipboard. Try again.</p>}
       </div>
-      <p className="mt-3 text-xs text-muted-foreground">Leaves out prices and team notes, so the deck is safe to share.</p>
+      <p className="mt-3 text-xs text-muted-foreground">Leaves out prices and team notes, so what comes back is safe to share. Check it before you send it.</p>
     </Panel>
   );
 }

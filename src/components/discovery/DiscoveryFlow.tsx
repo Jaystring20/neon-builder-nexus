@@ -4,22 +4,25 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { questions, labelFor, type DiscoveryQuestion } from "@/data/discoveryQuestions";
+import { questionsFor, labelFor, type DiscoveryQuestion } from "@/data/discoveryQuestions";
 import { calculateSegment, SEGMENT_PROFILES, type DiscoveryAnswers, type SegmentResult } from "@/data/segmentLogic";
+import { buildReading } from "@/data/diagnosticReading";
 import { serviceCategories } from "@/data/services";
 import { calendlyUrl } from "@/lib/booking";
 import { matchOffer, offerLine, priceRange, TIER_LABEL } from "@/data/offerMatch";
-import { useProgramme, useShowPrices } from "@/hooks/useSiteContent";
+import { usePortfolio, useProgramme, useShowPrices } from "@/hooks/useSiteContent";
 import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
 import discoveryCallQr from "@/assets/qr/discovery-call.svg";
 
 /**
- * The discovery: twelve questions, then a result the visitor sees straight
- * away, with Book a call as the main next step and the emailed breakdown as
- * the second. Answers persist in this browser so a refresh doesn't lose them.
+ * The discovery: ten to fourteen questions (the first one decides which
+ * apply), then a result the visitor sees straight away, with Book a call as
+ * the main next step and the emailed breakdown as the second. Answers persist
+ * in this browser so a refresh doesn't lose them.
  *
  * Questions and their ids live in src/data/discoveryQuestions.ts; scoring is
- * segmentLogic.ts; POST /api/discovery saves and sends the emails.
+ * segmentLogic.ts; the personal reading is diagnosticReading.ts; POST
+ * /api/discovery saves and sends the emails.
  */
 
 type Answers = Record<string, unknown>;
@@ -58,11 +61,13 @@ const DiscoveryFlow = () => {
     }
   }, [answers, index, stage]);
 
-  const q = questions[index];
+  // The first answer decides which questions follow, so the list is live.
+  const visible = useMemo(() => questionsFor(answers), [answers]);
+  const q = visible[Math.min(index, visible.length - 1)];
   const answer = answers[q.id];
   const followUpShown = Boolean(q.followUp && q.followUpTrigger?.(answer));
   const canContinue = isAnswered(q, answer);
-  const isLast = index === questions.length - 1;
+  const isLast = index >= visible.length - 1;
 
   const setAnswer = useCallback((id: string, value: unknown) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -132,7 +137,7 @@ const DiscoveryFlow = () => {
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <Progress index={index} section={q.section} />
+      <Progress index={Math.min(index, visible.length - 1)} total={visible.length} section={q.section} />
 
       <motion.div
         key={q.id}
@@ -225,11 +230,11 @@ const Intro = ({
       See where you <span className="text-primary">really stand.</span>
     </h1>
     <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-      Twelve questions, about four minutes, before you talk to anyone. You&rsquo;ll see what kind of business
-      you&rsquo;re building, what&rsquo;s holding it back, and the right first move.
+      About four minutes, before you talk to anyone. You&rsquo;ll see what you&rsquo;re really building, what&rsquo;s
+      holding it back, and the first move that fits you.
     </p>
     <ul className="mt-8 space-y-2 text-base text-foreground/90">
-      {["Your result on screen, free, no sign-up", "A plain read on your biggest gap", "The programme and way of working that fit"].map(
+      {["Your result on screen, free, no sign-up", "A first move written for your situation", "Where DCH could help, and what a call would cover"].map(
         (item) => (
           <li key={item} className="flex items-center gap-3">
             <Check className="h-4 w-4 shrink-0 text-primary" />
@@ -252,16 +257,16 @@ const Intro = ({
   </div>
 );
 
-const Progress = ({ index, section }: { index: number; section: string }) => (
+const Progress = ({ index, total, section }: { index: number; total: number; section: string }) => (
   <div>
     <div className="flex items-baseline justify-between text-sm">
       <span className="font-medium text-primary">{section}</span>
       <span className="tabular-nums text-muted-foreground">
-        {String(index + 1).padStart(2, "0")} / {questions.length}
+        {String(index + 1).padStart(2, "0")} / {total}
       </span>
     </div>
     <div className="mt-3 flex gap-1" aria-hidden="true">
-      {questions.map((_, i) => (
+      {Array.from({ length: total }, (_, i) => (
         <span
           key={i}
           className={cn("h-1 flex-1 transition-colors duration-500", i <= index ? "bg-primary" : "bg-border/60")}
@@ -409,7 +414,11 @@ const Result = ({
 }) => {
   const reduce = useReducedMotion();
   const segment: SegmentResult = useMemo(() => calculateSegment(answers as unknown as DiscoveryAnswers), [answers]);
-  const profile = SEGMENT_PROFILES[segment.segment as keyof typeof SEGMENT_PROFILES];
+  const profile = SEGMENT_PROFILES[segment.segment];
+  const reading = useMemo(() => buildReading(segment, answers), [segment, answers]);
+  const portfolio = usePortfolio();
+  const proof = reading.proofId ? portfolio.find((p) => p.id === reading.proofId) : undefined;
+  const training = serviceCategories.find((c) => c.slug === "training");
 
   const programme = useProgramme(segment.segment);
   const showPrices = useShowPrices();
@@ -418,13 +427,8 @@ const Result = ({
     .map((s) => serviceCategories.find((c) => c.slug === s))
     .filter((c): c is (typeof serviceCategories)[number] => Boolean(c));
 
-  type RecapRow = { label: string; value: string | null; quoted?: boolean };
-  const rows: RecapRow[] = [
-    { label: "What you're building", value: labelFor("q2_vision", answers.q2_vision), quoted: true },
-    { label: "What's holding you back", value: labelFor("q9_challenge", answers.q9_challenge) },
-    { label: "Your 90-day win", value: labelFor("q10_priority", answers.q10_priority), quoted: true },
-  ];
-  const recap = rows.filter((r): r is RecapRow & { value: string } => Boolean(r.value));
+  const vision = labelFor("q2_vision", answers.q2_vision, answers);
+  const challenge = labelFor("q9_challenge", answers.q9_challenge, answers);
 
   // The booking carries the result into Calendly, so DCH starts the call informed.
   const [showCalendar, setShowCalendar] = useState(false);
@@ -432,12 +436,17 @@ const Result = ({
     () =>
       calendlyUrl("discovery", {
         notes: [
-          `Discovery result: ${profile?.archetype ?? ""}`,
+          `Discovery result: ${profile.archetype}${reading.traits ? `, ${reading.traits}` : ""} (${segment.confidence} confidence)`,
           offerLine(offer),
-          ...recap.map((r) => `${r.label}: ${r.value}`),
-        ].join("\n"),
+          vision && `Building: ${vision}`,
+          challenge && `Holding them back: ${challenge}`,
+          reading.ninetyDay && `90-day win: ${reading.ninetyDay}`,
+          `First move suggested: ${reading.firstMove}`,
+        ]
+          .filter(Boolean)
+          .join("\n"),
       }),
-    [profile, offer, recap],
+    [profile, reading, segment.confidence, offer, vision, challenge],
   );
 
   const fade = (i: number) => ({
@@ -445,6 +454,8 @@ const Result = ({
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6, delay: i * 0.08, ease: EASE },
   });
+
+  const flags = [segment.capabilityGap, ...reading.tensions].filter((x): x is string => Boolean(x));
 
   return (
     <div className="mx-auto w-full max-w-3xl">
@@ -455,36 +466,75 @@ const Result = ({
         {...fade(1)}
         className="font-display-refined mt-4 text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-6xl"
       >
-        {profile?.archetype ?? "Your model"}
+        {profile.archetype}
       </motion.h1>
+      {reading.traits && (
+        <motion.p {...fade(1)} className="mt-2 text-lg text-muted-foreground">
+          {reading.traits}
+        </motion.p>
+      )}
       <motion.p {...fade(2)} className="mt-6 max-w-2xl text-xl leading-snug text-foreground/90">
         {segment.emailPersonalization.modelDescription}
       </motion.p>
-      {profile && (
-        <motion.p {...fade(3)} className="mt-4 text-base text-muted-foreground">
-          Your next challenge: <span className="text-foreground">{profile.nextChallenge.toLowerCase()}</span>.
+      {vision && (
+        <motion.p {...fade(3)} className="mt-4 max-w-2xl text-base text-muted-foreground">
+          For what you&rsquo;re building, <span className="text-foreground">&ldquo;{vision}&rdquo;</span>, the next
+          challenge is usually <span className="text-foreground">{profile.nextChallenge.toLowerCase()}</span>.
+        </motion.p>
+      )}
+      {reading.confidenceNote && (
+        <motion.p {...fade(3)} className="mt-4 max-w-2xl text-sm text-muted-foreground">
+          {reading.confidenceNote}
         </motion.p>
       )}
 
-      {segment.capabilityGap && (
-        <motion.div {...fade(4)} className="mt-10 border-l-2 border-secondary pl-5">
+      {/* The one thing to do first, and where DCH fits into it. */}
+      <motion.section {...fade(4)} aria-labelledby="move-heading" className="mt-12 border border-primary/30 bg-primary/[0.05] p-6 sm:p-8">
+        <p className="text-sm font-medium text-primary">
+          Your first move{challenge ? ` · ${challenge}` : ""}
+        </p>
+        <h2 id="move-heading" className="mt-3 text-xl leading-snug text-foreground sm:text-2xl">
+          {reading.firstMove}
+        </h2>
+        {reading.ninetyDay && (
+          <p className="mt-5 text-base text-muted-foreground">
+            It&rsquo;s the first step toward your 90-day win:{" "}
+            <span className="text-foreground">&ldquo;{reading.ninetyDay}&rdquo;</span>
+          </p>
+        )}
+        {reading.dch && (
+          <p className="mt-5 border-t border-border/40 pt-5 text-base text-foreground/90">
+            <span className="font-medium text-secondary">Where DCH comes in: </span>
+            <Link to={`/services/${reading.dch.practice}`} className="font-medium text-primary hover:text-foreground">
+              {reading.dch.title}
+            </Link>
+            . {reading.dch.line}
+          </p>
+        )}
+      </motion.section>
+
+      {flags.length > 0 && (
+        <motion.div {...fade(5)} className="mt-10 border-l-2 border-secondary pl-5">
           <p className="text-sm font-medium text-secondary">Worth knowing</p>
-          <p className="mt-2 max-w-2xl text-base leading-relaxed text-foreground/90">{segment.capabilityGap}</p>
+          <ul className="mt-2 max-w-2xl space-y-3 text-base leading-relaxed text-foreground/90">
+            {flags.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
         </motion.div>
       )}
 
-      {recap.length > 0 && (
-        <motion.dl {...fade(5)} className="mt-12 divide-y divide-border/40 border-y border-border/40">
-          {recap.map((r) => (
-            <div key={r.label} className="grid gap-1 py-4 sm:grid-cols-[13rem_1fr] sm:gap-6">
-              <dt className="text-sm text-muted-foreground">{r.label}</dt>
-              <dd className="text-foreground">{r.quoted ? `“${r.value}”` : r.value}</dd>
-            </div>
-          ))}
-        </motion.dl>
+      {proof && (
+        <motion.p {...fade(5)} className="mt-10 max-w-2xl text-base text-muted-foreground">
+          <span className="font-medium text-foreground">Similar work we&rsquo;ve shipped: </span>
+          <Link to="/our-work" className="font-medium text-primary hover:text-foreground">
+            {proof.title}
+          </Link>
+          . {proof.description}
+        </motion.p>
       )}
 
-      {offer.program && (
+      {offer.program ? (
         <motion.section {...fade(6)} aria-labelledby="path-heading" className="mt-14">
           <p className="text-sm font-medium text-primary">Your path</p>
           <h2 id="path-heading" className="font-display-refined mt-3 text-3xl leading-[1.05] text-foreground sm:text-4xl">
@@ -537,6 +587,27 @@ const Result = ({
             </p>
           )}
         </motion.section>
+      ) : (
+        // Schools and individuals: no business programme; the training tracks are the path.
+        <motion.section {...fade(6)} aria-labelledby="path-heading" className="mt-14">
+          <p className="text-sm font-medium text-primary">Your path</p>
+          <h2 id="path-heading" className="font-display-refined mt-3 text-3xl leading-[1.05] text-foreground sm:text-4xl">
+            {segment.program}
+          </h2>
+          <p className="mt-3 max-w-2xl text-lg text-muted-foreground">{segment.emailPersonalization.programFit}</p>
+          <p className="mt-6 text-base text-muted-foreground">
+            Delivered as cohorts, workshops or one-to-one, online or in person.{" "}
+            {training && (
+              <Link to={`/services/${training.slug}`} className="font-medium text-primary hover:text-foreground">
+                See {training.title}
+              </Link>
+            )}
+            {" · "}
+            <Link to="/events" className="font-medium text-primary hover:text-foreground">
+              Upcoming workshops
+            </Link>
+          </p>
+        </motion.section>
       )}
 
       <motion.section {...fade(7)} className="mt-14 border-t border-border/40 pt-10">
@@ -544,7 +615,8 @@ const Result = ({
           Start with a discovery call.
         </h2>
         <p className="mt-3 max-w-xl text-lg text-muted-foreground">
-          One-on-one. We test this against your real numbers and confirm the right path before anything is sold.
+          One-on-one, with your answers already read. We test this against your real situation and agree the right
+          first move before anything is sold.
         </p>
         <div className="mt-8">
           {showCalendar ? (
@@ -593,6 +665,9 @@ const Result = ({
 
 const EmailBreakdown = ({ answers }: { answers: Answers }) => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  // Bot trap: hidden from people, so anything typed here came from a script.
+  const [website, setWebsite] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
   const [error, setError] = useState<string | null>(null);
   const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -606,7 +681,7 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
       const res = await fetch("/api/discovery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), answers }),
+        body: JSON.stringify({ email: email.trim(), name: name.trim(), website, answers }),
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body?.success) throw new Error(body?.error ?? "We couldn't save your answers. Please try again.");
@@ -628,11 +703,21 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
   }
 
   return (
-    <form onSubmit={submit} className="mt-10 max-w-xl">
+    <form onSubmit={submit} className="relative mt-10 max-w-xl">
       <label htmlFor="discovery-email" className="text-base text-foreground">
         Or get the full breakdown by email
       </label>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+        <input
+          aria-label="Your first name (optional)"
+          type="text"
+          autoComplete="given-name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="First name"
+          maxLength={60}
+          className="h-12 border border-border/60 bg-card/40 px-4 text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none sm:w-40"
+        />
         <input
           id="discovery-email"
           type="email"
@@ -647,6 +732,16 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
           {state === "sending" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send it"}
         </Button>
       </div>
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      />
       {error && (
         <p role="alert" className="mt-3 text-sm text-destructive">
           {error}

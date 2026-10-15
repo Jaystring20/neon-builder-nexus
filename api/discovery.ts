@@ -26,6 +26,8 @@ import {
 } from "../src/lib/resend.v3.js";
 import { discoveryAlertEmail } from "../src/lib/leadEmails.js";
 import { matchOffer, offerLine } from "../src/data/offerMatch.js";
+import { buildReading } from "../src/data/diagnosticReading.js";
+import { SEGMENT_NAME } from "../src/data/segmentLogic.js";
 import { mergeProgram } from "../src/data/siteContent.js";
 import { loadSiteContent } from "../src/lib/siteContent.server.js";
 
@@ -54,7 +56,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // unusual content-type. Normalise rather than crashing on `.answers`.
     const body =
       typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body ?? {};
+    // Honeypot: a field people never see. Bots fill it; pretend all is well,
+    // so nothing is saved and no email goes to an address a script supplied.
+    if (typeof body.website === "string" && body.website.trim()) {
+      return res.status(200).json({ success: true, emailQueued: true });
+    }
+
     const { answers, email } = body as { answers?: DiscoveryAnswers; email?: string };
+    const name = typeof body.name === "string" ? body.name.trim().slice(0, 60) : "";
 
     if (!email || !answers) {
       return res
@@ -72,14 +81,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const segment = calculateSegment(answers);
     // With the team's dashboard edits, so emails match what the result screen showed.
     const program = mergeProgram(getProgramBySegment(segment.segment), (await loadSiteContent()).programmes?.[segment.segment]);
-    const founderName = trimmedEmail.split("@")[0];
+    const founderName = name;
+    const reading = buildReading(segment, answers as unknown as Record<string, unknown>);
 
     // Persist before anything that can fail on a third party.
     const saved = await saveDiscoveryResult(
       trimmedEmail,
       segment.segment,
       segment.program,
-      answers as unknown as Record<string, unknown>,
+      // The first name rides with the answers; it has no column of its own.
+      { ...(answers as unknown as Record<string, unknown>), ...(name ? { contact_name: name } : {}) },
       segment.capabilityGap
     );
 
@@ -111,7 +122,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let emailError: string | undefined;
     try {
       const sent = await sendEmailViaResendDetailed(
-        generateEmail1(founderName, trimmedEmail, segment, program, emailContext)
+        generateEmail1(founderName, trimmedEmail, segment, program, emailContext, reading)
       );
       emailQueued = sent.ok;
       emailError = sent.error;
@@ -128,6 +139,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           { segment: segment.segment, program: segment.program, capabilityGap: segment.capabilityGap },
           answers as unknown as Record<string, unknown>,
           offerLine(matchOffer(segment.segment, answers as unknown as Record<string, unknown>, program)),
+          {
+            name: name || undefined,
+            archetype: `${SEGMENT_NAME[segment.segment]}${reading.traits ? `, ${reading.traits}` : ""} (${segment.confidence} confidence)`,
+            firstMove: reading.firstMove,
+            tensions: reading.tensions,
+          },
         ),
       );
       if (!alert.ok) console.error("Discovery alert not sent:", alert.error);

@@ -24,16 +24,45 @@ const SEGMENT_PRACTICES: Record<string, string[]> = {
   startup: ["digital-infrastructure", "brand-architecture"],
   professional_service: ["brand-architecture", "ai-automation"],
   development_org: ["growth-operations", "training"],
+  education: ["training", "ai-automation"],
+  individual: ["training", "brand-architecture"],
 };
 
-const CHALLENGE_PRACTICE: Record<string, string> = {
-  customers: "growth-operations",
-  corporate_access: "growth-operations",
-  team: "training",
-  motivation: "training",
-  model: "brand-architecture",
-  scaling: "ai-automation",
+/**
+ * The practice that answers each obstacle. Schools and individuals pick from
+ * their own list of obstacles (discoveryQuestions.ts), so they map separately.
+ */
+const CHALLENGE_PRACTICE: Record<"business" | "school" | "career", Record<string, string>> = {
+  business: {
+    customers: "growth-operations",
+    corporate_access: "growth-operations", // retired option, kept for older answers
+    team: "training",
+    motivation: "training",
+    model: "brand-architecture",
+    scaling: "ai-automation",
+    cash: "growth-operations",
+  },
+  school: {
+    skills: "training",
+    curriculum: "training",
+    visibility: "growth-operations",
+    systems: "ai-automation",
+    cash: "training",
+  },
+  career: {
+    skills: "training",
+    visibility: "brand-architecture",
+    direction: "training",
+    time: "ai-automation",
+    income: "training",
+  },
 };
+
+/** The single practice most relevant to this visitor's obstacle. */
+export function challengePractice(segment: string, answers: Record<string, unknown>): string | null {
+  const audience = segment === "education" ? "school" : segment === "individual" ? "career" : "business";
+  return CHALLENGE_PRACTICE[audience][answers.q9_challenge as string] ?? null;
+}
 
 export interface OfferMatch {
   program: Program | null;
@@ -72,7 +101,7 @@ export function matchOffer(
   }
 
   const practices = [...(SEGMENT_PRACTICES[segment] ?? [])];
-  const fromChallenge = CHALLENGE_PRACTICE[answers.q9_challenge as string];
+  const fromChallenge = challengePractice(segment, answers);
   if (fromChallenge && !practices.includes(fromChallenge)) practices.unshift(fromChallenge);
 
   return { program, bestTier, reason, practices: practices.slice(0, 3) };

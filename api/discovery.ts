@@ -30,6 +30,14 @@ import { buildReading } from "../src/data/diagnosticReading.js";
 import { SEGMENT_NAME } from "../src/data/segmentLogic.js";
 import { mergeProgram } from "../src/data/siteContent.js";
 import { loadSiteContent } from "../src/lib/siteContent.server.js";
+import { leadHeat } from "../src/data/leadHeat.js";
+import {
+  recordEmailEvent,
+  recordFunnelEvent,
+  sessionSignals,
+  upsertDiagnosticLead,
+  validSession,
+} from "../src/lib/diagnosticLeads.server.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -49,6 +57,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       error: "The server is not configured to accept submissions yet.",
       missingEnv: missing,
     });
+  }
+
+  // ?op=track: one step of the funnel from the browser. Always 204, so a
+  // visitor never sees an error for something they didn't ask for.
+  if (req.query.op === "track") {
+    try {
+      const raw = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body ?? {};
+      await recordFunnelEvent(raw as Record<string, unknown>);
+    } catch (err) {
+      console.error("track failed:", err);
+    }
+    return res.status(204).end();
   }
 
   try {
@@ -83,6 +103,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const program = mergeProgram(getProgramBySegment(segment.segment), (await loadSiteContent()).programmes?.[segment.segment]);
     const founderName = name;
     const reading = buildReading(segment, answers as unknown as Record<string, unknown>);
+    const session = validSession(body.session_id);
+    const signals = await sessionSignals(session).catch(() => ({ openedBooking: false, booked: false }));
+    const allAnswers = { ...(answers as unknown as Record<string, unknown>), ...(name ? { contact_name: name } : {}) };
+    const heat = leadHeat(allAnswers, { ...signals, confidence: segment.confidence });
 
     // Persist before anything that can fail on a third party.
     const saved = await saveDiscoveryResult(
@@ -90,7 +114,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       segment.segment,
       segment.program,
       // The first name rides with the answers; it has no column of its own.
-      { ...(answers as unknown as Record<string, unknown>), ...(name ? { contact_name: name } : {}) },
+      allAnswers,
       segment.capabilityGap
     );
 
@@ -101,6 +125,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         success: false,
         error: "We could not save your answers. Please try again.",
       });
+    }
+
+    // Into the pipeline straight away, scored, so hot leads are seen first.
+    if (saved.id) {
+      try {
+        await recordEmailEvent(session, saved.id, answers.q0_type);
+        await upsertDiagnosticLead({
+          discoveryId: saved.id,
+          email: trimmedEmail,
+          name,
+          answers: allAnswers,
+          program: segment.program,
+          heat,
+          booked: signals.booked,
+        });
+      } catch (err) {
+        console.error("Could not create the diagnostic lead:", err);
+      }
     }
 
     const emailContext: EmailContext = {
@@ -145,6 +187,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             firstMove: reading.firstMove,
             tensions: reading.tensions,
           },
+          heat,
         ),
       );
       if (!alert.ok) console.error("Discovery alert not sent:", alert.error);
@@ -157,33 +200,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // is enough for the caller; the detail belongs in the runtime logs.
     if (emailError) console.error("Email 1 not sent:", emailError);
 
-    try {
-      const now = Date.now();
-      const email2 = generateEmail2(founderName, trimmedEmail, segment, program, emailContext);
-      const email3 = generateEmail3(founderName, trimmedEmail, segment, program, emailContext);
+    // Someone who has already booked doesn't need the nudges to book.
+    if (!signals.booked) {
+      try {
+        const now = Date.now();
+        const email2 = generateEmail2(founderName, trimmedEmail, segment, program, emailContext);
+        const email3 = generateEmail3(founderName, trimmedEmail, segment, program, emailContext);
 
-      const { error } = await getSupabase().from("scheduled_emails").insert([
-        {
-          email: trimmedEmail,
-          email_type: "email_2",
-          subject: email2.subject,
-          html: email2.html,
-          scheduled_for: new Date(now + DAY_MS).toISOString(),
-          sent: false,
-        },
-        {
-          email: trimmedEmail,
-          email_type: "email_3",
-          subject: email3.subject,
-          html: email3.html,
-          scheduled_for: new Date(now + 3 * DAY_MS).toISOString(),
-          sent: false,
-        },
-      ]);
+        const { error } = await getSupabase().from("scheduled_emails").insert([
+          {
+            email: trimmedEmail,
+            email_type: "email_2",
+            subject: email2.subject,
+            html: email2.html,
+            scheduled_for: new Date(now + DAY_MS).toISOString(),
+            sent: false,
+          },
+          {
+            email: trimmedEmail,
+            email_type: "email_3",
+            subject: email3.subject,
+            html: email3.html,
+            scheduled_for: new Date(now + 3 * DAY_MS).toISOString(),
+            sent: false,
+          },
+        ]);
 
-      if (error) console.error("Could not queue follow-up emails:", error.message);
-    } catch (err) {
-      console.error("Could not queue follow-up emails:", err);
+        if (error) console.error("Could not queue follow-up emails:", error.message);
+      } catch (err) {
+        console.error("Could not queue follow-up emails:", err);
+      }
     }
 
     return res.status(200).json({

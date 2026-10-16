@@ -87,7 +87,19 @@ export interface DiagnosticRow {
   capability_gap: string | null;
   created_at: string;
   updated_at: string;
-  lead: { id: string; status: LeadStatus } | null;
+  lead: { id: string; status: LeadStatus; priority: "high" | "medium" | "low" } | null;
+}
+
+export interface Funnel {
+  ready: boolean;
+  days: number;
+  started?: number;
+  steps?: { step: number; reached: number; question: string | null }[];
+  finished?: number;
+  emailed?: number;
+  openedBooking?: number;
+  booked?: number;
+  sources?: { source: string; started: number; finished: number; emailed: number }[];
 }
 
 export interface Diagnostic extends Omit<DiagnosticRow, "lead"> {
@@ -211,6 +223,7 @@ export const adminApi = {
   addNote: (entity_type: "lead" | "diagnostic", entity_id: string, body: string) =>
     call<{ ok: true }>("note", { body: { entity_type, entity_id, body } }),
   diagnostics: () => call<{ diagnostics: DiagnosticRow[] }>("diagnostics"),
+  funnel: (days: number) => call<Funnel>("funnel", { query: { days: String(days) } }),
   diagnostic: (id: string) =>
     call<{ diagnostic: Diagnostic; lead: { id: string; status: LeadStatus } | null; notes: Note[]; activity: Activity[] }>("diagnostic", {
       query: { id },

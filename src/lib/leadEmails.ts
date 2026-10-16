@@ -11,6 +11,7 @@
 import type { EmailPayload } from "./resend.v3.js";
 import { describe, type LeadIntake, type LeadRouting } from "../data/leadIntake.js";
 import { calendlyUrl } from "./booking.js";
+import { HEAT_LABEL, type HeatResult } from "../data/leadHeat.js";
 
 export const SITE = "https://www.digitalcreativeshubltd.com";
 
@@ -108,16 +109,18 @@ export function discoveryAlertEmail(
   answers: Record<string, unknown>,
   offer?: string,
   reading?: { name?: string; archetype?: string; firstMove?: string; tensions?: string[] },
+  heat?: HeatResult,
 ): EmailPayload {
   const text = (k: string) => (typeof answers[k] === "string" ? (answers[k] as string) : undefined);
   return {
     to: alertInbox(),
     replyTo: email,
-    subject: `New discovery result: ${email} (${result.program})`,
+    subject: `${heat?.heat === "hot" ? "HOT: " : ""}New discovery result: ${email} (${result.program})`,
     html: shell(`
 <p style="margin:0;font-size:13px;color:#0f766e;font-weight:600">New lead · Discovery form</p>
 <h1 style="margin:8px 0 20px;font-size:22px">${esc(reading?.name ? `${reading.name} · ${email}` : email)}</h1>
 ${rows([
+  ["Lead heat", heat ? `${HEAT_LABEL[heat.heat]}${heat.reasons.length ? `: ${heat.reasons.join(", ")}` : ""}` : undefined],
   ["Archetype", reading?.archetype],
   ["Result", `${result.program} (${result.segment})`],
   ["Recommended", offer || undefined],
@@ -128,7 +131,7 @@ ${rows([
   ["Tensions", reading?.tensions?.length ? reading.tensions.join(" ") : undefined],
   ["First move we gave", reading?.firstMove],
 ])}
-<p style="margin:24px 0 0;font-size:13px;color:#6b7280">They received the emailed breakdown. If they book, it comes through the discovery-call event in Calendly.</p>`),
+<p style="margin:24px 0 0;font-size:13px;color:#6b7280">They received the emailed breakdown, and they're already in Leads. If they book, it comes through the discovery-call event in Calendly.</p>`),
   };
 }
 

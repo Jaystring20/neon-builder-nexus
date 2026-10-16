@@ -210,7 +210,10 @@ async function leadsList(ctx: Ctx) {
   if ((LEAD_STATUSES as readonly string[]).includes(status)) query = query.eq("status", status);
   if (["high", "medium", "low"].includes(priority)) query = query.eq("priority", priority);
   if (search) query = query.or(`name.ilike.%${search}%,email.ilike.%${search}%,company.ilike.%${search}%`);
-  return { leads: must(await query) };
+  // Hottest first, newest first within each.
+  const rank: Record<string, number> = { high: 0, medium: 1, low: 2 };
+  const leads = must(await query) as { priority: string; created_at: string }[];
+  return { leads: [...leads].sort((a, b) => (rank[a.priority] ?? 3) - (rank[b.priority] ?? 3) || b.created_at.localeCompare(a.created_at)) };
 }
 
 async function notesAndActivity(db: SupabaseClient, type: "lead" | "diagnostic", id: string) {
@@ -297,7 +300,12 @@ async function diagnosticsList(ctx: Ctx) {
   ) as { id: string }[];
   const ids = rows.map((r) => r.id);
   const linked = ids.length
-    ? (must(await ctx.db.from("leads").select("id,discovery_id,status").in("discovery_id", ids)) as { id: string; discovery_id: string; status: string }[])
+    ? (must(await ctx.db.from("leads").select("id,discovery_id,status,priority").in("discovery_id", ids)) as {
+        id: string;
+        discovery_id: string;
+        status: string;
+        priority: string;
+      }[])
     : [];
   const byDiscovery = new Map(linked.map((l) => [l.discovery_id, l]));
   return { diagnostics: rows.map((r) => ({ ...r, lead: byDiscovery.get(r.id) ?? null })) };
@@ -311,6 +319,74 @@ async function diagnosticDetail(ctx: Ctx) {
   if (!diagnostic) throw new HttpError(404, "Result not found.");
   const lead = must(await ctx.db.from("leads").select("id,status").eq("discovery_id", id).maybeSingle());
   return { diagnostic, lead, ...(await notesAndActivity(ctx.db, "diagnostic", id)) };
+}
+
+/**
+ * The Growth Diagnostic funnel for the last 7, 30 or 90 days: how many
+ * started, how far they got, and how many finished, left an email, opened
+ * the calendar or booked. Counts people (sessions), not clicks.
+ */
+async function funnel(ctx: Ctx) {
+  allow(await currentUser(ctx), "leads.read");
+  const days = [7, 30, 90].includes(Number(ctx.req.query.days)) ? Number(ctx.req.query.days) : 30;
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
+  const { data, error } = await ctx.db
+    .from("diagnostic_events")
+    .select("session_id,event,step,question,source")
+    .gte("created_at", since)
+    .order("created_at")
+    .limit(50000);
+  // Before its migration is run, the table isn't there: say so instead of failing.
+  if (error) return { ready: false, days };
+
+  type Row = { session_id: string; event: string; step: number | null; question: string | null; source: string | null };
+  const sessions = new Map<string, { furthest: number; events: Set<string>; source: string }>();
+  const questionAt = new Map<number, Map<string, number>>();
+  for (const r of data as Row[]) {
+    const s = sessions.get(r.session_id) ?? { furthest: 0, events: new Set<string>(), source: "direct" };
+    s.events.add(r.event);
+    if (r.source && (r.event === "start" || s.source === "direct")) s.source = r.source;
+    if (r.event === "question" && r.step) {
+      s.furthest = Math.max(s.furthest, r.step);
+      if (r.question) {
+        const at = questionAt.get(r.step) ?? new Map<string, number>();
+        at.set(r.question, (at.get(r.question) ?? 0) + 1);
+        questionAt.set(r.step, at);
+      }
+    }
+    sessions.set(r.session_id, s);
+  }
+
+  const all = [...sessions.values()].filter((s) => s.events.has("start") || s.events.has("question") || s.events.has("finish"));
+  const count = (e: string) => all.filter((s) => s.events.has(e)).length;
+  const maxStep = Math.max(0, ...all.map((s) => s.furthest));
+  const steps = Array.from({ length: maxStep }, (_, i) => {
+    const step = i + 1;
+    const common = [...(questionAt.get(step) ?? new Map()).entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+    return { step, reached: all.filter((s) => s.furthest >= step || s.events.has("finish")).length, question: common };
+  });
+  const bySource = new Map<string, { started: number; finished: number; emailed: number }>();
+  for (const s of all) {
+    const b = bySource.get(s.source) ?? { started: 0, finished: 0, emailed: 0 };
+    b.started++;
+    if (s.events.has("finish")) b.finished++;
+    if (s.events.has("email")) b.emailed++;
+    bySource.set(s.source, b);
+  }
+  return {
+    ready: true,
+    days,
+    started: all.length,
+    steps,
+    finished: count("finish"),
+    emailed: count("email"),
+    openedBooking: count("book_open"),
+    booked: count("booked"),
+    sources: [...bySource.entries()]
+      .map(([source, b]) => ({ source, ...b }))
+      .sort((a, b) => b.started - a.started)
+      .slice(0, 8),
+  };
 }
 
 /** Put a diagnostic into the leads pipeline, so it's followed up like any call request. */
@@ -764,6 +840,7 @@ const OPS: Record<string, { method: "GET" | "POST"; run: (ctx: Ctx) => unknown }
   "lead-update": { method: "POST", run: leadUpdate },
   note: { method: "POST", run: noteAdd },
   diagnostics: { method: "GET", run: diagnosticsList },
+  funnel: { method: "GET", run: funnel },
   diagnostic: { method: "GET", run: diagnosticDetail },
   "diagnostic-to-lead": { method: "POST", run: diagnosticToLead },
   "deck-upload-url": { method: "POST", run: deckUploadUrl },

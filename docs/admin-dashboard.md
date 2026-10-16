@@ -134,3 +134,36 @@ Editor. Nothing to change in Vercel.
   Resend.
 - `src/data/events.ts`: shared labels, Lagos-time formatting, registration
   checks; `src/data/eventSchemas.ts`: server-side validation.
+
+# Diagnostic funnel and lead heat
+
+## What it does
+
+- **Funnel** (Diagnostics page): how many people started the Growth
+  Diagnostic, how far they got, and how many finished, left an email, opened
+  the booking calendar or booked, over 7, 30 or 90 days, with the biggest drop
+  called out and a breakdown by source (`utm_source`, else the referring site).
+  Anonymous: a random id per attempt, never answers or IP addresses.
+- **Lead heat**: every diagnostic that leaves an email becomes a lead at once,
+  with priority hot (high), warm (medium) or cool (low) from
+  `src/data/leadHeat.ts`. Hot ones get `HOT:` in the alert subject. Leads are
+  listed hottest first.
+- **Bookings**: Calendly's embedded calendar tells the page when someone books
+  (on any plan). If they've left an email, their lead moves to Booked and their
+  queued day-1 and day-3 emails are cancelled; opening the calendar alone makes
+  the lead high priority.
+
+## Turning it on (once)
+
+Run `supabase/migrations/20261016090000_diagnostic_funnel.sql` in the Supabase
+SQL Editor. Until then the funnel says it isn't counting, and leads are still
+created and scored from answers alone.
+
+## How it works
+
+- `src/lib/funnel.ts`: the browser side; sends each step to
+  `POST /api/discovery?op=track` with `sendBeacon`.
+- `src/lib/diagnosticLeads.server.ts`: records steps, creates and scores the
+  lead, and applies booking signals.
+- `api/admin.ts` (`op=funnel`): counts people per step for the dashboard.
+- `npm run check:diagnostic` pins the heat rules with real cases.

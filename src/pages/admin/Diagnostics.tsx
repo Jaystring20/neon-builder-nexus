@@ -12,6 +12,7 @@ import { briefResult, buildDiagnosticBrief, deckPrompt, type BriefInput } from "
 import { usePortfolio, useProgramme } from "@/hooks/useSiteContent";
 import { useMe } from "./AdminApp";
 import { SendDeck } from "./SendDeck";
+import { FunnelPanel } from "./Funnel";
 import { ActivityList, ErrorNote, Loading, NotesPanel, PageHeader, Panel, SEGMENT_LABEL, StatusBadge, ago, fmtDate } from "./ui";
 
 export function DiagnosticsList() {
@@ -20,6 +21,9 @@ export function DiagnosticsList() {
   return (
     <>
       <PageHeader title="Diagnostics" lead="Everyone who finished the Growth Diagnostic and asked for their breakdown." />
+      <div className="mt-6">
+        <FunnelPanel />
+      </div>
       {list.isLoading ? (
         <Loading />
       ) : list.error ? (
@@ -39,6 +43,7 @@ export function DiagnosticsList() {
                 </p>
               </div>
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                {d.lead && <HeatMark priority={d.lead.priority} />}
                 {d.lead ? <StatusBadge status={d.lead.status} /> : <span className="text-xs">Not in pipeline</span>}
                 <span>{ago(d.updated_at)}</span>
               </div>
@@ -49,6 +54,13 @@ export function DiagnosticsList() {
     </>
   );
 }
+
+const HEAT = { high: "Hot", medium: "Warm", low: "Cool" } as const;
+const HeatMark = ({ priority }: { priority: keyof typeof HEAT }) => (
+  <span className={priority === "high" ? "text-xs font-semibold uppercase tracking-wide text-secondary" : "text-xs uppercase tracking-wide"}>
+    {HEAT[priority] ?? priority}
+  </span>
+);
 
 const showAnswer = (id: string, v: unknown, answers: Record<string, unknown>, labels?: string[]): string | null => {
   if (Array.isArray(v)) return v.map((x) => labelFor(id, x, answers) ?? String(x)).join("\n") || null;

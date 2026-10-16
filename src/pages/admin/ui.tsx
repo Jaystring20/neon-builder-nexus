@@ -96,7 +96,7 @@ export const ErrorNote = ({ error }: { error: unknown }) => (
   </p>
 );
 
-const who = (p: { name: string; email: string } | null) => (p ? p.name || p.email : "Someone");
+const who = (p: { name: string; email: string } | null, auto?: unknown) => (auto ? "The website" : p ? p.name || p.email : "Someone");
 
 const CONTENT_LABEL: Record<string, string> = {
   programmes: "the programmes",
@@ -113,7 +113,10 @@ const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "diagnostic.to_lead": () => "added it to the leads pipeline",
   "diagnostic.deck_sent": (d) => `sent the deck ${d.file} to ${d.to}`,
   "lead.deck_sent": (d) => `sent the deck ${d.file}`,
-  "lead.created_from_diagnostic": () => "created this lead from a diagnostic",
+  "lead.created_from_diagnostic": (d) => `created this lead from a diagnostic${d.heat ? `, scored ${d.heat}${Array.isArray(d.reasons) && d.reasons.length ? ` (${d.reasons.join(", ")})` : ""}` : ""}`,
+  "lead.heat": (d) => `raised it to ${d.heat} after a retake${Array.isArray(d.reasons) && d.reasons.length ? ` (${d.reasons.join(", ")})` : ""}`,
+  "lead.opened_booking": () => "saw them open the booking calendar, and made it high priority",
+  "lead.booked_online": () => "saw them book a call in the embedded calendar",
   "team.add": (d) => `added ${d.email} to the team`,
   "team.update": (d) => `updated ${d.email}${d.active === false ? " (access removed)" : ""}`,
   "content.save": (d) => `updated ${CONTENT_LABEL[d.key as string] ?? d.key} on the website`,
@@ -127,7 +130,7 @@ const ACTION_TEXT: Record<string, (d: Record<string, unknown>) => string> = {
   "content.reset": (d) => `put ${CONTENT_LABEL[d.key as string] ?? d.key} back to the original`,
 };
 
-export const describeActivity = (a: Activity) => `${who(a.actor)} ${(ACTION_TEXT[a.action] ?? (() => a.action))(a.detail ?? {})}`;
+export const describeActivity = (a: Activity) => `${who(a.actor, a.detail?.auto)} ${(ACTION_TEXT[a.action] ?? (() => a.action))(a.detail ?? {})}`;
 
 export const ActivityList = ({ items }: { items: Activity[] }) =>
   items.length ? (

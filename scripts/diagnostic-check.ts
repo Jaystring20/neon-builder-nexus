@@ -10,6 +10,7 @@ import { calculateSegment, type DiscoveryAnswers, type Segment } from "../src/da
 import { matchOffer, type TierKey } from "../src/data/offerMatch.js";
 import { buildReading, firstMoveFor } from "../src/data/diagnosticReading.js";
 import { questionsFor } from "../src/data/discoveryQuestions.js";
+import { leadHeat, type Heat, type HeatSignals } from "../src/data/leadHeat.js";
 
 interface Case {
   who: string;
@@ -234,5 +235,48 @@ for (const [segment, type] of archetypes) {
   }
 }
 if (gaps) failed += gaps;
-console.log(failed ? `\n${failed} check(s) failed` : `\nAll ${cases.length} visitors pass, and every archetype × obstacle has its own first move`);
+
+// Lead heat: who the team should call first. Each case is a real kind of visitor.
+const heatCases: { who: string; answers: Record<string, unknown>; signals?: HeatSignals; expect: Heat }[] = [
+  {
+    who: "Funmimo: scaling, all in, clear goal, named",
+    answers: { ...base, ...cases[20].answers, q10_priority: "10,000 paying students by March", contact_name: "Elijah" },
+    signals: { confidence: "high" },
+    expect: "hot",
+  },
+  {
+    who: "Footwear founder: building, all in, goal cut short",
+    answers: { ...base, q0_type: "product_business", q1_brings_you: "building", q5_pressure: "80_hours", q7_revenue: "project", q10_priority: "land 5 cl" },
+    signals: { confidence: "low" },
+    expect: "warm",
+  },
+  {
+    who: "Just curious: starting, unsure, balance",
+    answers: { ...base, q1_brings_you: "starting", q5_pressure: "balance", q7_revenue: "unsure", q10_priority: "learn" },
+    expect: "cool",
+  },
+  {
+    who: "Same curious visitor, opened the calendar",
+    answers: { ...base, q1_brings_you: "starting", q5_pressure: "balance", q7_revenue: "unsure", q10_priority: "learn" },
+    signals: { openedBooking: true },
+    expect: "warm",
+  },
+  {
+    who: "Anyone who booked",
+    answers: { q1_brings_you: "confused" },
+    signals: { booked: true },
+    expect: "hot",
+  },
+];
+for (const c of heatCases) {
+  const h = leadHeat(c.answers, c.signals);
+  const ok = h.heat === c.expect;
+  console.log(`${ok ? "ok  " : "FAIL"}  heat: ${c.who.padEnd(48)} ${h.heat} (${h.score}) [${h.reasons.join(", ")}]`);
+  if (!ok) failed++;
+}
+console.log(
+  failed
+    ? `\n${failed} check(s) failed`
+    : `\nAll ${cases.length} visitors pass, every archetype × obstacle has its own first move, and all ${heatCases.length} heat cases score right`,
+);
 process.exitCode = failed ? 1 : 0;

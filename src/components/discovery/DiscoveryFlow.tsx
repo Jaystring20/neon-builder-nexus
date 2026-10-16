@@ -9,6 +9,7 @@ import { calculateSegment, SEGMENT_PROFILES, type DiscoveryAnswers, type Segment
 import { buildReading } from "@/data/diagnosticReading";
 import { serviceCategories } from "@/data/services";
 import { calendlyUrl } from "@/lib/booking";
+import { funnelSession, track } from "@/lib/funnel";
 import { matchOffer, offerLine, priceRange, TIER_LABEL } from "@/data/offerMatch";
 import { usePortfolio, useProgramme, useShowPrices } from "@/hooks/useSiteContent";
 import CalendlyEmbed from "@/components/booking/CalendlyEmbed";
@@ -76,12 +77,20 @@ const DiscoveryFlow = () => {
   const next = useCallback(() => {
     if (!canContinue) return;
     if (isLast) {
+      track("finish", { audience: answers.q0_type });
       setStage("result");
       window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
     } else setIndex((i) => i + 1);
-  }, [canContinue, isLast, reduce]);
+  }, [canContinue, isLast, reduce, answers.q0_type]);
 
   const back = () => (index === 0 ? setStage("intro") : setIndex((i) => i - 1));
+
+  // Count each question reached, so the dashboard shows where people stop.
+  useEffect(() => {
+    if (stage === "questions") track("question", { step: index + 1, question: q.id, audience: answers.q0_type });
+    // Only when the question changes, not on every keystroke in an answer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, q.id]);
 
   // Keyboard: number keys pick an option, Enter moves on.
   useEffect(() => {
@@ -106,6 +115,7 @@ const DiscoveryFlow = () => {
   }, [stage, q, next, setAnswer]);
 
   const restart = () => {
+    funnelSession(true);
     setAnswers({});
     setIndex(0);
     setStage("intro");
@@ -116,7 +126,10 @@ const DiscoveryFlow = () => {
     return (
       <Intro
         resuming={Boolean(resuming)}
-        onStart={() => setStage("questions")}
+        onStart={() => {
+          if (!resuming) track("start");
+          setStage("questions");
+        }}
         onRestart={restart}
       />
     );
@@ -432,6 +445,15 @@ const Result = ({
 
   // The booking carries the result into Calendly, so DCH starts the call informed.
   const [showCalendar, setShowCalendar] = useState(false);
+  // Calendly's embed tells the page when a time is booked (on any plan).
+  useEffect(() => {
+    if (!showCalendar) return;
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin === "https://calendly.com" && e.data?.event === "calendly.event_scheduled") track("booked", { audience: answers.q0_type });
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [showCalendar, answers.q0_type]);
   const bookingUrl = useMemo(
     () =>
       calendlyUrl("discovery", {
@@ -628,7 +650,10 @@ const Result = ({
                 variant="action"
                 size="xl"
                 className="group w-full sm:w-auto"
-                onClick={() => setShowCalendar(true)}
+                onClick={() => {
+                  track("book_open", { audience: answers.q0_type });
+                  setShowCalendar(true);
+                }}
               >
                 Book my discovery call
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -681,7 +706,7 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
       const res = await fetch("/api/discovery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), name: name.trim(), website, answers }),
+        body: JSON.stringify({ email: email.trim(), name: name.trim(), website, answers, session_id: funnelSession() }),
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body?.success) throw new Error(body?.error ?? "We couldn't save your answers. Please try again.");

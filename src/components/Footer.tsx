@@ -45,7 +45,9 @@ const Footer = () => {
           <p className="font-display-refined text-balance text-3xl leading-tight text-foreground sm:text-4xl md:text-5xl">
             Strategy. Creativity. Growth. <span className="text-secondary">Without limits.</span>
           </p>
-          <p className="mt-4 text-base text-muted-foreground">Working wherever growth needs to happen.</p>
+          <p className="mt-4 text-base text-muted-foreground">
+            We don&rsquo;t take every brief. Working wherever growth needs to happen.
+          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">

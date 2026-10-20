@@ -17,11 +17,11 @@ Visual: the real-time 3D engine (three rings, one core of light) spinning up.
 If the Seedance film (`npm run hero:video`) is encoded into src/assets/hero/,
 the hero plays that instead. Reduced motion shows a still.
 
-## 2. AI stand
+## 2. Outcomes
 
-**AI isn't our pitch. It's our multiplier.**
+**Clearer decisions. Work that holds together.**
 
-What changes when AI is built into the work, not bolted on?
+What changes for your business when your growth has a plan behind it.
 
 - Sharper diagnosis before anything gets built.
 - A brand that stays consistent everywhere it shows up.

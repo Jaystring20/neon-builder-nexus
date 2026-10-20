@@ -23,11 +23,11 @@ const AIMultiplierSection = () => {
             id="ai-heading"
             className="font-display-refined text-balance text-[2.25rem] leading-[1.05] text-foreground sm:text-5xl"
           >
-            AI isn&rsquo;t our pitch.{" "}
-            <span className="text-primary">It&rsquo;s our multiplier.</span>
+            Clearer decisions.{" "}
+            <span className="text-primary">Work that holds together.</span>
           </h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
-            What changes when AI is built into the work, not bolted on?
+            What changes for your business when your growth has a plan behind it.
           </p>
 
           <ul className="mt-10 space-y-5">

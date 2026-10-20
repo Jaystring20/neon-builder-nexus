@@ -58,15 +58,16 @@ const HeroSection = () => {
           }
         >
           <div className="max-w-[40rem]">
-            {/* Two short lines in one family. The turn ("Momentum doesn't.")
-                carries the brand colour; weight and colour do the emphasis,
-                not a second typeface. */}
+            {/* One line in one family. The colour sits on the last word,
+                "possible", so weight and colour do the emphasis, not a second
+                typeface. */}
             <h1
               className="font-display-refined hero-animate mb-7 text-balance text-[2.6rem] leading-[1.02] text-foreground sm:text-[3.5rem] lg:text-[3.75rem] xl:text-[4.25rem]"
               style={{ animationDelay: "80ms" }}
             >
-              <span className="block">Growth made possible.</span>
-              <span className="block text-primary sm:whitespace-nowrap">Momentum that doesn&rsquo;t stop.</span>
+              <span className="block">
+                Growth made <span className="text-primary">possible.</span>
+              </span>
             </h1>
 
             <p

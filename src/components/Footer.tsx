@@ -46,7 +46,7 @@ const Footer = () => {
             Strategy. Creativity. Growth. <span className="text-secondary">Without limits.</span>
           </p>
           <p className="mt-4 text-base text-muted-foreground">
-            Picky about briefs. Serious about growth. Working wherever growth needs to happen.
+            Chosen with care. Built to grow. Working wherever growth needs to happen.
           </p>
         </div>
 

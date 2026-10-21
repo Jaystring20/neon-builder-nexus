@@ -781,7 +781,7 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
           onChange={(e) => setNewsletter(e.target.checked)}
           className="mt-1 h-4 w-4 accent-primary"
         />
-        <span>Keep me updated with the newsletter. You can unsubscribe at any time.</span>
+        <span>Send me BuildWithJA Insights, the newsletter. You can unsubscribe at any time.</span>
       </label>
       <p className="mt-3 text-xs text-muted-foreground">Three emails about your result. We never share your address.</p>
     </form>

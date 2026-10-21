@@ -99,15 +99,21 @@ export async function upsertDiagnosticLead(input: {
   program: string;
   heat: HeatResult;
   booked: boolean;
+  newsletter: boolean;
 }): Promise<void> {
   const db = getSupabase();
   const priority = HEAT_PRIORITY[input.heat.heat];
-  const { data: existing } = await db.from("leads").select("id,priority,status").eq("discovery_id", input.discoveryId).maybeSingle();
+  const { data: existing } = await db.from("leads").select("id,priority,status,newsletter_opt_in").eq("discovery_id", input.discoveryId).maybeSingle();
 
   if (existing) {
     const patch: Record<string, unknown> = {};
     if (RANK[priority] > RANK[existing.priority]) patch.priority = priority;
     if (input.booked && (existing.status === "new" || existing.status === "contacted")) patch.status = "booked";
+    // Consent is only ever added here, never removed by a retake.
+    if (input.newsletter && !existing.newsletter_opt_in) {
+      patch.newsletter_opt_in = true;
+      patch.newsletter_opt_in_at = new Date().toISOString();
+    }
     if (!Object.keys(patch).length) return;
     const { error } = await db.from("leads").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", existing.id);
     if (error) return console.error("lead update failed:", error.message);
@@ -128,6 +134,8 @@ export async function upsertDiagnosticLead(input: {
     .from("leads")
     .insert([
       {
+        newsletter_opt_in: input.newsletter,
+        newsletter_opt_in_at: input.newsletter ? new Date().toISOString() : null,
         source: "diagnostic",
         discovery_id: input.discoveryId,
         name: input.name || input.email.split("@")[0],

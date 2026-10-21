@@ -691,6 +691,8 @@ const Result = ({
 const EmailBreakdown = ({ answers }: { answers: Answers }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  // Off unless the person ticks it: newsletter consent is never assumed.
+  const [newsletter, setNewsletter] = useState(false);
   // Bot trap: hidden from people, so anything typed here came from a script.
   const [website, setWebsite] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
@@ -706,7 +708,7 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
       const res = await fetch("/api/discovery", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), name: name.trim(), website, answers, session_id: funnelSession() }),
+        body: JSON.stringify({ email: email.trim(), name: name.trim(), website, answers, newsletter, session_id: funnelSession() }),
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body?.success) throw new Error(body?.error ?? "We couldn't save your answers. Please try again.");
@@ -772,6 +774,15 @@ const EmailBreakdown = ({ answers }: { answers: Answers }) => {
           {error}
         </p>
       )}
+      <label className="mt-4 flex items-start gap-3 text-sm text-muted-foreground">
+        <input
+          type="checkbox"
+          checked={newsletter}
+          onChange={(e) => setNewsletter(e.target.checked)}
+          className="mt-1 h-4 w-4 accent-primary"
+        />
+        <span>Keep me updated with the newsletter. You can unsubscribe at any time.</span>
+      </label>
       <p className="mt-3 text-xs text-muted-foreground">Three emails about your result. We never share your address.</p>
     </form>
   );

@@ -139,6 +139,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           program: segment.program,
           heat,
           booked: signals.booked,
+          newsletter: body.newsletter === true,
         });
       } catch (err) {
         console.error("Could not create the diagnostic lead:", err);

@@ -36,6 +36,7 @@ import {
   recordFunnelEvent,
   sessionSignals,
   upsertDiagnosticLead,
+  forwardNewsletterConsent,
   validSession,
 } from "../src/lib/diagnosticLeads.server.js";
 
@@ -141,6 +142,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           booked: signals.booked,
           newsletter: body.newsletter === true,
         });
+        if (body.newsletter === true) {
+          await forwardNewsletterConsent({ email: trimmedEmail, name, discoveryId: saved.id });
+        }
       } catch (err) {
         console.error("Could not create the diagnostic lead:", err);
       }

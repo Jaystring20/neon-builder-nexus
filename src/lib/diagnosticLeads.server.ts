@@ -193,7 +193,10 @@ async function applyBookingSignal(session: string, event: "book_open" | "booked"
  */
 export async function forwardNewsletterConsent(input: { email: string; name: string; discoveryId: string }): Promise<void> {
   const url = process.env.MAKE_NEWSLETTER_WEBHOOK_URL;
-  if (!url) return;
+  if (!url) {
+    console.warn("Newsletter consent not forwarded: MAKE_NEWSLETTER_WEBHOOK_URL is not set");
+    return;
+  }
   try {
     const res = await fetch(url, {
       method: "POST",
@@ -207,8 +210,9 @@ export async function forwardNewsletterConsent(input: { email: string; name: str
         consented_at: new Date().toISOString(),
       }),
     });
-    if (!res.ok) console.error("Newsletter webhook returned", res.status);
+    if (res.ok) console.log("Newsletter consent forwarded to Make", { discovery_id: input.discoveryId, status: res.status });
+    else console.error("Newsletter webhook returned", res.status, { discovery_id: input.discoveryId });
   } catch (err) {
-    console.error("Newsletter webhook failed:", err);
+    console.error("Newsletter webhook failed:", err, { discovery_id: input.discoveryId });
   }
 }

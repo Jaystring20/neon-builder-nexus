@@ -142,9 +142,9 @@ const PrivacyPolicy = () => (
                 unsubscribe.
               </li>
               <li>
-                <span className="font-semibold text-foreground">Diagnostic answers and consent records</span> are kept
-                until you unsubscribe from the newsletter and ask us to delete your data. We then delete or anonymise
-                them, except where we must keep a record by law.
+                <span className="font-semibold text-foreground">Diagnostic answers and consent records</span> are
+                deleted or anonymised two years after your last activity with us. You can ask us to delete them sooner.
+                We keep a record only where the law requires it.
               </li>
             </ul>
           </section>

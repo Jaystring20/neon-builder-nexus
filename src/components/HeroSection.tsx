@@ -74,7 +74,9 @@ const HeroSection = () => {
               className="hero-animate mb-9 max-w-[34rem] text-base leading-relaxed text-muted-foreground sm:text-lg"
               style={{ animationDelay: "180ms" }}
             >
-              We align your brand, your platforms and your people.
+              We build the brand, platforms and people behind your growth, with AI
+              in every layer. For startups, established brands and people
+              outgrowing where they are.
             </p>
 
             <div

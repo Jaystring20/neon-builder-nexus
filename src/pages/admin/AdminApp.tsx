@@ -157,8 +157,10 @@ function Guard() {
         <p className="text-muted-foreground">{(me.error as Error).message}</p>
       </AuthFrame>
     );
+  if (!me.data?.user?.role)
+    return <Navigate to="/admin/login" replace state={{ from: location.pathname }} />;
   return (
-    <MeContext.Provider value={me.data!.user}>
+    <MeContext.Provider value={me.data.user}>
       <Shell />
     </MeContext.Provider>
   );

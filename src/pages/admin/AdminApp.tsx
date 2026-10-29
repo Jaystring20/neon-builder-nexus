@@ -179,6 +179,7 @@ const AuthFrame = ({ title, children }: { title: string; children: React.ReactNo
 
 function Login() {
   const [email, setEmail] = useState("");
+  const [link, setLink] = useState("");
   const send = useMutation({ mutationFn: () => adminApi.login(email.trim()) });
 
   if (send.isSuccess)

@@ -194,8 +194,7 @@ function Login() {
             className="mt-6 space-y-3"
             onSubmit={(e: FormEvent) => {
               e.preventDefault();
-              const input = ((e.currentTarget as HTMLFormElement).elements.namedItem("link") as HTMLInputElement).value;
-              const token = new URLSearchParams(input.split("#")[1] ?? "").get("token");
+              const token = new URLSearchParams(link.split("#")[1] ?? "").get("token");
               if (token) window.location.assign(`/admin/verify#token=${encodeURIComponent(token)}`);
             }}
           >

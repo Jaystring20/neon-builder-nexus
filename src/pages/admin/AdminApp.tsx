@@ -188,6 +188,30 @@ function Login() {
           If <span className="text-foreground">{email.trim()}</span> is on the DCH team, a sign-in link is on its way. It works once, for 15
           minutes.
         </p>
+        {import.meta.env.DEV && (
+          <form
+            className="mt-6 space-y-3"
+            onSubmit={(e: FormEvent) => {
+              e.preventDefault();
+              const input = ((e.currentTarget as HTMLFormElement).elements.namedItem("link") as HTMLInputElement).value;
+              const token = new URLSearchParams(input.split("#")[1] ?? "").get("token");
+              if (token) window.location.assign(`/admin/verify#token=${encodeURIComponent(token)}`);
+            }}
+          >
+            <label htmlFor="admin-link" className="block text-sm font-medium text-foreground">
+              In this preview: paste the link from the email here (don't click it)
+            </label>
+            <input
+              id="admin-link"
+              name="link"
+              required
+              className="h-12 w-full border border-border/60 bg-background/60 px-4 text-foreground focus:border-primary focus:outline-none"
+            />
+            <Button type="submit" size="lg" className="w-full">
+              Sign in here
+            </Button>
+          </form>
+        )}
         <button className="mt-6 text-sm text-muted-foreground hover:text-foreground" onClick={() => send.reset()}>
           Use a different email
         </button>

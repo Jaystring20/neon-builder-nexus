@@ -1,32 +1,38 @@
-## Replace logo with new DCH brand mark
+# Mobile Hero: tighter, more premium arrangement
 
-Swap the existing small circular logo for the new uploaded "DCH" logo (blue + orange arrows wordmark) and give it bold, confident presence in the navbar and footer.
+Design read: dark, executive agency landing for founders on phones. Calm-confident, one clear action, visual as proof. Mobile only; desktop stays as-is.
 
-### Steps
+## What feels off today (393px)
+- Headline at 2.6rem with only 3 words leaves a lot of dead air; it reads small next to the heavy padding.
+- Two full-width stacked buttons of equal weight compete; the "Book a call" duplicates the floating button already on the page.
+- The micro-line under the buttons uses three middle dots and wraps to two lines.
+- The 3D visual / video sits below all the copy, so on first screen the user sees only text and buttons, then scrolls into a large visual with no reason to.
 
-1. **Add the new asset**
-   - Copy `user-uploads://IMG_5568_1.PNG` → `src/assets/dch-logo-primary.png` (PNG to preserve the transparent/clean edges of the mark).
+## New mobile arrangement (top to bottom)
 
-2. **Navbar (`src/components/Navbar.tsx`)**
-   - Replace `dchLogo` import with the new `dch-logo-primary.png`.
-   - Remove the cropped circular ring container. Render the new logo as a full mark:
-     - Desktop: `h-9 w-auto` (h-10 when not scrolled), `object-contain`, no ring, no rounded crop.
-     - Mobile: `h-8 w-auto`.
-   - Remove the duplicate "Digital Creatives Hub" text wordmark next to it (the new logo already contains "DCH" — keeping the text would be redundant and cramped). Keep an `aria-label`/`alt="Digital Creatives Hub"` for accessibility and SEO.
-   - Slightly widen the logo's hover pill padding so the mark breathes inside the floating nav pill.
+```text
+[ floating pill nav ]
+ small line: "For founders & growing brands"
+ GROWTH MADE
+ possible.            <- larger, ~3.4rem, tight leading
+ short sub-line (~18 words, 3 lines max)
+ [ Take the free diagnostic  -> ]   full-width, primary
+  Book a call ->                   quiet text link, centred
+ "Free, 4 minutes, no sales call"  single line
+ [ visual: 3D engine / video, cropped 4:3, peeks above the fold ]
+```
 
-3. **Footer (`src/components/Footer.tsx`)**
-   - Swap to the same new asset, sized larger (`h-12 w-auto`) so it reads as the primary brand anchor at the bottom of the page.
-   - Remove the small circular crop there as well.
+1. Headline: bump to ~3.4rem on mobile, leading 1.0, keep "possible." in primary colour. Same font family (no new typeface).
+2. Sub-copy: trim to one sentence on mobile ("We build the brand, platforms and people behind your growth, with AI in every layer."); the audience line moves to the small label above the headline. Full copy stays on tablet/desktop.
+3. CTAs: one dominant full-width button; "Book a call" becomes a text link under it on mobile only (still routes to the same place). Desktop keeps both buttons.
+4. Reassurance line: shortened so it fits on one line, no dot separators.
+5. Spacing: top padding just clears the nav, smaller gaps between headline, copy and buttons so the CTA and the top of the visual both show on the first screen (~647px tall).
+6. Visual: pulled up with a slight negative overlap and a soft fade at its top edge so it reads as part of the hero, height capped so it does not dominate the scroll.
+7. Motion: keep the existing staggered entrance; respect reduced motion (already in place).
 
-4. **Favicon (optional, recommended)**
-   - Also copy the logo to `public/favicon.png` and update `index.html` `<link rel="icon">` so the browser tab matches the new mark.
+## Verification
+Screenshot at 393x647 and 360x640 before and after, plus a desktop 1280 check to confirm nothing changed there.
 
-### Out of scope
-- No color-token changes, no layout/IA changes, no other component edits.
-- No changes to copy, services data, or routes.
-
-### Acceptance
-- New DCH logo appears bold and uncropped in the floating navbar (desktop + mobile) and in the footer.
-- No leftover circular ring or duplicate "Digital Creatives Hub" text next to the mark in the navbar.
-- Browser tab favicon reflects the new logo.
+## Technical details
+- Edit only `src/components/HeroSection.tsx` (responsive classes, `sm:hidden` / `hidden sm:inline` copy splits, link variant for mobile secondary CTA) and the mobile wrapper in `HeroInline` inside `src/components/HeroMedia.tsx` (aspect, max-height, negative top margin, top fade mask).
+- No new dependencies, no colour changes, tokens only.

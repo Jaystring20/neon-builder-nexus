@@ -23,6 +23,9 @@ async function call<T>(op: string, opts: { body?: unknown; query?: Record<string
     headers: post ? { "Content-Type": "application/json", "X-DCH-Admin": "1" } : undefined,
     body: post ? JSON.stringify(opts.body) : undefined,
   });
+  const isJson = (res.headers.get("content-type") || "").includes("application/json");
+  if (!isJson)
+    throw new AdminApiError(503, "The admin service isn't available here. Open the dashboard on the live site.");
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new AdminApiError(res.status, data.error || "Something went wrong.");
   return data as T;

@@ -147,7 +147,7 @@ async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> 
           diagnostics: { total: DIAGNOSTICS.length, thisWeek: 2 },
           upcoming: LEADS.filter((l) => l.call_at && !["won", "lost"].includes(l.status)).map((l) => ({ id: l.id, name: l.name, company: l.company, call_at: l.call_at! })),
           activity: ACTIVITY,
-          events: EVENT_LIST.filter((e) => e.status !== "cancelled").map((e) => ({
+          events: EVENT_LIST.filter((e) => (e.status as string) !== "cancelled").map((e) => ({
             id: e.id, title: e.title, starts_at: e.starts_at, capacity: e.capacity,
             registered: (e.counts.confirmed ?? 0) + (e.counts.pending_payment ?? 0) + (e.counts.attended ?? 0),
             awaitingPayment: e.counts.pending_payment ?? 0,
@@ -252,7 +252,7 @@ async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> 
   if (path === "/api/discovery") {
     if (op === "track") {
       res.statusCode = 204;
-      return res.end();
+      res.end(); return;
     }
     return json(res, 200, { success: true, emailQueued: true });
   }

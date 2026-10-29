@@ -179,6 +179,7 @@ const AuthFrame = ({ title, children }: { title: string; children: React.ReactNo
 
 function Login() {
   const [email, setEmail] = useState("");
+  const [link, setLink] = useState("");
   const send = useMutation({ mutationFn: () => adminApi.login(email.trim()) });
 
   if (send.isSuccess)
@@ -193,8 +194,7 @@ function Login() {
             className="mt-6 space-y-3"
             onSubmit={(e: FormEvent) => {
               e.preventDefault();
-              const input = ((e.currentTarget as HTMLFormElement).elements.namedItem("link") as HTMLInputElement).value;
-              const token = new URLSearchParams(input.split("#")[1] ?? "").get("token");
+              const token = new URLSearchParams(link.split("#")[1] ?? "").get("token");
               if (token) window.location.assign(`/admin/verify#token=${encodeURIComponent(token)}`);
             }}
           >
@@ -205,6 +205,8 @@ function Login() {
               id="admin-link"
               name="link"
               required
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
               className="h-12 w-full border border-border/60 bg-background/60 px-4 text-foreground focus:border-primary focus:outline-none"
             />
             <Button type="submit" size="lg" className="w-full">

@@ -205,6 +205,8 @@ function Login() {
               id="admin-link"
               name="link"
               required
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
               className="h-12 w-full border border-border/60 bg-background/60 px-4 text-foreground focus:border-primary focus:outline-none"
             />
             <Button type="submit" size="lg" className="w-full">

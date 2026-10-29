@@ -76,7 +76,7 @@ export const HeroInline = () => {
     return (
       // Wider than its column on desktop so the engine has room to breathe;
       // the section clips the overflow.
-      <div className="-mx-4 sm:mx-0 lg:-mr-[14%] lg:-ml-[4%]">
+      <div className="-mx-4 -mt-2 max-h-[340px] overflow-hidden sm:mx-0 sm:mt-0 sm:max-h-none lg:-mr-[14%] lg:-ml-[4%]">
         <Suspense fallback={<div className="mx-auto aspect-square w-full max-w-[420px] sm:max-w-[520px] lg:max-w-none" />}>
           <MomentumEngine3D />
         </Suspense>
@@ -84,7 +84,7 @@ export const HeroInline = () => {
     );
   }
   return (
-    <div className="-mx-4 sm:-mx-6 lg:hidden">
+    <div className="-mx-4 -mt-4 sm:mt-0 sm:-mx-6 lg:hidden">
       <LoopingVideo
         className="aspect-[4/3] w-full object-cover object-[62%_50%] sm:aspect-[16/9]"
         style={{ maskImage: INLINE_MASK, WebkitMaskImage: INLINE_MASK }}

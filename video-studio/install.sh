@@ -3,6 +3,7 @@
 # Third-party skills run with full agent permissions: review before you run.
 # Needs: Node 22+, Python 3.11+, ffmpeg, git, jq. Restart Claude Code afterwards.
 set -euo pipefail
+FAILED=""
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 mkdir -p ~/.claude/skills ~/.claude/agents
 
@@ -14,7 +15,12 @@ npx --yes ffmpeg-skill
 
 # All 19 Motion Skills packs (iart-ai) and Three.js. The ecommerce pack skips product-demo-video (its SKILL.md has a YAML error upstream).
 for p in iart-ai/tiktok-video-skills iart-ai/explainer-video-skills iart-ai/data-animation-skills iart-ai/kinetic-typography-skills iart-ai/text-message-video-skills iart-ai/youtube-video-skills iart-ai/ecommerce-video-skills iart-ai/ad-video-skills iart-ai/map-animation-skills iart-ai/web-animation-skills iart-ai/motion-design-skills iart-ai/freelance-motion-skills iart-ai/webgl-animation-skills iart-ai/manim-skills iart-ai/generative-illustration-skills iart-ai/javascript-animation-skills iart-ai/lower-thirds-skills iart-ai/b-roll-skills iart-ai/talking-head-skills cloudai-x/threejs-skills; do
-  npx --yes skills add "$p" -g -y
+  ok=0
+  for try in 1 2 3; do
+    if npx --yes skills add "$p" -g -y; then ok=1; break; fi
+    echo "Retry $try for $p (network hiccup?)"; sleep 3
+  done
+  [ "$ok" = 1 ] || { echo "FAILED: $p (re-run the script to try again)"; FAILED="${FAILED:-} $p"; }
 done
 
 # yt-dlp (only for videos you own or may use) + faster-whisper for transcripts
@@ -33,4 +39,5 @@ cp "$tmp"/cs/references/*.md ~/.claude/skills/shorts/references/ 2>/dev/null || 
 # DCH skill and agents from this repo
 cp -r "$HERE/skills/dch-social-video" ~/.claude/skills/
 cp "$HERE"/agents/*.md ~/.claude/agents/
+[ -z "$FAILED" ] || echo "These packs failed, re-run the script: $FAILED"
 echo "Done. Restart Claude Code."

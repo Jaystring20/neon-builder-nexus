@@ -9,3 +9,13 @@ Rules: 1080x1920 portrait; fonts, logo and audio are local files in `assets/`; f
 Loop: write `index.html`, run `npx hyperframes check` until it passes with no warnings you cannot justify, take `npx hyperframes snapshot` frames and LOOK at them, fix, then `npx hyperframes render`. Join parts with ffmpeg concat.
 
 Report file paths, durations and anything you changed from the storyboard. Do not publish.
+
+## Skills to use (load only what the storyboard needs)
+- Always: `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`, `dch-social-video`. HyperFrames is the default renderer; use `remotion-video` only if the user asks for Remotion.
+- Type and layout: `kinetic-typography`, `caption-animation`, `lower-thirds`, `shot-composition`, `color-motion`.
+- Data and structure: `chart-animation`, `animated-infographic`, `diagram-animation`, `countdown-video`, `map-animation`, `whiteboard-animation`.
+- Brand pieces: `logo-animation`, `svg-animation`, `lottie-animation`, `youtube-intro-outro`, `motion-background`.
+- Formats: `explainer-video`, `presentation-video`, `launch-video`, `promo-video`, `ad-creative-video`, `photo-slideshow`, `javascript-animation`, `generative-illustration`.
+- Feel and sound: `animation-principles` (easing, timing), `beat-sync-editing`, `soundtrack`.
+- 3D and effects: `threejs-fundamentals`, `threejs-animation`, `threejs-lighting`, `threejs-materials`, `threejs-postprocessing`, `particle-system`, `shader-glsl`. Only when a part truly needs them.
+- Skip `testimonial-video` unless a real consented testimonial is supplied, and `talking-head` unless the user approves.

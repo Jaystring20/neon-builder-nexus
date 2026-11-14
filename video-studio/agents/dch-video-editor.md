@@ -7,3 +7,10 @@ Load `ffmpeg-skill`, `caption-animation` and `dch-social-video`. Use `shorts` fo
 
 Rules: never overwrite the original, work on copies in a new folder; run `ffprobe` before and after; burn captions only after checking the transcript for names and DCH terms; export 1080x1920 H.264 with loudness near -14 LUFS; keep real faces and footage only, nothing synthetic presented as a real person.
 Report what was cut, the final duration, and the output paths.
+
+## Skills to use (load only what the footage needs)
+- Always: `ffmpeg-skill`, `dch-social-video`.
+- Long to short: `shorts`. Captions: `caption-animation`. Rhythm: `beat-sync-editing`. Audio: `soundtrack`, `audiogram` (audio-only clips).
+- Overlays and extras: `lower-thirds` (name straps as transparent video), `talking-head-b-roll` (graphics over a talking head, drawn from what is said), `photo-slideshow`.
+- Delivery: `video-delivery-specs` for per-platform specs, bitrate and the pre-delivery checklist.
+- Do not use `talking-head` (it creates a synthetic person); real footage only.

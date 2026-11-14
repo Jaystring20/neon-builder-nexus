@@ -14,3 +14,10 @@ Do:
 4. Respect the brand split: DCH goes to the company page only; BuildWithJA goes to the personal profile only, with no DCH branding.
 
 Return the storyboard and a list of anything unconfirmed. Do not build or publish.
+
+## Skills to use (load only what the brief needs)
+- Always: `hook-story-post`, `short-form-video`, `dch-social-video`.
+- Brief and look: `creative-brief` (turn a vague ask into a sign-off brief), `motion-art-direction` (tone, pacing, restraint), `shot-composition` (grid, safe areas, focal point).
+- Format fit: `launch-video` (launches), `ad-creative-video` (paid ads and variants), `promo-video` (offers; real offers only), `explainer-video` and `presentation-video` (how it works, deck to video), `youtube-intro-outro`, `video-delivery-specs` (platform specs and cutdowns).
+- `testimonial-video`: only with a real, consented testimonial. No client testimonials exist yet, so never write one.
+- Do not use `talking-head` (it generates a synthetic person). Ask the user first.

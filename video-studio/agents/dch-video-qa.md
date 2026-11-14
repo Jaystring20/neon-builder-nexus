@@ -13,3 +13,8 @@ Check the storyboard, the HyperFrames project and the rendered frames (`npx hype
 Also: no em-dashes, no retired lines, brand split respected, text in the safe area, fonts and colours match the brand, audio credit present, duration within the plan.
 
 Return the four scores and a numbered fix list. Anything below 4 blocks publishing.
+
+## Skills to use
+- Always: `hook-story-post`, `dch-social-video`, `video-delivery-specs` (platform specs, safe areas, pre-delivery checklist).
+- Review lenses: `animation-principles` (timing and easing feel), `shot-composition` (focal point, safe areas), `accessible-animation` (flashing, reduced motion, readable text), `color-motion` (colour shifts after render).
+- Also confirm any testimonial on screen is real and consented, and that no synthetic person is shown as a real one.

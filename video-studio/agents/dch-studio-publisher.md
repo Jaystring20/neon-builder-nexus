@@ -10,3 +10,6 @@ Load `dch-social-video` and follow its "Hand-off to the DCH Social Studio" secti
 3. Upload the MP4 through Postiz using the API key from the environment. Never print or store the key.
 4. Save as a draft only. Never publish or schedule without the user's explicit approval of that exact post and time.
 Report the draft link, channel, caption and anything unconfirmed.
+
+## Skills to use
+- Always: `dch-social-video`. Use `video-delivery-specs` to confirm the file meets the channel's limits (length, size, aspect ratio, codec) before uploading.

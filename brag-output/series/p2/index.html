@@ -1,0 +1,46 @@
+<!doctype html><html lang="en" data-resolution="portrait"><head><meta charset="UTF-8"/><meta name="viewport" content="width=1080, height=1920"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><style>
+@font-face{font-family:"Bricolage";font-weight:800;src:url(assets/fonts/bricolage-800.ttf)}
+@font-face{font-family:"Bricolage";font-weight:700;src:url(assets/fonts/bricolage-700.ttf)}
+@font-face{font-family:"Poppins";font-weight:400;src:url(assets/fonts/poppins-400.ttf)}
+@font-face{font-family:"Poppins";font-weight:500;src:url(assets/fonts/poppins-500.ttf)}
+@font-face{font-family:"JBMono";font-weight:500;src:url(assets/fonts/jbmono-500.ttf)}
+:root{--ground:#0F131A;--card:#161B24;--edge:rgba(255,255,255,.14);--ink:#EFF4F4;--muted:#8D97A8;--teal:#4ED0CC;--orange:#E0793E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ground)}
+#root{position:relative;width:1080px;height:1920px;background:var(--ground);color:var(--ink);font-family:"Poppins",sans-serif;overflow:hidden}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:90px 90px}
+.glow{position:absolute;left:-200px;top:560px;width:1480px;height:900px;background:radial-gradient(ellipse at center,rgba(78,208,204,.20),transparent 68%)}
+.display{font-family:"Bricolage",sans-serif;font-weight:800;letter-spacing:-.03em;line-height:1.02}
+.mono{font-family:"JBMono",monospace;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.teal{color:var(--teal)}.orange{color:var(--orange)}
+#spine{position:absolute;left:110px;top:0;width:4px;height:1920px;background:var(--teal);opacity:.6;transform-origin:top}
+#hdr{position:absolute;left:170px;top:120px;font-size:30px;color:var(--teal);line-height:1.5}
+#hdr span{color:var(--muted)}
+#brand{position:absolute;right:90px;top:104px;width:170px}
+.opt{margin-top:18px;border:2px solid var(--edge);padding:30px 36px;font-size:38px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.opt .dot{width:30px;height:30px;border:3px solid var(--edge)}
+.opt.sel{border-color:var(--teal);background:rgba(78,208,204,.12);color:var(--ink)}
+.opt.sel .dot{background:var(--teal);border-color:var(--teal)}
+#h2{position:absolute;left:170px;right:90px;top:340px;font-size:100px}
+.stage{position:absolute;left:170px;right:90px}
+.stage .dotm{position:absolute;left:-64px;top:30px;width:20px;height:20px;background:var(--teal)}
+.stage .nm{font-family:"Bricolage";font-weight:700;font-size:78px;letter-spacing:-.02em}
+.stage .ln{margin-top:10px;font-size:36px;line-height:1.35;color:var(--muted);max-width:760px}
+.stage.last .dotm{background:var(--orange)}</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
+<div class="bg-grid"></div><div class="glow" id="glow"></div><div id="spine"></div>
+<div id="hdr" class="mono">02 / 03<br><span>The shift</span></div>
+<img id="brand" src="assets/img/logo.png" alt="Digital Creatives Hub"/>
+<audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="12" data-media-start="9.5" data-volume="0.5"  ></audio><audio id="sx0" src="assets/sfx/drop.ogg" data-start="1.65" data-duration="0.11" data-volume="0.4"></audio><audio id="sx1" src="assets/sfx/drop.ogg" data-start="3.3499999999999996" data-duration="0.11" data-volume="0.4"></audio><audio id="sx2" src="assets/sfx/drop.ogg" data-start="5.05" data-duration="0.11" data-volume="0.4"></audio><audio id="sx3" src="assets/sfx/drop.ogg" data-start="6.75" data-duration="0.11" data-volume="0.4"></audio>
+<div id="h2" class="display">How momentum gets built.</div><div class="stage" id="st1" style="top:640px"><span class="dotm"></span><div class="nm">Diagnose.</div><div class="ln">We find the problem behind the brief.</div></div><div class="stage" id="st2" style="top:890px"><span class="dotm"></span><div class="nm">Architect.</div><div class="ln">Brand, platform and people mapped before anything is built.</div></div><div class="stage" id="st3" style="top:1140px"><span class="dotm"></span><div class="nm">Build.</div><div class="ln">In parallel, with AI in every layer and checkpoints you can see.</div></div><div class="stage last" id="st4" style="top:1390px"><span class="dotm"></span><div class="nm orange">Compound.</div><div class="ln">After launch we measure, refine and keep it moving.</div></div>
+</div><script>
+const tl=gsap.timeline({paused:true});const E="power3.out";
+tl.fromTo("#glow",{opacity:.55},{opacity:1,duration:12,ease:"sine.inOut"},0);
+
+tl.fromTo("#spine",{scaleY:0},{scaleY:1,duration:1.0,ease:"power2.inOut"},0);
+tl.fromTo("#h2",{opacity:0,y:30},{opacity:1,y:0,duration:.7,ease:E},.5);
+["#st1","#st2","#st3","#st4"].forEach((s,i)=>tl.fromTo(s,{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:E},1.6+i*1.7));
+
+window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>

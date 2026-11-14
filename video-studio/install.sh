@@ -36,8 +36,8 @@ cp "$tmp"/cs/scripts/* ~/.claude/skills/shorts/scripts/ 2>/dev/null || true
 cp "$tmp"/cs/references/*.md ~/.claude/skills/shorts/references/ 2>/dev/null || true
 (cd "$tmp/cs/remotion" && tar --exclude=node_modules --exclude=.remotion -cf - .) | (cd ~/.claude/skills/shorts/remotion && tar xf -)
 
-# DCH skill and agents from this repo
-cp -r "$HERE/skills/dch-social-video" ~/.claude/skills/
+# Our own skills (dch-social-video, hook-story-post) and agents from this repo
+cp -r "$HERE"/skills/* ~/.claude/skills/
 cp "$HERE"/agents/*.md ~/.claude/agents/
 [ -z "$FAILED" ] || echo "These packs failed, re-run the script: $FAILED"
 echo "Done. Restart Claude Code."

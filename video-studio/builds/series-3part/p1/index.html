@@ -1,0 +1,78 @@
+<!doctype html><html lang="en" data-resolution="portrait"><head><meta charset="UTF-8"/><meta name="viewport" content="width=1080, height=1920"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><style>
+@font-face{font-family:"Bricolage";font-weight:800;src:url(assets/fonts/bricolage-800.ttf)}
+@font-face{font-family:"Bricolage";font-weight:700;src:url(assets/fonts/bricolage-700.ttf)}
+@font-face{font-family:"Poppins";font-weight:400;src:url(assets/fonts/poppins-400.ttf)}
+@font-face{font-family:"Poppins";font-weight:500;src:url(assets/fonts/poppins-500.ttf)}
+@font-face{font-family:"JBMono";font-weight:500;src:url(assets/fonts/jbmono-500.ttf)}
+:root{--ground:#0F131A;--card:#161B24;--edge:rgba(255,255,255,.16);--ink:#EFF4F4;--muted:#8D97A8;--teal:#4ED0CC;--orange:#E0793E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ground)}
+#root{position:relative;width:1080px;height:1920px;background:var(--ground);color:var(--ink);font-family:"Poppins",sans-serif;overflow:hidden}
+#grid{position:absolute;left:0;top:-90px;width:1080px;height:2010px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:90px 90px}
+#glow{position:absolute;left:-620px;top:1000px;width:1500px;height:1200px;background:radial-gradient(ellipse at center,rgba(78,208,204,.22),transparent 66%)}
+.display{font-family:"Bricolage",sans-serif;font-weight:800;letter-spacing:-.03em;line-height:1.02}
+.mono{font-family:"JBMono",monospace;font-weight:500;letter-spacing:.08em}
+.teal{color:var(--teal)}
+#thread{position:absolute;left:61px;top:0;width:6px;height:1920px;background:var(--teal);opacity:.55}
+#pulsewrap{position:absolute;left:44px;top:0;width:40px;height:1920px;overflow:hidden}
+#pulse{position:absolute;left:17px;top:-320px;width:6px;height:300px;background:linear-gradient(180deg,rgba(78,208,204,0),#BFF7F4 70%,#EFF4F4);box-shadow:0 0 22px 6px rgba(78,208,204,.55)}
+#hdr{position:absolute;left:120px;top:300px;font-size:30px;color:var(--teal);line-height:1.5;text-transform:uppercase}
+#hdr span{color:var(--muted)}
+.h{position:absolute;left:120px;width:840px;top:440px}
+.line{position:absolute;left:120px;width:840px;font-size:46px;line-height:1.3;color:var(--ink);opacity:0}
+#h{font-size:112px}
+.line{top:720px}
+.card{position:absolute;width:380px;height:400px;background:var(--card);border:2px solid var(--edge);opacity:0}
+#ca{left:120px;top:990px;border-color:rgba(78,208,204,.7)}
+#cb{left:560px;top:1050px}
+#ca .circ{position:absolute;left:40px;top:40px;width:130px;height:130px;border-radius:50%;background:var(--teal)}
+.bar{position:absolute;height:18px}
+#ca .b1{left:40px;top:212px;width:230px;background:var(--ink)}
+#ca .b2{left:40px;top:250px;width:150px;background:var(--muted)}
+.sw{position:absolute;top:310px;width:50px;height:50px}
+.s1{left:40px;background:var(--teal)}.s2{left:104px;background:rgba(78,208,204,.45)}.s3{left:168px;border:2px solid var(--teal)}
+#cb .top{position:absolute;left:0;top:0;width:100%;height:52px;border-bottom:2px solid var(--edge)}
+#cb .top i{position:absolute;top:19px;width:14px;height:14px;background:var(--muted)}
+#cb .top i:nth-child(1){left:20px}#cb .top i:nth-child(2){left:44px}#cb .top i:nth-child(3){left:68px}
+#cb .hero{position:absolute;right:36px;top:88px;width:190px;height:110px;border:2px dashed var(--muted)}
+#cb .b3{right:36px;top:226px;width:120px;background:var(--muted)}
+#cb .b4{right:36px;top:262px;width:250px;background:rgba(141,151,168,.5)}
+#cb .btn{position:absolute;right:36px;top:314px;width:110px;height:46px;border:2px solid var(--muted)}
+.node{position:absolute;width:130px;height:130px;background:var(--card);border:3px solid var(--teal);opacity:0}
+.node i{position:absolute;left:47px;top:47px;width:30px;height:30px;background:var(--teal)}</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1080" data-height="1920">
+<div id="grid"></div><div id="glow"></div>
+<div id="thread"></div><div id="pulsewrap" data-layout-allow-overflow><div id="pulse" data-layout-allow-overflow></div></div>
+<div id="hdr" class="mono">01 / 03<br><span>The gap</span></div>
+<audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="11" data-media-start="0" data-volume="0.5" data-fade-in="0.6"></audio>
+<audio id="sx0" src="assets/sfx/drop.ogg" data-start="2.42" data-duration="0.11" data-volume="0.4"></audio>
+<audio id="sx1" src="assets/sfx/drop.ogg" data-start="6.22" data-duration="0.11" data-volume="0.4"></audio>
+<div id="h" class="h display" data-layout-allow-safe-zone>Growth breaks <span class="teal">in the gaps.</span></div>
+<div id="la" class="line" data-layout-allow-safe-zone>The brand says one thing and the website does another.</div>
+<div id="lb" class="line" data-layout-allow-safe-zone>Businesses end up hiring five vendors who never speak to each other.</div>
+<div id="ca" class="card"><div class="circ"></div><div class="bar b1"></div><div class="bar b2"></div><div class="sw s1"></div><div class="sw s2"></div><div class="sw s3"></div></div>
+<div id="cb" class="card"><div class="top"><i></i><i></i><i></i></div><div class="hero"></div><div class="bar b3"></div><div class="bar b4"></div><div class="btn"></div></div>
+<div class="node" id="n1" style="left:140px;top:1000px"><i></i></div><div class="node" id="n2" style="left:430px;top:1100px"><i></i></div><div class="node" id="n3" style="left:760px;top:990px"><i></i></div><div class="node" id="n4" style="left:250px;top:1310px"><i></i></div><div class="node" id="n5" style="left:620px;top:1290px"><i></i></div>
+</div><script>
+const tl=gsap.timeline({paused:true});const E="power3.out";const D=11;
+tl.fromTo("#glow",{opacity:.55},{opacity:1,duration:D,ease:"sine.inOut"},0);
+tl.fromTo("#grid",{y:0},{y:90,duration:D,ease:"none"},0);
+tl.fromTo("#la",{opacity:0,y:24},{opacity:1,y:0,duration:.3,ease:E},2.4);
+tl.fromTo("#ca",{opacity:0,x:-70,rotation:0},{opacity:1,x:0,rotation:0,duration:.45,ease:E},2.45);
+tl.fromTo("#cb",{opacity:0,x:70,rotation:0},{opacity:1,x:0,rotation:0,duration:.45,ease:E},2.65);
+tl.to("#cb",{y:54,rotation:5,duration:.4,ease:"back.out(2.2)"},3.5);
+tl.to("#ca",{y:-16,rotation:-2.5,duration:.4,ease:"back.out(2.2)"},3.5);
+tl.to("#ca",{x:-8,duration:2.0,ease:"sine.inOut"},3.95);
+tl.to("#cb",{x:12,duration:2.0,ease:"sine.inOut"},3.95);
+tl.to(["#la","#ca","#cb"],{opacity:0,duration:.18,ease:"power2.in"},6.0);
+tl.fromTo("#lb",{opacity:0,y:24},{opacity:1,y:0,duration:.3,ease:E},6.2);
+const P=[[140, 1000], [430, 1100], [760, 990], [250, 1310], [620, 1290]],F=[14,-12,10,-14,12];
+P.forEach((p,i)=>{const s="#n"+(i+1);
+ tl.fromTo(s,{opacity:0,scale:.6,x:0,y:0},{opacity:1,scale:1,x:0,y:0,duration:.4,ease:"back.out(1.8)"},6.25+i*.13);
+ tl.to(s,{y:F[i],duration:1.5,ease:"sine.inOut",yoyo:true,repeat:1},7.2);
+ tl.to(s,{x:(475-p[0])*.55,y:(1180-p[1])*.55,duration:.42,ease:"power2.inOut"},10.2);
+ tl.to(s,{y:"+=520",opacity:0,duration:.36,ease:"power2.in"},10.62);});
+tl.fromTo("#pulse",{y:0},{y:2300,duration:.8,ease:"power1.in"},10.2);
+window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>

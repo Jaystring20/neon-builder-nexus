@@ -1,0 +1,72 @@
+<!doctype html><html lang="en" data-resolution="portrait"><head><meta charset="UTF-8"/><meta name="viewport" content="width=1080, height=1920"/>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script><style>
+@font-face{font-family:"Bricolage";font-weight:800;src:url(assets/fonts/bricolage-800.ttf)}
+@font-face{font-family:"Bricolage";font-weight:700;src:url(assets/fonts/bricolage-700.ttf)}
+@font-face{font-family:"Poppins";font-weight:400;src:url(assets/fonts/poppins-400.ttf)}
+@font-face{font-family:"Poppins";font-weight:500;src:url(assets/fonts/poppins-500.ttf)}
+@font-face{font-family:"JBMono";font-weight:500;src:url(assets/fonts/jbmono-500.ttf)}
+:root{--ground:#0F131A;--card:#161B24;--edge:rgba(255,255,255,.16);--ink:#EFF4F4;--muted:#8D97A8;--teal:#4ED0CC;--orange:#E0793E}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ground)}
+#root{position:relative;width:1080px;height:1920px;background:var(--ground);color:var(--ink);font-family:"Poppins",sans-serif;overflow:hidden}
+#grid{position:absolute;left:0;top:-90px;width:1080px;height:2010px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:90px 90px}
+#glow{position:absolute;left:-620px;top:1000px;width:1500px;height:1200px;background:radial-gradient(ellipse at center,rgba(78,208,204,.22),transparent 66%)}
+.display{font-family:"Bricolage",sans-serif;font-weight:800;letter-spacing:-.03em;line-height:1.02}
+.mono{font-family:"JBMono",monospace;font-weight:500;letter-spacing:.08em}
+.teal{color:var(--teal)}
+#thread{position:absolute;left:61px;top:0;width:6px;height:1920px;background:var(--teal);opacity:.55}
+#pulsewrap{position:absolute;left:44px;top:0;width:40px;height:1920px;overflow:hidden}
+#pulse{position:absolute;left:17px;top:-320px;width:6px;height:300px;background:linear-gradient(180deg,rgba(78,208,204,0),#BFF7F4 70%,#EFF4F4);box-shadow:0 0 22px 6px rgba(78,208,204,.55)}
+#hdr{position:absolute;left:120px;top:300px;font-size:30px;color:var(--teal);line-height:1.5;text-transform:uppercase}
+#hdr span{color:var(--muted)}
+.h{position:absolute;left:120px;width:840px;top:440px}
+.line{position:absolute;left:120px;width:840px;font-size:46px;line-height:1.3;color:var(--ink);opacity:0}
+.tile{position:absolute;width:270px;height:270px;background:var(--card);border:3px solid var(--edge)}
+#t1{left:120px;top:430px}#t2{left:405px;top:715px}#t3{left:690px;top:1000px}
+.tile .fill{position:absolute;inset:0;background:linear-gradient(135deg,rgba(78,208,204,.9),rgba(78,208,204,.25));opacity:0}
+.tile .tx{position:absolute;left:20px;bottom:22px;font-size:46px;white-space:nowrap}
+.cn{position:absolute;background:var(--teal);opacity:0}
+#c1h{left:390px;top:563px;width:152px;height:4px}#c1v{left:538px;top:563px;width:4px;height:152px}
+#c2h{left:675px;top:848px;width:152px;height:4px}#c2v{left:823px;top:848px;width:4px;height:152px}
+.line{top:1320px}
+#l3{opacity:1}#l3 .w{opacity:0}
+#sq{position:absolute;left:44px;top:930px;width:40px;height:40px;background:var(--teal);opacity:0}</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
+<div id="grid"></div><div id="glow"></div>
+<div id="thread"></div><div id="pulsewrap" data-layout-allow-overflow><div id="pulse" data-layout-allow-overflow></div></div>
+<div id="hdr" class="mono">02 / 03<br><span>One engine</span></div>
+<audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="12" data-media-start="11" data-volume="0.5" ></audio>
+<audio id="sx0" src="assets/sfx/drop.ogg" data-start="2.02" data-duration="0.11" data-volume="0.4"></audio>
+<audio id="sx1" src="assets/sfx/drop.ogg" data-start="6.07" data-duration="0.11" data-volume="0.4"></audio>
+<audio id="sx2" src="assets/sfx/click.ogg" data-start="11.45" data-duration="0.055" data-volume="0.4"></audio>
+<div class="tile" id="t1"><div class="fill"></div><div class="tx display" data-layout-allow-safe-zone>Brand.</div></div>
+<div class="tile" id="t2"><div class="fill"></div><div class="tx display" data-layout-allow-safe-zone>Platforms.</div></div>
+<div class="tile" id="t3"><div class="fill"></div><div class="tx display" data-layout-allow-safe-zone>People.</div></div>
+<div class="cn" id="c1h"></div><div class="cn" id="c1v"></div><div class="cn" id="c2h"></div><div class="cn" id="c2v"></div>
+<div id="l2" class="line" data-layout-allow-safe-zone>Three parts of one engine. Each makes the others stronger.</div>
+<div id="l3" class="line" data-layout-allow-safe-zone><span class="w">AI</span> <span class="w">runs</span> <span class="w">through</span> <span class="w">all</span> <span class="w">three.</span> <span class="w">That&rsquo;s</span> <span class="w">why</span> <span class="w">it</span> <span class="w">compounds.</span></div>
+<div id="sq"></div>
+</div><script>
+const tl=gsap.timeline({paused:true});const E="power3.out";const D=12;
+tl.fromTo("#glow",{opacity:.55},{opacity:1,duration:D,ease:"sine.inOut"},0);
+tl.fromTo("#grid",{y:0},{y:90,duration:D,ease:"none"},0);
+tl.fromTo("#pulse",{y:0},{y:2300,duration:.9,ease:"power1.out"},0);
+["#t1","#t2","#t3"].forEach((s,i)=>tl.fromTo(s,{y:0},{y:i%2?10:-10,duration:.95,ease:"sine.inOut",yoyo:true,repeat:1},.05));
+tl.fromTo("#c1h",{opacity:1,scaleX:0,transformOrigin:"left center"},{opacity:1,scaleX:1,duration:.25,ease:"power2.in"},2.0);
+tl.fromTo("#c1v",{opacity:1,scaleY:0,transformOrigin:"center top"},{opacity:1,scaleY:1,duration:.25,ease:"power2.out"},2.25);
+tl.fromTo("#c2h",{opacity:1,scaleX:0,transformOrigin:"left center"},{opacity:1,scaleX:1,duration:.25,ease:"power2.in"},2.5);
+tl.fromTo("#c2v",{opacity:1,scaleY:0,transformOrigin:"center top"},{opacity:1,scaleY:1,duration:.25,ease:"power2.out"},2.75);
+tl.to("#t1",{borderColor:"#4ED0CC",duration:.3},2.0);tl.to("#t2",{borderColor:"#4ED0CC",duration:.3},2.5);tl.to("#t3",{borderColor:"#4ED0CC",duration:.3},3.0);
+tl.fromTo("#l2",{opacity:0,y:24},{opacity:1,y:0,duration:.3,ease:E},2.0);
+tl.to("#l2",{opacity:0,duration:.15,ease:"power2.in"},5.85);
+tl.to("#l3 .w",{opacity:1,duration:.12,stagger:.27,ease:"none"},6.05);
+tl.to(".tile .fill",{opacity:.34,duration:.5,stagger:.32,ease:"power2.out"},6.1);
+tl.to(".cn",{boxShadow:"0 0 18px 4px rgba(78,208,204,.7)",duration:.5,stagger:.2},6.2);
+tl.to(".tile .fill",{opacity:.16,duration:.9,ease:"sine.inOut",yoyo:true,repeat:3},7.3);
+tl.to(".tile .tx",{opacity:0,duration:.2},11.0);
+tl.to(".cn",{opacity:0,duration:.15},11.0);
+[[255,565],[540,850],[825,1135]].forEach((c,i)=>tl.to("#t"+(i+1),{x:64-c[0],y:950-c[1],scale:.148,duration:.45,ease:"power3.in"},11.0));
+tl.set(".tile",{opacity:0},11.45);tl.set("#sq",{opacity:1},11.45);
+tl.fromTo("#sq",{y:0},{y:1100,duration:.55,ease:"power2.in"},11.45);
+window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>

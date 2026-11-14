@@ -22,25 +22,24 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ground)}
 .opt .dot{width:30px;height:30px;border:3px solid var(--edge)}
 .opt.sel{border-color:var(--teal);background:rgba(78,208,204,.12);color:var(--ink)}
 .opt.sel .dot{background:var(--teal);border-color:var(--teal)}
-#h2{position:absolute;left:170px;right:90px;top:340px;font-size:100px}
-.stage{position:absolute;left:170px;right:90px}
-.stage .dotm{position:absolute;left:-64px;top:30px;width:20px;height:20px;background:var(--teal)}
-.stage .nm{font-family:"Bricolage";font-weight:700;font-size:78px;letter-spacing:-.02em}
-.stage .ln{margin-top:10px;font-size:36px;line-height:1.35;color:var(--muted);max-width:760px}
-.stage.last .dotm{background:var(--orange)}</style></head><body>
-<div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
+#l1{position:absolute;left:170px;right:90px;top:400px;font-size:106px}.tile{position:absolute;left:170px;right:90px;border:2px solid var(--edge);background:var(--card);padding:30px 40px 30px 84px}
+.tile .sq{position:absolute;left:40px;top:46px;width:22px;height:22px;background:var(--teal)}
+.tile .tg{display:none;font-size:28px;color:var(--teal);margin-bottom:4px}
+.tile .nm{font-family:"Bricolage";font-weight:700;font-size:58px;letter-spacing:-.02em;line-height:1.05}
+.tile .ln{margin-top:8px;font-size:32px;line-height:1.35;color:var(--muted)}
+#l2{position:absolute;left:170px;right:90px;top:1560px;font-size:54px;line-height:1.1}</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1080" data-height="1920">
 <div class="bg-grid"></div><div class="glow" id="glow"></div><div id="spine"></div>
-<div id="hdr" class="mono">02 / 03<br><span>The shift</span></div>
+<div id="hdr" class="mono">02 / 05<br><span>The engine</span></div>
 <img id="brand" src="assets/img/logo.png" alt="Digital Creatives Hub"/>
-<audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="12" data-media-start="9.5" data-volume="0.5"  ></audio><audio id="sx0" src="assets/sfx/drop.ogg" data-start="1.65" data-duration="0.11" data-volume="0.4"></audio><audio id="sx1" src="assets/sfx/drop.ogg" data-start="3.3499999999999996" data-duration="0.11" data-volume="0.4"></audio><audio id="sx2" src="assets/sfx/drop.ogg" data-start="5.05" data-duration="0.11" data-volume="0.4"></audio><audio id="sx3" src="assets/sfx/drop.ogg" data-start="6.75" data-duration="0.11" data-volume="0.4"></audio>
-<div id="h2" class="display">How growth gets built.</div><div class="stage" id="st1" style="top:640px"><span class="dotm"></span><div class="nm">Diagnose.</div><div class="ln">We find the problem behind the brief.</div></div><div class="stage" id="st2" style="top:890px"><span class="dotm"></span><div class="nm">Architect.</div><div class="ln">Brand, platform and people mapped before anything is built.</div></div><div class="stage" id="st3" style="top:1140px"><span class="dotm"></span><div class="nm">Build.</div><div class="ln">In parallel, with AI in every layer and checkpoints you can see.</div></div><div class="stage last" id="st4" style="top:1390px"><span class="dotm"></span><div class="nm orange">Compound.</div><div class="ln">After launch we measure, refine and keep it moving.</div></div>
+<audio id="music" src="assets/music/bed.mp3" data-start="0" data-duration="11" data-media-start="10.6" data-volume="0.5"  ></audio><audio id="sx0" src="assets/sfx/drop.ogg" data-start="2.25" data-duration="0.11" data-volume="0.4"></audio><audio id="sx1" src="assets/sfx/drop.ogg" data-start="3.65" data-duration="0.11" data-volume="0.4"></audio><audio id="sx2" src="assets/sfx/drop.ogg" data-start="5.05" data-duration="0.11" data-volume="0.4"></audio>
+<div id="l1" class="display">Growth made <span class="teal">possible.</span></div><div class="tile" id="t1" style="top:740px"><span class="sq"></span><div class="tg mono"></div><div class="nm">Brand.</div><div class="ln">Identity that earns attention and keeps it.</div></div><div class="tile" id="t2" style="top:990px"><span class="sq"></span><div class="tg mono"></div><div class="nm">Platforms.</div><div class="ln">Software that scales the business, not the busywork.</div></div><div class="tile" id="t3" style="top:1240px"><span class="sq"></span><div class="tg mono"></div><div class="nm">People.</div><div class="ln">Training that turns capability into performance.</div></div><div id="l2" class="display">AI runs through all three. <span class="teal">That&rsquo;s why it compounds.</span></div>
 </div><script>
 const tl=gsap.timeline({paused:true});const E="power3.out";
-tl.fromTo("#glow",{opacity:.55},{opacity:1,duration:12,ease:"sine.inOut"},0);
-
+tl.fromTo("#glow",{opacity:.55},{opacity:1,duration:11,ease:"sine.inOut"},0);
 tl.fromTo("#spine",{scaleY:0},{scaleY:1,duration:1.0,ease:"power2.inOut"},0);
-tl.fromTo("#h2",{opacity:0,y:30},{opacity:1,y:0,duration:.7,ease:E},.5);
-["#st1","#st2","#st3","#st4"].forEach((s,i)=>tl.fromTo(s,{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:E},1.6+i*1.7));
-
+tl.fromTo("#l1",{opacity:0,y:30},{opacity:1,y:0,duration:.7,ease:E},.5);
+["#t1","#t2","#t3"].forEach((s,i)=>tl.fromTo(s,{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:E},2.2+i*1.4));
+tl.fromTo("#l2",{opacity:0,y:20},{opacity:1,y:0,duration:.6,ease:E},6.6);
 window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
 </script></body></html>

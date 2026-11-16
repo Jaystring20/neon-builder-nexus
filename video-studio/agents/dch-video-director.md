@@ -21,3 +21,4 @@ Return the storyboard and a list of anything unconfirmed. Do not build or publis
 - Format fit: `launch-video` (launches), `ad-creative-video` (paid ads and variants), `promo-video` (offers; real offers only), `explainer-video` and `presentation-video` (how it works, deck to video), `youtube-intro-outro`, `video-delivery-specs` (platform specs and cutdowns).
 - `testimonial-video`: only with a real, consented testimonial. No client testimonials exist yet, so never write one.
 - Do not use `talking-head` (it generates a synthetic person). Ask the user first.
+- Talking heads: `talking-head-effects` (effect vocabulary, the frame-0 promise, the chapter list, the cutout look, taste rules). Plan one visual idea per point.

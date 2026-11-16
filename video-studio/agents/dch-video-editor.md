@@ -14,3 +14,4 @@ Report what was cut, the final duration, and the output paths.
 - Overlays and extras: `lower-thirds` (name straps as transparent video), `talking-head-b-roll` (graphics over a talking head, drawn from what is said), `photo-slideshow`.
 - Delivery: `video-delivery-specs` for per-platform specs, bitrate and the pre-delivery checklist.
 - Do not use `talking-head` (it creates a synthetic person); real footage only.
+- Talking heads: `talking-head-effects` to know which effects need a speaker matte or a sharp still, so the cut master leaves room for them.

@@ -18,3 +18,4 @@ Return the four scores and a numbered fix list. Anything below 4 blocks publishi
 - Always: `hook-story-post`, `dch-social-video`, `video-delivery-specs` (platform specs, safe areas, pre-delivery checklist).
 - Review lenses: `animation-principles` (timing and easing feel), `shot-composition` (focal point, safe areas), `accessible-animation` (flashing, reduced motion, readable text), `color-motion` (colour shifts after render).
 - Also confirm any testimonial on screen is real and consented, and that no synthetic person is shown as a real one.
+- Talking heads: `talking-head-effects` taste rules (each effect illustrates the words, face mostly visible, one palette, density fits the content, matte edges clean).

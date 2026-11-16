@@ -19,3 +19,4 @@ Report file paths, durations and anything you changed from the storyboard. Do no
 - Feel and sound: `animation-principles` (easing, timing), `beat-sync-editing`, `soundtrack`.
 - 3D and effects: `threejs-fundamentals`, `threejs-animation`, `threejs-lighting`, `threejs-materials`, `threejs-postprocessing`, `particle-system`, `shader-glsl`. Only when a part truly needs them.
 - Skip `testimonial-video` unless a real consented testimonial is supplied, and `talking-head` unless the user approves.
+- Talking heads: `talking-head-effects` for the effect catalogue and build recipes (speaker matte with `npx hyperframes remove-background`, effects behind the cutout, chapter list, print interrupts).
